@@ -98,7 +98,7 @@ public class ResetPwActivity extends AppCompatActivity {
                     HashMap<String, String> params = new HashMap<>();
                     params.put("type", "1");
                     params.put("phone", phone.getText());
-                    RequestManager.getInstance(getBaseContext()).requestAsyn("/users/send_verification_code", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                    RequestManager.getInstance(getBaseContext()).requestAsyn("users/send_verification_code", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                         @Override
                         public void onReqSuccess(String result) {
                             Log.d(TAG, result);
@@ -130,7 +130,7 @@ public class ResetPwActivity extends AppCompatActivity {
                     params.put("phone", phone.getText().trim());
                     params.put("psw", password.getText().trim());
                     params.put("verification_code", confirm.getText().trim());
-                    RequestManager.getInstance(getBaseContext()).requestAsyn("/users/user_reset_psw", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                    RequestManager.getInstance(getBaseContext()).requestAsyn("users/user_reset_psw", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                         @Override
                         public void onReqSuccess(String result) {
                             Log.d(TAG, result);

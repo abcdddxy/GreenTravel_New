@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/search_height"
         android:background="@color/searchViewBackground"
         android:orientation="horizontal">
 
         <FrameLayout
-
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
@@ -20,36 +19,36 @@
             <EditText
                 android:id="@+id/route_et_search"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/search_edittext_height"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
-                android:drawablePadding="5dp"
+                android:layout_margin="@dimen/search_margin"
                 android:background="@drawable/route_search_background"
+                android:drawablePadding="@dimen/search_drawable_padding"
                 android:hint=""
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:textSize="16sp" />
+                android:textSize="@dimen/search_text_size" />
 
             <ImageView
                 android:id="@+id/route_iv_delete"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="@dimen/search_delete_margin_right"
                 android:src="@drawable/search_delete"
                 android:visibility="gone" />
         </FrameLayout>
 
-        <Button
-            android:id="@+id/route_btn_back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/search_back"
-            android:visibility="gone"/>
+        <!--<Button-->
+        <!--android:id="@+id/route_btn_back"-->
+        <!--android:layout_width="32dp"-->
+        <!--android:layout_height="32dp"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:background="@drawable/search_back"-->
+        <!--android:visibility="gone" />-->
     </LinearLayout>
 
     <ListView

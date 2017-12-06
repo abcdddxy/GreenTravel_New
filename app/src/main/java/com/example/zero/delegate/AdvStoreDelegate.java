@@ -32,9 +32,9 @@ public class AdvStoreDelegate implements ItemViewDelegate<AdvDestinSearchBean> {
         holder.setText(R.id.adv_destin_store_title, bean.getTitle());
         holder.setText(R.id.adv_destin_store_comments, bean.getComments() + "条评论");
         holder.setText(R.id.adv_destin_store_price, "￥" + bean.getPrice());
-        holder.setText(R.id.adv_destin_store_address, bean.getAddress());
-        holder.setText(R.id.adv_destin_store_distance, "距离您" + bean.getDistance() + "米");
-        holder.setText(R.id.adv_destin_store_phone, "电话：" + bean.getPhone());
+        holder.setText(R.id.adv_destin_store_address, bean.getAddress() + "  距离您" + bean.getDistance() + "米");
+        // holder.setText(R.id.adv_destin_store_distance, );
+        //  holder.setText(R.id.adv_destin_store_phone, "电话：" + bean.getPhone());
         holder.setRating(R.id.adv_destin_store_rate, bean.getRate());
         holder.setTextList(R.id.adv_destin_store_labels, bean.getLabels());
 
@@ -52,7 +52,7 @@ public class AdvStoreDelegate implements ItemViewDelegate<AdvDestinSearchBean> {
         Glide.with(context)
                 .load(bean.getImg())
                 .dontAnimate()
-                .placeholder(R.drawable.personal_img)
+                .placeholder(R.drawable.loading)
                 .into(img);
     }
 }

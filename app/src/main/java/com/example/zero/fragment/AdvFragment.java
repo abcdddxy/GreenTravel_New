@@ -45,21 +45,21 @@ public class AdvFragment extends Fragment {
                 switch (checkedId) {
                     case R.id.adv_rb_1:
                         controller.showFragment(0);
-                        rb1.setTextColor(getResources().getColor(R.color.GreenTheme10, null));
+                        rb1.setTextColor(getResources().getColor(R.color.GreenTheme11, null));
                         rb2.setTextColor(getResources().getColor(R.color.nav_gray, null));
                         rb1.setCompoundDrawablesWithIntrinsicBounds(R.drawable.destination_green, 0, 0, 0);
                         rb2.setCompoundDrawablesWithIntrinsicBounds(R.drawable.plane_gray, 0, 0, 0);
-                        view1.setBackgroundColor(getResources().getColor(R.color.GreenTheme10, null));
+                        view1.setBackgroundColor(getResources().getColor(R.color.GreenTheme11, null));
                         view2.setBackgroundColor(getResources().getColor(R.color.nav_gray, null));
                         break;
                     case R.id.adv_rb_2:
                         controller.showFragment(1);
                         rb1.setTextColor(getResources().getColor(R.color.nav_gray, null));
-                        rb2.setTextColor(getResources().getColor(R.color.GreenTheme10, null));
+                        rb2.setTextColor(getResources().getColor(R.color.GreenTheme11, null));
                         rb1.setCompoundDrawablesWithIntrinsicBounds(R.drawable.destination_gray, 0, 0, 0);
                         rb2.setCompoundDrawablesWithIntrinsicBounds(R.drawable.plane_green, 0, 0, 0);
                         view1.setBackgroundColor(getResources().getColor(R.color.nav_gray, null));
-                        view2.setBackgroundColor(getResources().getColor(R.color.GreenTheme10, null));
+                        view2.setBackgroundColor(getResources().getColor(R.color.GreenTheme11, null));
                     default:
                         break;
                 }

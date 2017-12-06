@@ -14,10 +14,10 @@
         android:button="@null"
         android:drawableLeft="@drawable/destination_green"
         android:gravity="center"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:text="目的地"
-        android:textColor="@color/GreenTheme10"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
+        android:text="目的地推荐"
+        android:textColor="@color/GreenTheme11"
         android:textSize="15sp" />
 
     <View

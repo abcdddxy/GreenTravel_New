@@ -57,7 +57,7 @@ public class MainApplication extends Application {
             params.put("type", "1");
             params.put("phone", phone);
             params.put("token", token);
-            RequestManager.getInstance(getBaseContext()).requestAsyn("/users/user_login", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+            RequestManager.getInstance(getBaseContext()).requestAsyn("users/user_login", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                 @Override
                 public void onReqSuccess(String result) {
                     Log.d(TAG, result);
@@ -65,7 +65,7 @@ public class MainApplication extends Application {
                     user_id = jsonObj.getString("user_id");
                     token = jsonObj.getString("token");
                     username = jsonObj.getString("username");
-                    avator = jsonObj.getString("avator");
+                    avator = jsonObj.getString("avator_url");
                     SharedPreferences sharedPreferences = getSharedPreferences("GreenTravel", Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("phone", phone);

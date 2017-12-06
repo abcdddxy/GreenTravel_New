@@ -7,8 +7,6 @@
     android:theme="@android:style/Theme.Holo.Light.NoActionBar"
     android:weightSum="2">
 
-
-
     <TimePicker
         android:id="@+id/timePicker1"
         android:layout_width="0dp"

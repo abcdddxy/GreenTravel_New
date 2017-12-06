@@ -60,52 +60,52 @@
                 android:layout_marginRight="15dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/setting_map"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/setting_map"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="地图设置"
-                android:textColor="@color/black" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="地图设置"-->
+                <!--android:textColor="@color/black" />-->
 
-            <ImageView
-                style="@style/arrow_right_black"
-                android:layout_marginRight="15dp" />
-        </LinearLayout>
+            <!--<ImageView-->
+                <!--style="@style/arrow_right_black"-->
+                <!--android:layout_marginRight="15dp" />-->
+        <!--</LinearLayout>-->
 
-        <LinearLayout
-            android:id="@+id/setting_city"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/setting_city"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="城市切换"
-                android:textColor="@color/black" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="城市切换"-->
+                <!--android:textColor="@color/black" />-->
 
-            <TextView
-                android:id="@+id/current_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="当前城市：北京市" />
+            <!--<TextView-->
+                <!--android:id="@+id/current_city"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:text="当前城市：北京市" />-->
 
-            <ImageView
-                style="@style/arrow_right_black"
-                android:layout_marginRight="15dp" />
-        </LinearLayout>
+            <!--<ImageView-->
+                <!--style="@style/arrow_right_black"-->
+                <!--android:layout_marginRight="15dp" />-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 
     <LinearLayout
@@ -169,52 +169,52 @@
                 android:textOn="" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/setting_pic"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/setting_pic"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="仅Wi-Fi下显示图片"
-                android:textColor="@color/black" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="仅Wi-Fi下显示图片"-->
+                <!--android:textColor="@color/black" />-->
 
-            <ToggleButton
-                android:id="@+id/pic_toggle"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/toggle_button_select"
-                android:checked="false"
-                android:text=""
-                android:textOff=""
-                android:textOn="" />
-        </LinearLayout>
+            <!--<ToggleButton-->
+                <!--android:id="@+id/pic_toggle"-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:background="@drawable/toggle_button_select"-->
+                <!--android:checked="false"-->
+                <!--android:text=""-->
+                <!--android:textOff=""-->
+                <!--android:textOn="" />-->
+        <!--</LinearLayout>-->
 
-        <LinearLayout
-            android:id="@+id/setting_safety"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/setting_safety"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:text="安全中心"
-                android:textColor="@color/black" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="安全中心"-->
+                <!--android:textColor="@color/black" />-->
 
-            <ImageView
-                style="@style/arrow_right_black"
-                android:layout_marginRight="15dp" />
-        </LinearLayout>
+            <!--<ImageView-->
+                <!--style="@style/arrow_right_black"-->
+                <!--android:layout_marginRight="15dp" />-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 
     <LinearLayout

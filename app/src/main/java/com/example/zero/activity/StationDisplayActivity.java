@@ -72,6 +72,7 @@ public class StationDisplayActivity extends AppCompatActivity {
     private String stationName;
     private int size = 100;
     private String[] shopIdList = new String[size];
+    private String[] sellerIdList = new String[size];
     private double[] sellerLatList = new double[size];
     private double[] sellerLngList = new double[size];
     private String[] tagList = new String[size];
@@ -236,11 +237,11 @@ public class StationDisplayActivity extends AppCompatActivity {
     private void parseJSONWithJSONObject(String jsonData) {
         try {
             JSONArray shop = new JSONArray(jsonData);
-
             if (shop.length() != 0) {
                 int count = 0;
                 for (int i = 0; i < shop.length(); i++) {
                     shopIdList[count] = shop.getJSONObject(i).getString("shop_id");
+                    sellerIdList[count] = shop.getJSONObject(i).getString("seller_id");
                     sellerLatList[count] = shop.getJSONObject(i).getDouble("lat");
                     sellerLngList[count] = shop.getJSONObject(i).getDouble("lng");
                     tagList[count] = shop.getJSONObject(i).getString("tag");
@@ -420,6 +421,7 @@ public class StationDisplayActivity extends AppCompatActivity {
                 Bundle mBundle = new Bundle();
                 Intent intent = new Intent(context, ShoppingCartActivity.class);
                 mBundle.putString("shopId", shopIdList[position]);
+                mBundle.putString("sellerId",sellerIdList[position]);
                 mBundle.putString("shopName", shopNameList[position]);
                 mBundle.putString("shopImg", posterList[position]);
                 intent.putExtras(mBundle);

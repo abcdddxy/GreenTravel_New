@@ -1,6 +1,5 @@
 package com.example.zero.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,7 +12,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +19,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.zero.adapter.RouteSearchAdapter;
 import com.example.zero.greentravel_new.R;
 
 public class SearchView extends LinearLayout implements View.OnClickListener {
@@ -34,10 +31,6 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
      * 删除键
      */
     private ImageView ivDelete;
-    /**
-     * 返回按钮
-     */
-    private Button btnBack;
     /**
      * 弹出列表
      */
@@ -88,7 +81,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
     private void initViews() {
         etInput = (EditText) findViewById(R.id.route_et_search);
         ivDelete = (ImageView) findViewById(R.id.route_iv_delete);
-        btnBack = (Button) findViewById(R.id.route_btn_back);
+        //btnBack = (Button) findViewById(R.id.route_btn_back);
         lvTips = (ListView) findViewById(R.id.route_lv_list);
 
         lvTips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -110,7 +103,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
         });
 
         ivDelete.setOnClickListener(this);
-        btnBack.setOnClickListener(this);
+        //btnBack.setOnClickListener(this);
 
         etInput.addTextChangedListener(new EditChangedListener());
         etInput.setOnClickListener(this);
@@ -208,12 +201,6 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
                 etInput.setText("");
                 ivDelete.setVisibility(GONE);
                 mListener.onBack();
-                break;
-            case R.id.route_btn_back:
-                etInput.setText("");
-                ivDelete.setVisibility(GONE);
-                mListener.onBack();
-//                ((Activity) mContext).finish();
                 break;
             default:
                 break;

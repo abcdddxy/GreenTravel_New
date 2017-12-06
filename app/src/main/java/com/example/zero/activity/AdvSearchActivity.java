@@ -242,7 +242,7 @@ public class AdvSearchActivity extends AppCompatActivity {
         params.put("price_filter", getPriceFilters());
         params.put("user_lon", "113.303346");
         params.put("user_lat", "23.122086");
-        RequestManager.getInstance(getBaseContext()).requestAsyn("/search", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+        RequestManager.getInstance(getBaseContext()).requestAsyn("search/keywordSearch", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
                 showList.clear();

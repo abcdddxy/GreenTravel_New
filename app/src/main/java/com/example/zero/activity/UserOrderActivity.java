@@ -68,7 +68,7 @@ public class UserOrderActivity extends Activity {
                         params.put("user_id", userId);
                         params.put("token", token);
                         params.put("order_no", dataList.get(position).getOrderId());
-                        RequestManager.getInstance(getBaseContext()).requestAsyn("/order/usercancel", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                        RequestManager.getInstance(getBaseContext()).requestAsyn("order/usercancel", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {
                                 Toast.makeText(getBaseContext(), "canceled", Toast.LENGTH_SHORT).show();
@@ -90,7 +90,7 @@ public class UserOrderActivity extends Activity {
                     case R.id.user_order_receive: {
                         HashMap<String, String> params = new HashMap<>();
                         params.put("order_no", dataList.get(position).getOrderId());
-                        RequestManager.getInstance(getBaseContext()).requestAsyn("/order/gen_QRcode_content", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                        RequestManager.getInstance(getBaseContext()).requestAsyn("order/gen_QRcode_content", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {
                                 JSONObject object = JSON.parseObject(result);
@@ -154,7 +154,7 @@ public class UserOrderActivity extends Activity {
         params.put("user_id", userId);
         params.put("token", token);
         params.put("order_type", order_type);
-        RequestManager.getInstance(getBaseContext()).requestAsyn("/order/userorderlist", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+        RequestManager.getInstance(getBaseContext()).requestAsyn("order/userorderlist", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
                 JSONObject object = JSON.parseObject(result);

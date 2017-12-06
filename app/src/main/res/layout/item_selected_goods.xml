@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="￥ 100"
-        android:textColor="@color/GreenTheme12"
+        android:textColor="@color/GreenTheme14"
         android:textSize="16sp" />
 
     <LinearLayout

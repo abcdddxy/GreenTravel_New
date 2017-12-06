@@ -26,10 +26,16 @@
         android:layout_height="1px"
         android:background="@color/divideLine" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/msg_recv"
+    <FrameLayout
+        android:id="@+id/msg_framelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/msg_recv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </FrameLayout>
 </LinearLayout>

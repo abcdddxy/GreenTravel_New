@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,8 @@ public class MsgActivity extends AppCompatActivity {
     private String msg_pic, msg_title, msg_content, msg_time;
     private MsgAdapter adapter;
     private MainApplication application;
+    private TextView textView;
+    private FrameLayout msg_fl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +85,15 @@ public class MsgActivity extends AppCompatActivity {
         msg_recv = (RecyclerView) findViewById(R.id.msg_recv);
         msg_recv.setLayoutManager(new LinearLayoutManager(this));
         backArrow = (TextView) findViewById(R.id.msg_back_arrow);
+        msg_fl = (FrameLayout) findViewById(R.id.msg_framelayout);
+        textView = new TextView(this);
+        textView.setText("您还未登录哦\n" + "请您登录后进行查看!");
+        textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.no_login, 0, 0);
+        textView.setCompoundDrawablePadding(30);
+        textView.setPadding(0, 500, 0, 0);
+        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView.setTextSize(14);
+        textView.setTextColor(getResources().getColor(R.color.gray1, null));
     }
 
     public void sendNewMsg() {
@@ -96,8 +109,9 @@ public class MsgActivity extends AppCompatActivity {
 
     public void getMsg() {
         if (application.isOnline() == false) {
-            Toast.makeText(this, "请您先登录再进行查看", Toast.LENGTH_LONG).show();
+            msg_fl.addView(textView);
         } else {
+            msg_fl.removeView(textView);
             HashMap<String, String> params = new HashMap<>();
             params.put("user_id", uid);
             params.put("offset", 0 + "");

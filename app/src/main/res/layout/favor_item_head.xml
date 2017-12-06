@@ -4,11 +4,16 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="10dp"
+        android:background="@color/divideLine" />
+
     <TextView
         android:id="@+id/other_favor"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"

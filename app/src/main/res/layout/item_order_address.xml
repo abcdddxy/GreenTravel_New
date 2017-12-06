@@ -1,76 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/order_cus_addr"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:background="@color/white"
-    android:orientation="horizontal">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/address" />
+    android:layout_height="60dp"
+    android:background="@color/white">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/order_addr_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/customer_name"
+                android:id="@+id/order_addr_tip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:text="收货人：吴姿颍"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/customer_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_weight="1"
+                    android:text="收货人：吴姿颍"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/customer_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="18811721895"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <!--<TextView-->
+            <!--android:id="@+id/customer_address"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="收货地址：北京市海淀区西土城路10号北京邮电大学"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="12sp" />-->
 
             <TextView
-                android:id="@+id/customer_phone"
-                android:layout_width="wrap_content"
+                android:id="@+id/free_receive_service"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="18811721895"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </RelativeLayout>
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="@color/GreenTheme"
+                android:textSize="12sp" />
+        </LinearLayout>
 
-        <!--<TextView-->
-        <!--android:id="@+id/customer_address"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:text="收货地址：北京市海淀区西土城路10号北京邮电大学"-->
-        <!--android:textColor="@color/black"-->
-        <!--android:textSize="12sp" />-->
-
-        <TextView
-            android:id="@+id/free_receive_service"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="(收货不便时，可选择免费代收服务)"
-            android:textColor="@color/GreenTheme"
-            android:textSize="12sp" />
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/arrow_right_black" />
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center"
-        android:layout_marginRight="15dp"
-        android:src="@drawable/arrow_right_black" />
-</LinearLayout>
+</FrameLayout>

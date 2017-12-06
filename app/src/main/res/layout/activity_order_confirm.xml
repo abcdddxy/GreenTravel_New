@@ -71,13 +71,13 @@
             android:layout_marginRight="10dp"
             android:gravity="center_vertical"
             android:text="¥ 489.00"
-            android:textColor="@color/price" />
+            android:textColor="@color/GreenTheme14" />
 
         <Button
             android:id="@+id/order_button_submit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/light_orange"
+            android:background="@color/GreenTheme"
             android:text="提交订单"
             android:textColor="@color/white" />
     </LinearLayout>

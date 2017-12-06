@@ -2,10 +2,8 @@ package com.example.zero.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -20,10 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -37,10 +33,8 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BaiduMapOptions;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
@@ -48,7 +42,6 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.example.zero.fragment.FragmentController;
 
-import com.example.zero.fragment.RouteFragmentDouble;
 import com.example.zero.greentravel_new.R;
 import com.example.zero.util.MainApplication;
 import com.example.zero.view.TitleLayout;
@@ -60,8 +53,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener, SensorEventListener {
 
@@ -306,10 +297,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         //未选中时的颜色
         bottom_navigation_bar_container.setInActiveColor(R.color.nav_gray);
         //选中时的颜色
-        bottom_navigation_bar_container.setActiveColor(R.color.colorPrimaryDark);
+        bottom_navigation_bar_container.setActiveColor(R.color.GreenTheme13);
 
         //角标
-        badgeItem = new BadgeItem().setBackgroundColor(Color.RED).setText("99").setHideOnSelect(true);
+        //badgeItem = new BadgeItem().setBackgroundColor(Color.RED).setText("99").setHideOnSelect(true);
 
         routeItem = new BottomNavigationItem(R.drawable.route, "路线");
         adviceItem = new BottomNavigationItem(R.drawable.advice, "建议");

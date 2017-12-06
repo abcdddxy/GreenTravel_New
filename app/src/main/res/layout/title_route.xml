@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:background="#000"
+    android:background="@color/GreenTheme13"
     android:weightSum="1">
 
     <Button
         android:id="@+id/title_btn_model"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:text="单人模式"
-        android:textColor="#FFF" />
+        android:textColor="@color/white" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/title_civ_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginLeft="62dp"
-        android:src="@drawable/title_icon" />
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/title_center_view"
+        android:src="@drawable/title_icon"
+        app:riv_oval="true" />
+
+    <View
+    android:id="@+id/title_center_view"
+    android:layout_width="20dp"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true" />
 
     <TextView
         android:id="@+id/title_tv_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/title_center_view"
         android:text="@string/title_title"
-        android:textColor="#FFF"
+        android:textColor="@color/white"
         android:textSize="24sp" />
 
     <Button
         android:id="@+id/title_btn_more"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="40dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:text="@string/title_more"
-        android:textColor="#FFF" />
-
-</LinearLayout>
+        android:textColor="@color/white" />
+</RelativeLayout>

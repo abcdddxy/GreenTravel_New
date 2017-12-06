@@ -23,9 +23,9 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/route_result_location"
             android:layout_marginBottom="100dp"
-            android:layout_marginLeft="40dp"/>
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/route_result_location" />
 
     </RelativeLayout>
 
@@ -47,7 +47,7 @@
             android:id="@+id/drawer_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/background"
             android:orientation="vertical">
 
             <LinearLayout
@@ -57,45 +57,46 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="@dimen/search_double_height">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/search_exchange_button_width"
                         android:orientation="vertical">
 
                         <com.example.zero.view.SearchPopView
                             android:id="@+id/route_search_single"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
 
                         <com.example.zero.view.SearchPopView
                             android:id="@+id/route_search_single2"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="40dp"
-                        android:layout_height="115dp"
+                        android:layout_width="@dimen/search_exchange_button_width"
+                        android:layout_height="match_parent"
                         android:layout_gravity="right"
                         android:background="@color/searchViewBackground">
 
                         <Button
-                            android:id="@+id/search_btn_change"
-                            android:layout_width="30dp"
-                            android:layout_height="40dp"
+                            android:id="@+id/search_btn_change2"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="center"
-                            android:background="@drawable/search_change" />
+                            android:background="@drawable/search_change"
+                            android:paddingRight="5dp" />
                     </LinearLayout>
                 </FrameLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
                     android:orientation="vertical">
 
                     <ListView
@@ -114,24 +115,15 @@
                 <Button
                     android:id="@+id/route_btn_single_search"
                     style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_gravity="bottom|right"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="#1874CD"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
+                    android:layout_width="@dimen/search_button_width"
+                    android:layout_height="@dimen/search_button_height"
+                    android:background="@color/GreenTheme"
                     android:text="@string/route_search_btn"
                     android:textColor="@color/white"
-                    android:textSize="24sp"
                     android:visibility="gone" />
             </LinearLayout>
         </FrameLayout>
 
     </com.example.zero.view.WrappingSlidingDrawer>
-
-
 </FrameLayout>
 

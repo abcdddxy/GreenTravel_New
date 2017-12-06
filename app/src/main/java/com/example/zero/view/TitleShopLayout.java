@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.example.zero.greentravel_new.R;
 public class TitleShopLayout extends LinearLayout{
     private TextView text;
     private ImageView img;
+    private RelativeLayout rl;
 
     public TitleShopLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,6 +36,7 @@ public class TitleShopLayout extends LinearLayout{
 
         text = (TextView) findViewById(R.id.title_shop_text);
         img = (ImageView) findViewById(R.id.title_shop_img);
+        rl = (RelativeLayout) findViewById(R.id.title_shop);
     }
 
     public TextView getText() {
@@ -52,7 +55,8 @@ public class TitleShopLayout extends LinearLayout{
         Glide.with(context)
                 .load(imgUrl)
                 .dontAnimate()
-                .placeholder(R.drawable.personal_img)
+                .placeholder(R.drawable.defult_user_img)
                 .into(img);
     }
+
 }

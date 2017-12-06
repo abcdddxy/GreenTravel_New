@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -21,58 +22,66 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:background="@color/nav_gray" />
+        android:layout_height="1px"
+        android:background="@color/divideLine" />
 
     <LinearLayout
         android:id="@+id/station_spinner_set"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:background="@color/white"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/station_spinner1"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:drawableRight="@drawable/more_unfold"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="线路"
-            android:textColor="#af000000"
-            android:textSize="16sp" />
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/station_spinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/more_unfold"
+                android:gravity="center"
+                android:text="线路"
+                android:textColor="@color/black" />
+        </LinearLayout>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="1px"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:background="@color/nav_gray" />
+            android:background="@color/divideLine" />
 
-        <TextView
-            android:id="@+id/station_spinner2"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:drawableRight="@drawable/more_unfold"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="站点"
-            android:textColor="#af000000"
-            android:textSize="16sp" />
+            android:layout_weight="1"
+            android:gravity="center">
 
+            <TextView
+                android:id="@+id/station_spinner2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/more_unfold"
+                android:gravity="center"
+                android:text="站点"
+                android:textColor="@color/black" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:background="@color/nav_gray" />
+        android:layout_height="1px"
+        android:background="@color/divideLine" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/station_schedule_recy"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
 

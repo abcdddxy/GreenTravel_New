@@ -82,18 +82,18 @@ public class SettingActivity extends AppCompatActivity {
                 // 设置完成后返回到原来的界面startActivityForResult(intent, 0);
             }
         });
-        map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(SettingActivity.this, "map", Toast.LENGTH_SHORT).show();
-            }
-        });
-        city.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(SettingActivity.this, "city", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        map.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(SettingActivity.this, "map", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        city.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(SettingActivity.this, "city", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         MainApplication application = (MainApplication) getApplication();
         newMsg.setChecked(application.getMsgBtn());
         newMsg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -135,33 +135,33 @@ public class SettingActivity extends AppCompatActivity {
                 }
             }
         });
-        pic.setChecked(application.getPicBtn());
-        pic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferences sharedPreferences = getSharedPreferences("GreenTravel", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                if (compoundButton.isChecked()) {
-                    editor.putBoolean("pic_download", true);
-                    editor.commit();
-                    if (isWifiConnected(SettingActivity.this)) {
-                        //由于当前图片均使用本地的，所以该部分代码待写//TODO:下载图片
-                    } else {
-                        //不下载图片，显示图片占位符
-                    }
-                } else {
-                    editor.putBoolean("pic_download", true);
-                    editor.commit();
-                    //直接下载图片
-                }
-            }
-        });
-        safety.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(SettingActivity.this, "safety", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        pic.setChecked(application.getPicBtn());
+//        pic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                SharedPreferences sharedPreferences = getSharedPreferences("GreenTravel", Activity.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                if (compoundButton.isChecked()) {
+//                    editor.putBoolean("pic_download", true);
+//                    editor.commit();
+//                    if (isWifiConnected(SettingActivity.this)) {
+//                        //由于当前图片均使用本地的，所以该部分代码待写//TODO:下载图片
+//                    } else {
+//                        //不下载图片，显示图片占位符
+//                    }
+//                } else {
+//                    editor.putBoolean("pic_download", true);
+//                    editor.commit();
+//                    //直接下载图片
+//                }
+//            }
+//        });
+//        safety.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(SettingActivity.this, "safety", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,12 +217,12 @@ public class SettingActivity extends AppCompatActivity {
         backArrow = (TextView) findViewById(R.id.setting_back_arrow);
         location = (LinearLayout) findViewById(R.id.setting_location);
         location_text = (TextView) findViewById(R.id.location_text);
-        map = (LinearLayout) findViewById(R.id.setting_map);
-        city = (LinearLayout) findViewById(R.id.setting_city);
+        //map = (LinearLayout) findViewById(R.id.setting_map);
+        //city = (LinearLayout) findViewById(R.id.setting_city);
         newMsg = (ToggleButton) findViewById(R.id.msg_toggle);
         apk = (ToggleButton) findViewById(R.id.apk_toggle);
-        pic = (ToggleButton) findViewById(R.id.pic_toggle);
-        safety = (LinearLayout) findViewById(R.id.setting_safety);
+        //pic = (ToggleButton) findViewById(R.id.pic_toggle);
+        //safety = (LinearLayout) findViewById(R.id.setting_safety);
         about = (LinearLayout) findViewById(R.id.about);
         update = (LinearLayout) findViewById(R.id.setting_update);
         current_ver = (TextView) findViewById(R.id.current_ver);

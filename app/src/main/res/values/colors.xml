@@ -20,6 +20,7 @@
     <color name="deep_orange">#A0522D</color>
     <!--灰色-->
     <color name="gray">#EDEDED</color>
+    <color name="gray1">#b3b1b1</color>
 
     <!--搜索框-->
     <color name="searchViewBackground">#87c38e</color>
@@ -32,15 +33,19 @@
     <color name="GreenTheme2">#ade1b3</color>
     <color name="GreenTheme3">#709275</color>
     <color name="GreenTheme4">#2c7f36</color>
-    <color name="GreenTheme5">#00FFCC</color>
-    <color name="GreenTheme6">#33FF99</color>
+    <color name="GreenTheme5">#06c1ae</color>
+    <color name="GreenTheme6">#f79e42</color>
     <color name="GreenTheme7">#33CC99</color>
     <color name="GreenTheme8">#66CC66</color>
-    <color name="GreenTheme9">#99FFCC</color>
+    <color name="GreenTheme9">#fe7845</color>
     <color name="GreenTheme10">#3CB371</color>
     <color name="GreenTheme11">#57bc66</color>
     <color name="GreenTheme12">#FBB2AE</color>
     <color name="GreenTheme13">#6B9599</color>
+    <color name="GreenTheme14">#ff8692</color>
+    <color name="GreenTheme15">#99cdff</color>
+    <color name="GreenTheme16">#adb3ff</color>
+    <color name="GreenTheme17">#f0de44</color>
 
     <!--nav颜色-->
     <color name="firstColor">#00BCD4</color>
@@ -62,7 +67,7 @@
     <!--分隔线灰色-->
     <color name="divideLine">#A9A9A9</color>
     <!--界面背景色-->
-    <color name="background">#E6E6E6</color>
+    <color name="background">#EDEDED</color>
     <!--顶部导航栏蓝色-->
     <color name="nav_head">#1296db</color>
 
@@ -96,6 +101,4 @@
 
     <!-- 透明 -->
     <color name="transparent">#00000000</color>
-
-
 </resources>

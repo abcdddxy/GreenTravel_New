@@ -18,8 +18,11 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
-            android:layout_margin="4dp"
-            android:baselineAlignBottom="true" />
+            android:baselineAlignBottom="true"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -89,10 +92,10 @@
                 android:layout_width="80dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center"
-                android:textSize="12sp"
                 android:background="@drawable/sale_button_use_shape"
                 android:text="立即使用"
-                android:textColor="@color/GreenTheme" />
+                android:textColor="@color/GreenTheme"
+                android:textSize="12sp" />
         </LinearLayout>
     </com.example.zero.view.CouponView>
 </FrameLayout>

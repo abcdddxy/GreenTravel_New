@@ -2,84 +2,86 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
 
-    <com.example.zero.view.TitleLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <!--<com.example.zero.view.TitleLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content" />-->
 
-    <TextView
-        android:id="@+id/adv_act"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:text="this is Mukai Shudoku"
-        android:visibility="gone"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:background="@color/nav_gray"/>
+    <!--<TextView-->
+    <!--android:id="@+id/adv_act"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:text="this is Mukai Shudoku"-->
+    <!--android:visibility="gone" />-->
+
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1px"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:background="@color/divideLine" />-->
 
     <LinearLayout
         android:id="@+id/adv_spinner_set"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:elevation="5dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/adv_spinner1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:padding="10dp"
+            android:layout_weight="1"
             android:drawableRight="@drawable/more_unfold"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="综合排序"
-            android:textColor="#af000000"
-            android:textSize="16sp"
-            android:gravity="center"></TextView>
+            android:textColor="@color/black" />
+
         <View
-            android:layout_width="1dp"
+            android:layout_width="1px"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:background="@color/nav_gray"/>
+            android:background="@color/divideLine" />
+
         <TextView
             android:id="@+id/adv_spinner2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:padding="10dp"
+            android:layout_weight="1"
             android:drawableRight="@drawable/more_unfold"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="不限价格"
-            android:textColor="#af000000"
-            android:textSize="16sp"
-            android:gravity="center"></TextView>
+            android:textColor="@color/black" />
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="1px"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:background="@color/nav_gray"/>
+            android:background="@color/divideLine" />
 
         <TextView
             android:id="@+id/adv_spinner3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:padding="10dp"
+            android:layout_weight="1"
             android:drawableRight="@drawable/more_unfold"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="不限距离"
-            android:textColor="#af000000"
-            android:textSize="16sp"
-            android:gravity="center"></TextView>
-
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:background="@color/nav_gray"/>
+        android:layout_height="1px"
+        android:background="@color/divideLine" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/adv_search_recv"

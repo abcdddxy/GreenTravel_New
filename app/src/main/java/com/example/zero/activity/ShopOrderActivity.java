@@ -7,17 +7,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.zero.adapter.ShopCartAdapter;
 import com.example.zero.bean.ShopCartBean;
 import com.example.zero.greentravel_new.R;
+import com.example.zero.util.MainApplication;
+import com.example.zero.util.RequestManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ShopOrderActivity extends AppCompatActivity {
@@ -40,6 +47,7 @@ public class ShopOrderActivity extends AppCompatActivity {
     //前后端接口
     private String shopName;
     private String shopId;
+    private String sellerId;
     private int count;
     private int size = 100;
     private String[] idList = new String[size];
@@ -47,6 +55,8 @@ public class ShopOrderActivity extends AppCompatActivity {
     private String[] posterList = new String[size];
     private double[] priceList = new double[size];
     private int[] numList = new int[size];
+
+    private static final String TAG = "ShopOrderActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,8 +172,10 @@ public class ShopOrderActivity extends AppCompatActivity {
 
         shopName = mBundle.getString("shopName");
         shopId = mBundle.getString("shopId");
+        sellerId = mBundle.getString("sellerId");
         count = mBundle.getInt("size");
         idList = mBundle.getStringArray("idList");
+
         nameList = mBundle.getStringArray("nameList");
         posterList = mBundle.getStringArray("posterList");
         priceList = mBundle.getDoubleArray("priceList");
@@ -175,35 +187,74 @@ public class ShopOrderActivity extends AppCompatActivity {
         tvShopCartSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int size = mGoPayList.size();
-                String[] idList = new String[size];
-                String[] nameList = new String[size];
-                String[] posterList = new String[size];
-                double[] priceList = new double[size];
-                int[] numList = new int[size];
-
-                for (int i = 0; i < size; i++) {
-                    idList[i] = String.valueOf(mGoPayList.get(i).getId());
-                    nameList[i] = mGoPayList.get(i).getProductName();
-                    posterList[i] = mGoPayList.get(i).getDefaultPic();
-                    priceList[i] = mGoPayList.get(i).getPrice();
-                    numList[i] = mGoPayList.get(i).getCount();
+                //TODO
+                MainApplication application = (MainApplication) getApplication();
+                JSONArray orderGoods = new JSONArray();
+                for (int i = 0; i < mGoPayList.size(); i++) {
+                    JSONObject good = new JSONObject();
+                    good.put("bought_num", mGoPayList.get(i).getCount());
+                    good.put("goods_name", mGoPayList.get(i).getProductName());
+                    good.put("id", mGoPayList.get(i).getProductId());
+                    good.put("picture_url", mGoPayList.get(i).getDefaultPic());
+                    good.put("price", mGoPayList.get(i).getPrice());
+                    good.put("seller_id", sellerId);
+                    orderGoods.add(good);
                 }
+                HashMap<String, String> params = new HashMap<>();
+                params.put("user_id", application.getUser_id());
+                params.put("seller_id", sellerId);
+                RequestManager.getInstance(getBaseContext()).requestPostByAsynBody("order/clearing", params, orderGoods.toString(), new RequestManager.ReqCallBack<String>() {
+                    @Override
+                    public void onReqSuccess(String result) {
+                        JSONObject extraMessage = JSON.parseObject(result);
+                        JSONArray invalid = JSON.parseArray(extraMessage.getString("invalid_goods_id"));
+                        int count = 0;
+                        for (int i = 0; i < mGoPayList.size(); i++) {
+                            if (!invalid.contains(mGoPayList.get(i).getProductId())) count++;
+                        }
+                        if (count > 0) {
+                            Bundle mBundle = new Bundle();
+                            Intent intent = new Intent(getBaseContext(), OrderConfirmActivity.class);
+                            String[] idList = new String[count];
+                            String[] nameList = new String[count];
+                            String[] posterList = new String[count];
+                            double[] priceList = new double[count];
+                            int[] numList = new int[count];
+                            for (int i = 0; i < mGoPayList.size(); i++) {
+                                if (invalid.contains(idList[i])) continue;
+                                idList[i] = mGoPayList.get(i).getProductId();
+                                nameList[i] = mGoPayList.get(i).getProductName();
+                                posterList[i] = mGoPayList.get(i).getDefaultPic();
+                                priceList[i] = mGoPayList.get(i).getPrice();
+                                numList[i] = mGoPayList.get(i).getCount();
+                            }
+                            mBundle.putString("shopName", shopName);
+                            mBundle.putString("shopId", shopId);
+                            mBundle.putInt("size", count);
+                            mBundle.putStringArray("idList", idList);
+                            mBundle.putStringArray("nameList", nameList);
+                            mBundle.putStringArray("posterList", posterList);
+                            mBundle.putDoubleArray("priceList", priceList);
+                            mBundle.putIntArray("numList", numList);
+                            mBundle.putString("coupons", extraMessage.getString("coupons"));
+                            mBundle.putString("mailing", extraMessage.getString("mailing_infos"));
+                            intent.putExtras(mBundle);
+                            startActivity(intent);
+                            if (count < mGoPayList.size())
+                                Toast.makeText(getBaseContext(), "您所选的部分商品已失效", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getBaseContext(), "您所选的商品已下架", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-                Bundle mBundle = new Bundle();
-                Intent intent = new Intent(getBaseContext(), OrderConfirmActivity.class);
-                mBundle.putString("shopName", shopName);
-                mBundle.putString("shopId", shopId);
-                mBundle.putInt("size", size);
-                mBundle.putStringArray("idList", idList);
-                mBundle.putStringArray("nameList", nameList);
-                mBundle.putStringArray("posterList", posterList);
-                mBundle.putDoubleArray("priceList", priceList);
-                mBundle.putIntArray("numList", numList);
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        Toast.makeText(getBaseContext(), "失败", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, errorMsg);
+                    }
+                });
 
-                intent.putExtras(mBundle);
-                startActivity(intent);
-                Toast.makeText(getBaseContext(), "结算", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -223,7 +274,6 @@ public class ShopOrderActivity extends AppCompatActivity {
             sb.setProductName(nameList[i]);
             sb.setProductId(idList[i]);
             sb.setCount(numList[i]);
-
             // TODO: 2017/11/14 暂时未定义属性
             sb.setColor("NULL");
             sb.setSize("NULL");

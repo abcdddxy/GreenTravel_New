@@ -5,7 +5,7 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <com.example.zero.view.TitleLayout
+    <com.example.zero.view.TitleShopLayout
         android:id="@+id/main_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

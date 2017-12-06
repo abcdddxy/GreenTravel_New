@@ -9,7 +9,6 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,18 +16,13 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.zero.greentravel_new.R;
-
-import static android.content.ContentValues.TAG;
-
 
 public class SearchPopView extends LinearLayout implements View.OnClickListener {
 
@@ -40,10 +34,6 @@ public class SearchPopView extends LinearLayout implements View.OnClickListener 
      * 删除键
      */
     private ImageView ivDelete;
-    /**
-     * 返回按钮
-     */
-    private Button btnBack;
     /**
      * 上下文对象
      */
@@ -95,10 +85,10 @@ public class SearchPopView extends LinearLayout implements View.OnClickListener 
     private void initViews() {
         etInput = (EditText) findViewById(R.id.route_et_search);
         ivDelete = (ImageView) findViewById(R.id.route_iv_delete);
-        btnBack = (Button) findViewById(R.id.route_btn_back);
+        //btnBack = (Button) findViewById(R.id.route_btn_back);
 
         ivDelete.setOnClickListener(this);
-        btnBack.setOnClickListener(this);
+        //btnBack.setOnClickListener(this);
 
         etInput.addTextChangedListener(new EditChangedListener());
         etInput.setOnClickListener(this);
@@ -160,7 +150,7 @@ public class SearchPopView extends LinearLayout implements View.OnClickListener 
         popupWindow.setAdapter(adapter);
     }
 
-    public void setJUD(boolean B){
+    public void setJUD(boolean B) {
         JUD = B;
     }
 
@@ -221,11 +211,6 @@ public class SearchPopView extends LinearLayout implements View.OnClickListener 
                 }
                 break;
             case R.id.route_iv_delete:
-                etInput.setText("");
-                mListener.onBack();
-                ivDelete.setVisibility(GONE);
-                break;
-            case R.id.route_btn_back:
                 etInput.setText("");
                 mListener.onBack();
                 ivDelete.setVisibility(GONE);

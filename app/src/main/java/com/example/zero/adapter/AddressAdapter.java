@@ -23,7 +23,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     private Context context;
     private List<AddressBean> dataList;
     private onRecycleItemClickListener mClickListener;
-    private int lastSelectPos;
+    private int lastSelectPos = -1;
 
     public AddressAdapter(Context context, List<AddressBean> addrDataList) {
         this.context = context;
@@ -64,7 +64,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
                     addressBean.setChange(false);
                     addressBean.setDefaultAddr("设为默认");
                 }
-                if (lastSelectPos != position) {
+                if (lastSelectPos != position || lastSelectPos == -1) {
                     dataList.get(position).setChange(true);
                     lastSelectPos = position;
                 }

@@ -186,7 +186,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
                     Toast.makeText(context, "连接服务器失败，请重新尝试！", Toast.LENGTH_LONG).show();
                 }
             });
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -205,7 +205,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
                     nameList[count] = goods.getJSONObject(i).getString("goods_name");
                     posterList[count] = goods.getJSONObject(i).getString("picture_url");
                     if (!posterList[count].contains("http")) {
-                        posterList[count] = "http://10.108.112.96:8080/" + posterList[count];
+                        posterList[count] = "http://10.108.120.225:8080/" + posterList[count];
                     }
                     priceList[count] = goods.getJSONObject(i).getDouble("price");
                     descriptionList[count] = goods.getJSONObject(i).getString("description");
@@ -403,7 +403,35 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
                     intent.putExtras(mBundle);
                     startActivity(intent);
                     Toast.makeText(context, "结算", Toast.LENGTH_SHORT).show();
-                } else {
+                } else {int size = selectedList.size();
+                    String[] idList = new String[size];
+                    String[] nameList = new String[size];
+                    String[] posterList = new String[size];
+                    double[] priceList = new double[size];
+                    int[] numList = new int[size];
+
+                    for (int i = 0; i < size; i++) {
+                        idList[i] = String.valueOf(selectedList.get(Integer.valueOf(selectIdList.get(i))).id);
+                        nameList[i] = selectedList.get(Integer.valueOf(selectIdList.get(i))).name;
+                        posterList[i] = selectedList.get(Integer.valueOf(selectIdList.get(i))).imgUrl;
+                        priceList[i] = selectedList.get(Integer.valueOf(selectIdList.get(i))).price;
+                        numList[i] = selectedList.get(Integer.valueOf(selectIdList.get(i))).count;
+                    }
+
+                    Bundle mBundle = new Bundle();
+                    Intent intent = new Intent(context, ShopOrderActivity.class);
+                    mBundle.putString("shopName", shopName);
+                    mBundle.putString("shopId", shopId);
+                    mBundle.putInt("size", size);
+                    mBundle.putStringArray("idList", idList);
+                    mBundle.putStringArray("nameList", nameList);
+                    mBundle.putStringArray("posterList", posterList);
+                    mBundle.putDoubleArray("priceList", priceList);
+                    mBundle.putIntArray("numList", numList);
+
+                    intent.putExtras(mBundle);
+                    startActivity(intent);
+                    Toast.makeText(context, "结算", Toast.LENGTH_SHORT).show();
                     Toast.makeText(context, "请先登录后在进行操作！", Toast.LENGTH_SHORT).show();
                 }
                 break;

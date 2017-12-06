@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                 params.put("type", "0");
                 params.put("phone", phone.getText().trim());
                 params.put("psw", password.getText().trim());
-                RequestManager.getInstance(getBaseContext()).requestAsyn("/users/user_login", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                RequestManager.getInstance(getBaseContext()).requestAsyn("users/user_login", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                     @Override
                     public void onReqSuccess(String result) {
                         Log.d(TAG, result);

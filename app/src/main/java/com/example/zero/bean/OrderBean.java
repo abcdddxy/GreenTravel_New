@@ -1,5 +1,7 @@
 package com.example.zero.bean;
 
+import com.example.zero.greentravel_new.R;
+
 /**
  * Created by jojo on 2017/11/13.
  */
@@ -14,6 +16,10 @@ public class OrderBean {
     private String item;
     private String order_msg;
     private String discount, deliver, cus_msg;
+    private String addr_tip;
+    private int addr_icon;
+    private String addr_service;
+    private boolean tip;
     public static final String ADDRESS = "addr";
     public static final String GOODSINFO = "goodsinfo";
     public static final String ORDEROTHER = "other";
@@ -90,6 +96,38 @@ public class OrderBean {
 
     public void setCusMsg(String msg) {
         this.cus_msg = msg;
+    }
+
+    public void setAddrTip(String addr_tip) {
+        this.addr_tip = addr_tip;
+    }
+
+    public void setTip(boolean tip) {
+        this.tip = tip;
+    }
+
+    public void setAddrIcon(int icon) {
+        this.addr_icon = icon;
+    }
+
+    public void setAddrService(String service) {
+        this.addr_service = service;
+    }
+
+    public boolean getTip() {
+        return tip;
+    }
+
+    public String getAddrTip() {
+        return addr_tip;
+    }
+
+    public int getAddrIcon() {
+        return addr_icon;
+    }
+
+    public String getAddrService() {
+        return addr_service;
     }
 
     public String getAddrId() {

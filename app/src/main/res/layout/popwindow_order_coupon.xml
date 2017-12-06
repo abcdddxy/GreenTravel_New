@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popwindow1_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/popwindow1_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_above="@+id/popwindow1_rg"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="店铺优惠"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <RadioGroup
+        android:id="@+id/popwindow1_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/popwindow1_line"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="150dp">
+
+        <RadioButton
+            android:id="@+id/popwindow1_rb1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:button="@null"
+            android:checked="true"
+            android:drawableRight="@drawable/checkbox_on"
+            android:text="" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divideLine" />
+
+        <RadioButton
+            android:id="@+id/popwindow1_rb2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableRight="@drawable/checkbox_off"
+            android:text="不使用优惠" />
+
+    </RadioGroup>
+
+    <View
+        android:id="@+id/popwindow1_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@+id/popwindow1_close"
+        android:background="@color/divideLine" />
+
+    <TextView
+        android:id="@+id/popwindow1_close"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="关闭"
+        android:textColor="@color/GreenTheme11" />
+</RelativeLayout>

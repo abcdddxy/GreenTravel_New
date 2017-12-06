@@ -15,10 +15,10 @@ import okhttp3.RequestBody;
 
 public class HttpUtil {
 
-    private static String CJF = "10.108.120.154";
+    private static String CJF = "10.108.120.225";
     private static String ZMQ = "10.108.112.96";
 
-    private static String server = ZMQ;
+    private static String server = CJF;
 
     public static void sendSingleOkHttpRequest(Bundle mBundle, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();

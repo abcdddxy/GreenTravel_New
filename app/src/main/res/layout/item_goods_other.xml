@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="-￥ 10.00"
-            android:textColor="@color/price" />
+            android:textColor="@color/GreenTheme14" />
 
         <ImageView
             style="@style/arrow_right_black"
@@ -87,6 +87,7 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="选填:对本次交易的说明"
+            android:maxLines="1"
             android:text=""
             android:textColor="@color/black"
             android:textCursorDrawable="@null"
@@ -115,6 +116,6 @@
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
             android:text="￥ 489.00"
-            android:textColor="@color/price" />
+            android:textColor="@color/GreenTheme14" />
     </RelativeLayout>
 </LinearLayout>

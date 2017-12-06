@@ -50,7 +50,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
     private View changePhone;
     private View changePw;
     private Bitmap mBitmap;
-    private TextView user_name,user_phone;
+    private TextView user_name, user_phone;
     private Button signOut;
     protected static final int CHOOSE_PICTURE = 0;
     protected static final int TAKE_PICTURE = 1;
@@ -84,19 +84,20 @@ public class UserActivity extends Activity implements View.OnClickListener {
         MainApplication application = (MainApplication) getApplication();
         user_name.setText(application.getUsername());
         String s = application.getPhone();
-        if(s!=null){
-            s = s.substring(0,3) + "****" + s.substring(9,11);
+        if (s != null) {
+            s = s.substring(0, 3) + "****" + s.substring(9, 11);
             user_phone.setText(s);
         }
 
         String avator = application.getAvator();
-        if(avator!=null&&!avator.equals("")) {
+        if (avator != null && !avator.equals("")) {
+            avator = "http://10.108.120.31:8080/users/" + avator + "?type=0";
             Glide.with(getContext())
-                    .load("http://10.108.120.91:8080/users/"+avator+"?type=0")
-                    .placeholder(R.drawable.personal_img)
+                    .load(avator)
+                    .dontAnimate()
+                    .placeholder(R.drawable.defult_user_img)
                     .into(mImage);
         }
-
     }
 
     /**
@@ -120,8 +121,8 @@ public class UserActivity extends Activity implements View.OnClickListener {
                 HashMap<String, String> params = new HashMap<>();
                 SharedPreferences sharedPreferences = getSharedPreferences("GreenTravel", MODE_PRIVATE);
                 params.put("user_id", sharedPreferences.getString("user_id", ""));
-                params.put("user_name",newName.getText().trim());
-                RequestManager.getInstance(getBaseContext()).requestAsyn("/users/update_user_info", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                params.put("user_name", newName.getText().trim());
+                RequestManager.getInstance(getBaseContext()).requestAsyn("users/update_user_info", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                     @Override
                     public void onReqSuccess(String result) {
                         Log.d(TAG, result);
@@ -170,13 +171,13 @@ public class UserActivity extends Activity implements View.OnClickListener {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view1) {
-                if(confirmPw.getText().trim().equals(newPw.getText().trim())) {
+                if (confirmPw.getText().trim().equals(newPw.getText().trim())) {
                     HashMap<String, String> params = new HashMap<>();
                     SharedPreferences sharedPreferences = getSharedPreferences("GreenTravel", MODE_PRIVATE);
                     params.put("user_id", sharedPreferences.getString("user_id", ""));
                     params.put("old_psw", prePw.getText().trim());
                     params.put("new_psw", newPw.getText().trim());
-                    RequestManager.getInstance(getBaseContext()).requestAsyn("/users/update_psw", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                    RequestManager.getInstance(getBaseContext()).requestAsyn("users/update_psw", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                         @Override
                         public void onReqSuccess(String result) {
                             Log.d(TAG, result);
@@ -190,8 +191,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
                             Log.d(TAG, errorMsg);
                         }
                     });
-                }
-                else{
+                } else {
                     Toast.makeText(getBaseContext(), "修改成功", Toast.LENGTH_SHORT);
                 }
             }
@@ -220,8 +220,8 @@ public class UserActivity extends Activity implements View.OnClickListener {
                     params.put("type", "2");
                     params.put("phone", newPhone.getText());
                     MainApplication application = (MainApplication) getApplication();
-                    params.put("user_id",application.getUser_id());
-                    RequestManager.getInstance(getBaseContext()).requestAsyn("/users/send_verification_code", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                    params.put("user_id", application.getUser_id());
+                    RequestManager.getInstance(getBaseContext()).requestAsyn("users/send_verification_code", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                         @Override
                         public void onReqSuccess(String result) {
                             Log.d(TAG, result);
@@ -256,7 +256,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
                     params.put("user_id", sharedPreferences.getString("user_id", ""));
                     params.put("new_phone", newPhone.getText().trim());
                     params.put("verification_code", confirm.getText().trim());
-                    RequestManager.getInstance(getBaseContext()).requestAsyn("/users/update_phone", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                    RequestManager.getInstance(getBaseContext()).requestAsyn("users/update_phone", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
                         @Override
                         public void onReqSuccess(String result) {
                             Log.d(TAG, result);
@@ -264,7 +264,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
                             String s = newPhone.getText().trim();
                             MainApplication mainApplication = (MainApplication) getApplication();
                             mainApplication.setPhone(s);
-                            s = s.substring(0,3) + "****" + s.substring(9,11);
+                            s = s.substring(0, 3) + "****" + s.substring(9, 11);
                             user_phone.setText(s);
                             dialog.dismiss();
                         }
@@ -276,7 +276,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
                         }
                     });
                 } else {
-                    Toast.makeText(getBaseContext(), "请输入正确的手机号"+newString, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "请输入正确的手机号" + newString, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -384,39 +384,39 @@ public class UserActivity extends Activity implements View.OnClickListener {
                 bos.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.e(TAG,e.getLocalizedMessage());
+                Log.e(TAG, e.getLocalizedMessage());
             }
 
-            final HashMap<String,Object> params = new HashMap<>();
+            final HashMap<String, Object> params = new HashMap<>();
             final MainApplication application = (MainApplication) getApplication();
-            params.put("user_id",application.getUser_id());
-            params.put("file",file);
+            params.put("user_id", application.getUser_id());
+            params.put("file", file);
 
-            RequestManager.getInstance(getBaseContext()).upLoadFile("/users/upload_photo",params,new RequestManager.ReqCallBack<String>() {
+            RequestManager.getInstance(getBaseContext()).upLoadFile("users/upload_photo", params, new RequestManager.ReqCallBack<String>() {
 
                 @Override
                 public void onReqSuccess(String result) {
 
-                    Log.d(TAG,result.toString());
+                    Log.d(TAG, result.toString());
                     JSONObject object = JSON.parseObject(result);
                     String url = object.getString("avator_url");
 
-                    final HashMap<String,String> params2 = new HashMap<>();
-                    params2.put("user_id",application.getUser_id());
-                    params2.put("photo_url",url);
+                    final HashMap<String, String> params2 = new HashMap<>();
+                    params2.put("user_id", application.getUser_id());
+                    params2.put("photo_url", url);
                     application.setAvator(url);
-                    RequestManager.getInstance(getBaseContext()).requestAsyn("/users/update_user_info",RequestManager.TYPE_POST_JSON,params2,new RequestManager.ReqCallBack<String>() {
+                    RequestManager.getInstance(getBaseContext()).requestAsyn("users/update_user_info", RequestManager.TYPE_POST_JSON, params2, new RequestManager.ReqCallBack<String>() {
 
                         @Override
                         public void onReqSuccess(String result) {
-                            Toast.makeText(getBaseContext(),"修改成功",Toast.LENGTH_SHORT).show();
-                            Log.d(TAG,result);
+                            Toast.makeText(getBaseContext(), "修改成功", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, result);
                         }
 
                         @Override
                         public void onReqFailed(String errorMsg) {
-                            Toast.makeText(getBaseContext(),"修改失败",Toast.LENGTH_SHORT).show();
-                            Log.d(TAG,errorMsg);
+                            Toast.makeText(getBaseContext(), "修改失败", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, errorMsg);
                         }
                     });
 
@@ -424,8 +424,8 @@ public class UserActivity extends Activity implements View.OnClickListener {
 
                 @Override
                 public void onReqFailed(String errorMsg) {
-                    Toast.makeText(getBaseContext(),"修改失败",Toast.LENGTH_SHORT).show();
-                    Log.d(TAG,errorMsg);
+                    Toast.makeText(getBaseContext(), "修改失败", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, errorMsg);
                 }
             });
 
@@ -456,7 +456,8 @@ public class UserActivity extends Activity implements View.OnClickListener {
                 application.logout();
                 finish();
                 break;
-            default:break;
+            default:
+                break;
         }
     }
 }

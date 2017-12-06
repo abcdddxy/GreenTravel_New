@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context="com.example.zero.fragment.AdvPlanFragment">
 
     <!-- TODO: 建议出行计划 -->
@@ -11,105 +12,106 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/search_double_height"
             android:background="@color/white">
 
             <LinearLayout
+                android:id="@+id/plan_search_ll"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="40dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="@dimen/search_exchange_button_width"
                 android:orientation="vertical">
 
                 <com.example.zero.view.SearchPopView
                     android:id="@+id/plan_search_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:iconifiedByDefault="false" />
 
                 <com.example.zero.view.SearchPopView
                     android:id="@+id/plan_search_end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:iconifiedByDefault="false" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="40dp"
-                android:layout_height="115dp"
-                android:layout_gravity="right"
+                android:layout_width="@dimen/search_exchange_button_width"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
                 android:background="@color/searchViewBackground">
 
                 <Button
                     android:id="@+id/adv_plan_btn_change"
-                    android:layout_width="30dp"
-                    android:layout_height="40dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/search_change" />
+                    android:background="@drawable/search_change"
+                    android:paddingRight="5dp" />
             </LinearLayout>
-        </FrameLayout>
+        </RelativeLayout>
 
         <ListView
             android:id="@+id/plan_search_results1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
             android:visibility="gone" />
 
         <ListView
             android:id="@+id/plan_search_results2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
             android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_height="@dimen/search_edittext_height"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginVertical="15dp"
-                android:text="出行时间段"
-                android:textAlignment="center"
-                android:textSize="18dp" />
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="出行时间段:"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/plan_search_time"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_marginHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/route_search_background"
+                android:gravity="center"
                 android:textAlignment="center"
-                android:textSize="20dp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:layout_gravity="center|bottom">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
             <Button
                 android:id="@+id/plan_search_commit"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom|right"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="#1874CD"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
+                android:layout_width="@dimen/search_button_width"
+                android:layout_height="@dimen/search_button_height"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/search_btn_shape_corner"
                 android:text="@string/route_search_btn"
                 android:textColor="@color/white"
-                android:textSize="24sp"
                 android:visibility="gone" />
-        </LinearLayout>
-
+        </RelativeLayout>
     </LinearLayout>
-
 </ScrollView>

@@ -32,7 +32,7 @@ public class RequestManager {
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");//这个需要和服务端保持一致
     //private static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");//这个需要和服务端保持一致
     private static final String TAG = RequestManager.class.getSimpleName();
-    private static final String BASE_URL = "http://10.108.120.154:8080";//请求接口根地址10.108.122.50:8080
+    private static final String BASE_URL = "http://10.108.120.225:8080";//请求接口根地址
     private static volatile RequestManager mInstance;//单例引用
     public static final int TYPE_GET = 0;//get请求
     public static final int TYPE_POST_JSON = 1;//post请求参数为json
@@ -237,7 +237,7 @@ public class RequestManager {
     }
 
     /**
-     * okHttp get异步请求
+     * okHttp get异步请求1
      *
      * @param actionUrl 接口地址
      * @param paramsMap 请求参数
@@ -285,7 +285,7 @@ public class RequestManager {
     }
 
     /**
-     * okHttp get异步请求
+     * okHttp get异步请求2
      *
      * @param actionUrl 接口地址
      * @param paramsMap 请求参数
@@ -333,7 +333,7 @@ public class RequestManager {
     }
 
     /**
-     * okHttp post异步请求
+     * okHttp post异步请求1
      *
      * @param actionUrl 接口地址
      * @param paramsMap 请求参数
@@ -400,6 +400,57 @@ public class RequestManager {
             RequestBody formBody = builder.build();
             String requestUrl = String.format("%s/%s", BASE_URL, actionUrl);
             final Request request = addHeaders().url(requestUrl).post(formBody).build();
+            final Call call = mOkHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    failedCallBack("访问失败", callBack);
+                    Log.e(TAG, e.toString());
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        String string = response.body().string();
+                        Log.e(TAG, "response ----->" + string);
+                        successCallBack((T) string, callBack);
+                    } else {
+                        failedCallBack(response.body().string(), callBack);
+                    }
+                }
+            });
+            return call;
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+        return null;
+    }
+
+    /**
+     * okHttp post异步请求2
+     *
+     * @param actionUrl 接口地址
+     * @param paramsMap 请求参数
+     * @param callBack  请求返回数据回调
+     * @param <T>       数据泛型
+     * @return
+     */
+    public <T> Call requestPostByAsynBody(String actionUrl, HashMap<String, String> paramsMap, String json, final ReqCallBack<T> callBack) {
+        try {
+            StringBuilder tempParams = new StringBuilder();
+            int pos = 0;
+            for (String key : paramsMap.keySet()) {
+                if (pos > 0) {
+                    tempParams.append("&");
+                }
+                tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
+                pos++;
+            }
+            String params = tempParams.toString();
+            MediaType jsontype = MediaType.parse("application/json; charset=utf-8");
+            RequestBody body = RequestBody.create(jsontype, json);
+            String requestUrl = String.format("%s/%s?%s", BASE_URL, actionUrl, params);
+            final Request request = addHeaders().url(requestUrl).post(body).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override

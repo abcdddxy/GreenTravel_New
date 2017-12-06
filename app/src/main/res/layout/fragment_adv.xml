@@ -20,18 +20,16 @@
             android:id="@+id/adv_color1"
             android:layout_width="0dp"
             android:layout_height="4dp"
-            android:layout_weight="1.0"
-            android:background="@color/GreenTheme10" />
+            android:layout_weight="1"
+            android:background="@color/GreenTheme11" />
 
         <View
             android:id="@+id/adv_color2"
             android:layout_width="0dp"
             android:layout_height="4dp"
-            android:layout_weight="1.0"
+            android:layout_weight="1"
             android:background="@color/divideLine" />
     </LinearLayout>
 
     <include layout="@layout/adv_bottom_radio" />
-
-
 </LinearLayout>

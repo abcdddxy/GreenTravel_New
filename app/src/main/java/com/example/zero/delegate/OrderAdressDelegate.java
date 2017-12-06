@@ -1,8 +1,13 @@
 package com.example.zero.delegate;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.zero.bean.OrderBean;
 import com.example.zero.greentravel_new.R;
@@ -28,7 +33,16 @@ public class OrderAdressDelegate implements ItemViewDelegate<OrderBean> {
     public void convert(final Context context, final RecycleViewHolder holder, OrderBean orderBean, final int position) {
         holder.setText(R.id.customer_name, orderBean.getCusName());
         holder.setText(R.id.customer_phone, orderBean.getCusPhone());
-        final LinearLayout address = holder.getView(R.id.order_cus_addr);
+        holder.setImageResource(R.id.order_addr_icon, orderBean.getAddrIcon());
+        holder.setText(R.id.free_receive_service, orderBean.getAddrService());
+        TextView tip = holder.getView(R.id.order_addr_tip);
+        if (orderBean.getTip()) {
+            tip.setVisibility(View.VISIBLE);
+            tip.setText(orderBean.getAddrTip());
+        } else {
+            tip.setVisibility(View.GONE);
+        }
+        final FrameLayout address = holder.getView(R.id.order_cus_addr);
         address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

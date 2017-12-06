@@ -116,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="¥ 185"
-                        android:textColor="@color/GreenTheme12"
+                        android:textColor="@color/GreenTheme14"
                         android:textSize="14dp" />
 
                     <LinearLayout

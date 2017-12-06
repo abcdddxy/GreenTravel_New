@@ -49,7 +49,7 @@ public class AddressActivity extends AppCompatActivity {
     private AddressAdapter addressAdapter;
     private static final int ADD = 1;
     private static final int EDIT = 2;
-    private TextView textView;
+    private TextView textView, textView1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class AddressActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = getIntent();
-                if(intent.getStringExtra("type").equals("orderConfirm")){
+                if (intent.getStringExtra("type").equals("orderConfirm")) {
                     Intent intent1 = new Intent();
                     intent1.putExtra("id", dataList1.get(position).get("id"));
                     intent1.putExtra("name", dataList1.get(position).get("mailing_name"));
@@ -94,7 +94,7 @@ public class AddressActivity extends AppCompatActivity {
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                MainApplication application = (MainApplication) getApplication();
+                                final MainApplication application = (MainApplication) getApplication();
                                 uid = application.getUser_id();
                                 HashMap<String, String> params = new HashMap<>();
                                 params.put("id", dataList1.get(position).get("id"));
@@ -103,10 +103,14 @@ public class AddressActivity extends AppCompatActivity {
                                     @Override
                                     public void onReqSuccess(String result) {
                                         showAddress();
+                                        application.setAddressId("");
+                                        application.setAddressName("");
+                                        application.setAddressPhone("");
                                     }
 
                                     @Override
                                     public void onReqFailed(String errorMsg) {
+                                        Log.e(TAG, errorMsg);
                                         Toast.makeText(AddressActivity.this, "内部服务器错误", Toast.LENGTH_LONG).show();
                                     }
                                 });
@@ -139,6 +143,7 @@ public class AddressActivity extends AppCompatActivity {
                         @Override
                         public void onReqFailed(String errorMsg) {
                             Log.e(TAG, errorMsg);
+                            Toast.makeText(AddressActivity.this, "内部服务器错误", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -153,20 +158,23 @@ public class AddressActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (dataList1.size() == 10) {
-                    Toast.makeText(AddressActivity.this, "您最多只能添加十个收货信息", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent();
-                    intent.setClass(AddressActivity.this, AddressEditActivity.class);
-                    intent.putExtra("type", "add");
-                    if (dataList1.size() == 0) {
-                        intent.putExtra("is_default", "1");
+                MainApplication application = (MainApplication) getApplication();
+                if (application.isOnline()) {
+                    if (dataList1.size() == 10) {
+                        Toast.makeText(AddressActivity.this, "您最多只能添加十个收货信息", Toast.LENGTH_SHORT).show();
                     } else {
-                        intent.putExtra("is_default", "0");
+                        Intent intent = new Intent();
+                        intent.setClass(AddressActivity.this, AddressEditActivity.class);
+                        intent.putExtra("type", "add");
+                        if (dataList1.size() == 0) {
+                            intent.putExtra("is_default", "1");
+                        } else {
+                            intent.putExtra("is_default", "0");
+                        }
+                        intent.putExtra("name", "");
+                        intent.putExtra("phone", "");
+                        startActivityForResult(intent, ADD);
                     }
-                    intent.putExtra("name", "");
-                    intent.putExtra("phone", "");
-                    startActivityForResult(intent, ADD);
                 }
             }
         });
@@ -183,10 +191,18 @@ public class AddressActivity extends AppCompatActivity {
         back = (TextView) findViewById(R.id.address_back_arrow);
         add = (TextView) findViewById(R.id.address_add);
         textView = new TextView(AddressActivity.this);
+        textView1 = new TextView(AddressActivity.this);
         textView.setText("还没有收货地址哦，快去添加吧！");
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(16);
-        textView.setTextColor(getResources().getColor(R.color.GreenTheme4, null));
+        textView.setTextColor(getResources().getColor(R.color.gray1, null));
+        textView1.setText("您还未登录哦\n" + "请您登录后进行查看!");
+        textView1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.no_login, 0, 0);
+        textView1.setCompoundDrawablePadding(30);
+        textView1.setPadding(0, 500, 0, 0);
+        textView1.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView1.setTextSize(14);
+        textView1.setTextColor(getResources().getColor(R.color.gray1, null));
     }
 
     public void showAddress() {
@@ -195,8 +211,9 @@ public class AddressActivity extends AppCompatActivity {
         final MainApplication application = (MainApplication) getApplication();
         uid = application.getUser_id();
         if (application.isOnline() == false) {
-            Toast.makeText(AddressActivity.this, "请您先登录再进行操作", Toast.LENGTH_SHORT).show();
+            addr_content.addView(textView1);
         } else {
+            addr_content.removeView(textView1);
             HashMap<String, String> params = new HashMap<>();
             params.put("user_id", uid);
             RequestManager.getInstance(this).requestAsyn("users/get_mailing_infos", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
@@ -245,6 +262,7 @@ public class AddressActivity extends AppCompatActivity {
 
                 @Override
                 public void onReqFailed(String errorMsg) {
+                    Log.e(TAG, errorMsg);
                     Toast.makeText(AddressActivity.this, "内部服务器错误", Toast.LENGTH_LONG).show();
                 }
             });
@@ -271,6 +289,7 @@ public class AddressActivity extends AppCompatActivity {
 
                     @Override
                     public void onReqFailed(String errorMsg) {
+                        Log.e(TAG, errorMsg);
                         Toast.makeText(AddressActivity.this, "内部服务器错误", Toast.LENGTH_LONG).show();
                     }
                 });

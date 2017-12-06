@@ -157,7 +157,7 @@ public class AdvDestinFragment extends Fragment implements SearchPopView.SearchP
         searchPopView = (SearchPopView) getActivity().findViewById(R.id.destin_search);
         searchPopView.setAutoCompleteAdapter(autoCompleteAdapter);
         searchPopView.setTipsHintAdapter(hintAdapter);
-        searchPopView.setHintText("请输入起点");
+        searchPopView.setHintText("请输入站点名称");
         searchPopView.setSearchPopViewListener(this);
 
         lvResults = (ListView) getActivity().findViewById(R.id.destin_search_results);
@@ -201,7 +201,7 @@ public class AdvDestinFragment extends Fragment implements SearchPopView.SearchP
             case DATA:
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userId", "guest");
-                RequestManager.getInstance(context).requestAsyn("http://10.108.112.96:8080/route/station",
+                RequestManager.getInstance(context).requestAsyn("http://10.108.120.225:8080/route/station",
                         RequestManager.TYPE_GET_Z, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {
@@ -333,7 +333,7 @@ public class AdvDestinFragment extends Fragment implements SearchPopView.SearchP
         getResultData(text);
         lvResults.setVisibility(View.VISIBLE);
         //第一次获取结果 还未配置适配器
-        resultAdapter.getItem(0).setComments("起点");
+        resultAdapter.getItem(0).setComments("");
         if (lvResults.getAdapter() == null) {
             //获取搜索数据 设置适配器
             lvResults.setAdapter(resultAdapter);

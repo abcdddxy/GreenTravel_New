@@ -290,6 +290,16 @@ Android App GreenTravel
 		<th>171129</th>
 		<th colspan="3">第十次程序合并</th>
 	</tr>
+	<tr>
+		<th>171204</th>
+		<th>书写使用手册</th>
+		<th>支付接口部分完成</th>
+		<th>修改可用优惠券筛选 书写使用手册个人设置部分</th>
+	</tr>
+    <tr>
+		<th>171205</th>
+		<th colspan="3">第十一次程序合并</th>
+	</tr>
 </table>
 
 ## 遇到bug或难点
@@ -578,6 +588,16 @@ Android App GreenTravel
 	</tr>
     <tr>
 		<th>171129</th>
+		<th colspan="3">暂时没有发现bug</th>
+	</tr>
+	<tr>
+		<th>171204</th>
+		<th>无</th>
+		<th>无</th>
+		<th>无</th>
+	</tr>
+    <tr>
+		<th>171205</th>
 		<th colspan="3">暂时没有发现bug</th>
 	</tr>
 </table>
@@ -873,6 +893,16 @@ Android App GreenTravel
 	</tr>
     <tr>
 		<th>171129</th>
+		<th colspan="3">无</th>
+	</tr>
+	<tr>
+		<th>171204</th>
+		<th>无</th>
+		<th>无</th>
+		<th>https://www.cnblogs.com/Johness/archive/2012/09/01/2666163.html</th>
+	</tr>
+    <tr>
+		<th>171205</th>
 		<th colspan="3">无</th>
 	</tr>
 </table>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/popwindow_rl"
+    android:id="@+id/popwindow2_rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <View
-        android:id="@+id/popwindow_other"
+        android:id="@+id/popwindow2_other"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_above="@+id/popwindow_rg"
+        android:layout_above="@+id/popwindow2_rg"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
@@ -22,16 +22,16 @@
         android:textSize="16sp" />
 
     <RadioGroup
-        android:id="@+id/popwindow_rg"
+        android:id="@+id/popwindow2_rg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/popwindow_line"
+        android:layout_above="@+id/popwindow2_line"
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingBottom="150dp">
 
         <RadioButton
-            android:id="@+id/popwindow_rb1"
+            android:id="@+id/popwindow2_rb1"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
@@ -47,7 +47,7 @@
             android:background="@color/divideLine" />
 
         <RadioButton
-            android:id="@+id/popwindow_rb2"
+            android:id="@+id/popwindow2_rb2"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
@@ -59,14 +59,14 @@
     </RadioGroup>
 
     <View
-        android:id="@+id/popwindow_line"
+        android:id="@+id/popwindow2_line"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_above="@+id/popwindow_close"
+        android:layout_above="@+id/popwindow2_close"
         android:background="@color/divideLine" />
 
     <TextView
-        android:id="@+id/popwindow_close"
+        android:id="@+id/popwindow2_close"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"

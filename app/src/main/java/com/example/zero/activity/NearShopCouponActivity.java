@@ -125,7 +125,7 @@ public class NearShopCouponActivity extends AppCompatActivity {
                     Toast.makeText(context, "连接服务器失败，请重新尝试！", Toast.LENGTH_LONG).show();
                 }
             });
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

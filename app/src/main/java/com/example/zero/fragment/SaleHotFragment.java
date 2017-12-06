@@ -1,12 +1,10 @@
 package com.example.zero.fragment;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,7 +25,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.example.zero.activity.ShoppingCartActivity;
 import com.example.zero.adapter.SaleHotCouponAdapter;
 import com.example.zero.bean.SaleBean;
 import com.example.zero.greentravel_new.R;
@@ -70,7 +67,6 @@ public class SaleHotFragment extends Fragment {
     private RadioButton saleHotFood, saleHotEntertainment, saleHotShopping, saleHotTravel;
     private SwipeRefreshLayout swipeRefreshLayout;
     boolean isLoading;
-    private ProgressDialog pd;
     private Handler handler = new Handler();
 
     @Override
@@ -84,7 +80,7 @@ public class SaleHotFragment extends Fragment {
         adapter.setOnItemClickListener(new SaleHotCouponAdapter.onRecycleItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(context, "点击条目 " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "点击条目 " + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -92,7 +88,7 @@ public class SaleHotFragment extends Fragment {
                 MainApplication application = (MainApplication) getActivity().getApplication();
                 uid = application.getUser_id();
                 token = application.getToken();
-                if (application.isOnline() == false) {
+                if (!application.isOnline()) {
                     Toast.makeText(context, "请您先登录再进行操作", Toast.LENGTH_SHORT).show();
                 } else {
                     HashMap<String, String> params = new HashMap<>();
@@ -184,6 +180,7 @@ public class SaleHotFragment extends Fragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        coupon_id.clear();
                         dataList.clear();
                         getCouponData();
                     }
@@ -191,39 +188,39 @@ public class SaleHotFragment extends Fragment {
             }
         });
         //上拉加载监听
-        hot_recv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            //当RecyclerView的滑动状态改变时触发
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                if (lastVisibleItemPosition + 1 == adapter.getItemCount()) {
-                    Log.d("test", "loading executed");
-                    boolean isRefreshing = swipeRefreshLayout.isRefreshing();
-                    if (isRefreshing) {
-                        adapter.notifyItemRemoved(adapter.getItemCount());
-                        return;
-                    }
-                    if (!isLoading) {
-                        isLoading = true;
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                getCouponData();
-                                Log.d("test", "load more completed");
-                                isLoading = false;
-                            }
-                        }, 1000);
-                    }
-                }
-            }
-        });
+//        hot_recv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            //当RecyclerView的滑动状态改变时触发
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+//                if (lastVisibleItemPosition + 1 == adapter.getItemCount()) {
+//                    Log.d("test", "loading executed");
+//                    boolean isRefreshing = swipeRefreshLayout.isRefreshing();
+//                    if (isRefreshing) {
+//                        adapter.notifyItemRemoved(adapter.getItemCount());
+//                        return;
+//                    }
+//                    if (!isLoading) {
+//                        isLoading = true;
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                getCouponData();
+//                                Log.d("test", "load more completed");
+//                                isLoading = false;
+//                            }
+//                        }, 1000);
+//                    }
+//                }
+//            }
+//        });
     }
 
     public void isLocationOpen() {
@@ -273,8 +270,8 @@ public class SaleHotFragment extends Fragment {
                 HashMap<String, String> params = new HashMap<>();
 //            Toast.makeText(context, "纬度" + latitude, Toast.LENGTH_SHORT).show();
 //            Toast.makeText(context, "经度" + longitude, Toast.LENGTH_SHORT).show();
-                params.put("longitude", "" + 113.5333880000);
-                params.put("latitude", "" + 22.7935870000);
+                params.put("longitude", "" + 113.332205);
+                params.put("latitude", "" + 23.156263);
 //            params.put("longitude", "" + longitude);
 //            params.put("latitude", "" + latitude);
                 RequestManager.getInstance(context).requestAsyn("users/me/coupons/near", RequestManager.TYPE_GET, params, new RequestManager.ReqCallBack<String>() {

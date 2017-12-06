@@ -60,9 +60,7 @@ public class FavorStationFragment extends Fragment {
         bean.setType(FavorItemBean.ITEM);
         FavorItemBean beanB = new FavorItemBean();
         beanB.setType(FavorItemBean.BUTTON);
-        for (int i = 0; i < 5; i++) {
-            dataList.add(bean);
-        }
+        dataList.add(bean);
         dataList.add(beanB);
         adapter = new FavorItemAdapter(context, dataList);
         sta_recy.setAdapter(adapter);

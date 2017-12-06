@@ -26,7 +26,6 @@ import com.example.zero.activity.UserActivity;
 import com.example.zero.activity.UserOrderActivity;
 import com.example.zero.greentravel_new.R;
 import com.example.zero.util.MainApplication;
-import com.example.zero.util.RequestManager;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 /**
@@ -66,10 +65,6 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
         person_frag = inflater.inflate(R.layout.fragment_personal_info, container, false);
         context = getContext();
         innitView();
-        Glide.with(getContext())
-                .load("http://10.108.120.91:8080/users/XkF171031150359171103175428.jpg?type=1")
-                .placeholder(R.drawable.personal_img)
-                .into(img);
         setting.setOnClickListener(this);
         user.setOnClickListener(this);
         login.setOnClickListener(this);
@@ -128,19 +123,19 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
             user_name.setText(mainApplication.getUsername());
             String avator = mainApplication.getAvator();
             if (avator != null && !avator.equals("")) {
-                avator = "http://10.108.120.91:8080/users/" + avator + "?type=0";
+                avator = "http://10.108.120.31:8080/users/" + avator + "?type=0";
                 Log.d(TAG, avator);
                 Glide.with(getContext())
                         .load(avator)
                         .dontAnimate()
-                        .placeholder(R.drawable.personal_img)
+                        .placeholder(R.drawable.defult_user_img)
                         .into(img);
             }
         } else {
             user_name.setVisibility(View.GONE);
             login.setVisibility(View.VISIBLE);
             register.setVisibility(View.VISIBLE);
-            img.setImageResource(R.drawable.personal_img);
+            img.setImageResource(R.drawable.defult_user_img);
         }
     }
 

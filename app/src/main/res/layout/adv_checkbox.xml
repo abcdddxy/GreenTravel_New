@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:textColor="@color/nav_gray"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
     <com.donkingliang.labels.LabelsView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,14 +27,15 @@
         app:labelTextPaddingRight="10dp"
         app:labelTextPaddingTop="5dp"
         app:labelTextSize="16sp"
-        app:lineMargin="3dp"
+        app:lineMargin="5dp"
         app:maxSelect="5"
         app:selectType="MULTI"
-        app:wordMargin="4dp" />
+        app:wordMargin="5dp" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:layout_marginLeft="10dp"
-        android:background="@color/nav_gray" />
+        android:layout_marginRight="10dp"
+        android:background="@color/divideLine" />
 </LinearLayout>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginRight="40dp"
+        android:layout_height="@dimen/search_double_height"
+        android:layout_marginRight="@dimen/search_exchange_button_width"
         android:orientation="vertical">
 
         <com.example.zero.view.SearchPopView
@@ -18,21 +18,20 @@
             android:id="@+id/route_search22"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="40dp"
-        android:layout_height="115dp"
-        android:layout_gravity="right"
+        android:layout_width="@dimen/search_exchange_button_width"
+        android:layout_height="@dimen/search_double_height"
+        android:layout_alignParentRight="true"
         android:background="@color/searchViewBackground">
 
         <Button
             android:id="@+id/search_btn_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center"
             android:background="@drawable/search_change"
-            android:padding="5dp" />
+            android:paddingRight="5dp" />
     </LinearLayout>
-</FrameLayout>
+</RelativeLayout>
