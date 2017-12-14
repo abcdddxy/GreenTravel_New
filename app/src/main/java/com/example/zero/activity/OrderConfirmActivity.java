@@ -55,16 +55,17 @@ public class OrderConfirmActivity extends AppCompatActivity {
     private TextView backArrow;
     private String shopName;
     private String shopId;
+    private String sellerId;
     private String coupons;
     private String mailing;
     private int count;
-    private int size = 100;
+    private int listSize = 100;
     private String addr_id, addr_name, addr_phone;
-    private String[] idList = new String[size];
-    private String[] nameList = new String[size];
-    private String[] posterList = new String[size];
-    private double[] priceList = new double[size];
-    private int[] numList = new int[size];
+    private String[] idList = new String[listSize];
+    private String[] nameList = new String[listSize];
+    private String[] posterList = new String[listSize];
+    private double[] priceList = new double[listSize];
+    private int[] numList = new int[listSize];
     private PopupWindow popupWindow;
     private View contentView;
     private RadioButton rb1, rb2;
@@ -75,10 +76,8 @@ public class OrderConfirmActivity extends AppCompatActivity {
     private String coupon_name = "";
     private ArrayList<Map<String, String>> couponInfo = new ArrayList<>();
 
-    IWXAPI msgApi;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirm);
         initView();
@@ -86,6 +85,7 @@ public class OrderConfirmActivity extends AppCompatActivity {
         final Bundle mBundle = intent.getExtras();
         shopName = mBundle.getString("shopName");
         shopId = mBundle.getString("shopId");
+        sellerId = mBundle.getString("sellerId");
         count = mBundle.getInt("size");
         idList = mBundle.getStringArray("idList");
         nameList = mBundle.getStringArray("nameList");
@@ -128,82 +128,87 @@ public class OrderConfirmActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                JSONArray goodsList = new JSONArray();
-//                for (int i = 0; i < size; i++) {
-//                    JSONObject jsonObject = new JSONObject();
-//                    jsonObject.put("good_id", idList[i]);
-//                    jsonObject.put("goods_num", numList[i]);
-//                    jsonObject.put("good_price", priceList[i]);
-//                    goodsList.add(jsonObject);
-//                }
-//                MainApplication mainApplication = (MainApplication) getApplication();
-//                JSONObject order = new JSONObject();
-//                order.put("coupon_id", "0");
-//                order.put("products", goodsList.toString());
-//                order.put("receive_id", "0");
-//                order.put("remark", "hahaha");
-//                order.put("seller_id", shopId);
-//                order.put("token", mainApplication.getToken());
-//                order.put("user_id", mainApplication.getUser_id());
-//                order.put("user_source", "ticket");
-//                Log.d(TAG, order.toString());
-//                HashMap<String, String> params = new HashMap<>();
-//                params.put("order", order.toString());
-//                RequestManager.getInstance(getBaseContext()).requestAsyn("/order/submit", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
-//                    @Override
-//                    public void onReqSuccess(String result) {
-//                        JSONObject object = JSONObject.parseObject(result);
-//                        Toast.makeText(getBaseContext(), object.getString("message"), Toast.LENGTH_LONG).show();
-                //msgApi = WXAPIFactory.createWXAPI(OrderConfirmActivity.this, null);
-                // msgApi.registerApp(appId);// 将该app注册到微信
-                msgApi = WXAPIFactory.createWXAPI(OrderConfirmActivity.this, appId);
-                if (!msgApi.isWXAppInstalled()) {
-                    Toast.makeText(OrderConfirmActivity.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
+                if (addr_id.equals("")) {
+                    Toast.makeText(OrderConfirmActivity.this, "请添加您的收货地址", Toast.LENGTH_LONG).show();
                 } else {
-                    MainApplication application = (MainApplication) getApplication();
+                    JSONArray goodsList = new JSONArray();
+                    for (int i = 0; i < count; i++) {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("good_id", idList[i]);
+                        jsonObject.put("good_num", numList[i]);
+                        jsonObject.put("good_price", priceList[i]);
+                        goodsList.add(jsonObject);
+                    }
+                    MainApplication mainApplication = (MainApplication) getApplication();
+                    JSONObject order = new JSONObject();
+                    if (coupon_name.equals("")) {
+                        order.put("coupon_id", "0");
+                    } else if (couponInfo.size() != 0) {
+                        order.put("coupon_id", couponInfo.get(0).get("id"));
+                    }
+                    order.put("products", goodsList);
+                    order.put("receive_id", addr_id);
+                    order.put("remark", "111");
+                    order.put("seller_id", sellerId);
+                    order.put("token", mainApplication.getToken());
+                    order.put("user_id", mainApplication.getUser_id());
+                    order.put("user_source", "ticket");
+                    Log.d(TAG, order.toString());
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("user_id", application.getUser_id());
-                    params.put("token", application.getToken());
-                    params.put("order_no", "1512454872376edZogoPqZ7"); //object.getString("order_no")
-                    RequestManager.getInstance(OrderConfirmActivity.this).requestAsyn("order/getprepayid", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                    RequestManager.getInstance(getBaseContext()).requestPostByAsynBody("order/submit", params, order.toJSONString(), new RequestManager.ReqCallBack<String>() {
                         @Override
                         public void onReqSuccess(String result) {
-                            //todo:获取prepayid，调起微信支付
-                            Toast.makeText(OrderConfirmActivity.this, "开始支付", Toast.LENGTH_LONG).show();
-                            JSONObject jo = JSON.parseObject(result);
-                            try {
-                                PayReq request = new PayReq();
-                                request.packageValue = jo.getString("package");
-                                request.appId = jo.getString("appid");
-                                request.partnerId = jo.getString("partnerid");
-                                request.prepayId = jo.getString("prepayId");
-                                // request.packageValue = "Sign=WXPay";
-                                request.nonceStr = jo.getString("noncestr");
-                                request.timeStamp = jo.getString("timestamp");
-                                request.sign = jo.getString("sign");
-                                request.extData = "app data";
-                                Log.i(TAG, "onReqSuccess: " + msgApi.sendReq(request));
-//                                msgApi.sendReq(request);
-                            } catch (Exception e) {
-                                Log.i(TAG, "onReqSuccess: " + e.getMessage());
+                            final JSONObject object = JSONObject.parseObject(result);
+                            final IWXAPI msgApi = WXAPIFactory.createWXAPI(OrderConfirmActivity.this, null);
+                            msgApi.registerApp(appId);
+                            if (!msgApi.isWXAppInstalled()) {
+                                Toast.makeText(OrderConfirmActivity.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
+                            } else {
+                                final MainApplication application = (MainApplication) getApplication();
+                                HashMap<String, String> params = new HashMap<>();
+                                params.put("user_id", application.getUser_id());
+                                params.put("token", application.getToken());
+                                params.put("order_no", object.getString("order_no"));
+                                RequestManager.getInstance(OrderConfirmActivity.this).requestAsyn("order/getprepayid", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                                    @Override
+                                    public void onReqSuccess(String result) {
+                                        JSONObject jo = JSON.parseObject(result);
+                                        try {
+                                            PayReq request = new PayReq();
+                                            request.packageValue = jo.getString("package");
+                                            request.appId = jo.getString("appid");
+                                            request.partnerId = jo.getString("partnerid");
+                                            request.prepayId = jo.getString("prepayid");
+                                            request.nonceStr = jo.getString("noncestr");
+                                            request.timeStamp = jo.getString("timestamp");
+                                            request.sign = jo.getString("sign");
+//                                            Log.e(TAG, " appid: " + request.appId + " partnerId: " + request.partnerId + " prepayid: " + request.prepayId + " noncestr: " + request.nonceStr + " time: " + request.timeStamp + " sign: " + request.sign + " packageValue; " + request.packageValue);
+//                                            Log.i(TAG, "onReqSuccess0: " + request.checkArgs());
+//                                            Log.i(TAG, "onReqSuccess1: " + msgApi.sendReq(request));
+                                            msgApi.sendReq(request);
+                                        } catch (Exception e) {
+                                            Log.e(TAG, e.getMessage());
+                                        }
+                                        Log.d(TAG, "发起微信支付申请");
+                                        application.setOrder(object.getString("order_no"), finalPrice.getText().toString());
+                                    }
+
+                                    @Override
+                                    public void onReqFailed(String errorMsg) {
+                                        Log.e(TAG, errorMsg);
+                                        Toast.makeText(OrderConfirmActivity.this, "支付失败", Toast.LENGTH_LONG).show();
+                                    }
+                                });
                             }
-                            Log.d(TAG, "发起微信支付申请");
                         }
 
                         @Override
                         public void onReqFailed(String errorMsg) {
                             Log.e(TAG, errorMsg);
-                            Toast.makeText(OrderConfirmActivity.this, "支付失败", Toast.LENGTH_LONG).show();
+                            Toast.makeText(OrderConfirmActivity.this, "创建订单失败", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
-//                    }
-//
-//                    @Override
-//                    public void onReqFailed(String errorMsg) {
-//                        Log.e(TAG, errorMsg);
-//                    }
-//                });
             }
         });
         ActionBar actionBar = getSupportActionBar();
@@ -231,14 +236,15 @@ public class OrderConfirmActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 1:
-                MainApplication application = (MainApplication) getApplication();
-                addr_id = application.getAddressId();
-                addr_name = application.getAddressName();
-                addr_phone = application.getAddressPhone();
                 if (resultCode == 1) {
                     addr_id = data.getStringExtra("id");
                     addr_name = data.getStringExtra("name");
                     addr_phone = data.getStringExtra("phone");
+                } else {
+                    MainApplication application = (MainApplication) getApplication();
+                    addr_id = application.getAddressId();
+                    addr_name = application.getAddressName();
+                    addr_phone = application.getAddressPhone();
                 }
                 showGoodsList(coupon_name, flag2);
                 break;
@@ -250,7 +256,6 @@ public class OrderConfirmActivity extends AppCompatActivity {
     private void getCouponInfo() {
         couponInfo.clear();
         JSONObject couponObject = JSON.parseObject(coupons);
-        //JSONArray couponArray = JSON.parseArray(couponObject.getString("couponList"));
         JSONObject bestCoupon = JSONObject.parseObject(couponObject.getString("bestCoupon"));
         if (bestCoupon == null) {
             Log.d(TAG, "bestCoupon = null");

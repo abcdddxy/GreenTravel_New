@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,8 +25,7 @@ import java.util.Map;
  */
 
 public class QRcodeActivity extends Activity {
-
-    private Button btn;
+    //private TextView content;
     private TextView back;
     private ImageView iv;
 
@@ -43,6 +43,7 @@ public class QRcodeActivity extends Activity {
             }
         });
         generate(intent.getStringExtra("content"),  iv);
+        Log.e("HHHHHH",intent.getStringExtra("content"));
     }
 
     private Bitmap generateBitmap(String content, int width, int height) {

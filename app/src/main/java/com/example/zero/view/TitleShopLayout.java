@@ -20,14 +20,15 @@ import com.bumptech.glide.Glide;
 import com.example.zero.fragment.RouteFragment;
 import com.example.zero.fragment.RouteFragmentController;
 import com.example.zero.greentravel_new.R;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 /**
  * Created by ZERO on 2017/10/19.
  */
 
-public class TitleShopLayout extends LinearLayout{
+public class TitleShopLayout extends LinearLayout {
     private TextView text;
-    private ImageView img;
+    private RoundedImageView img;
     private RelativeLayout rl;
 
     public TitleShopLayout(Context context, AttributeSet attrs) {
@@ -35,7 +36,7 @@ public class TitleShopLayout extends LinearLayout{
         LayoutInflater.from(context).inflate(R.layout.title_shop, this);
 
         text = (TextView) findViewById(R.id.title_shop_text);
-        img = (ImageView) findViewById(R.id.title_shop_img);
+        img = (RoundedImageView) findViewById(R.id.title_shop_img);
         rl = (RelativeLayout) findViewById(R.id.title_shop);
     }
 
@@ -47,7 +48,7 @@ public class TitleShopLayout extends LinearLayout{
         text.setText(t);
     }
 
-    public ImageView getImg() {
+    public RoundedImageView getImg() {
         return img;
     }
 
@@ -55,6 +56,7 @@ public class TitleShopLayout extends LinearLayout{
         Glide.with(context)
                 .load(imgUrl)
                 .dontAnimate()
+                .transform(new GlideCircleTransform(getContext()))
                 .placeholder(R.drawable.defult_user_img)
                 .into(img);
     }

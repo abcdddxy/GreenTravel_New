@@ -29,6 +29,7 @@ public class MainApplication extends Application {
     private boolean apk;
     private boolean pic;
     private String address_id, address_name, address_phone;
+    private String order_id, order_money;
 
     private List<RouteSearchBean> stationList = new ArrayList<>();
     private List<String> busyStationList = new ArrayList<>();
@@ -38,6 +39,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        isOnline = false;
         SDKInitializer.initialize(this);
     }
 
@@ -63,16 +65,16 @@ public class MainApplication extends Application {
                     Log.d(TAG, result);
                     JSONObject jsonObj = JSON.parseObject(result);
                     user_id = jsonObj.getString("user_id");
-                    token = jsonObj.getString("token");
                     username = jsonObj.getString("username");
                     avator = jsonObj.getString("avator_url");
-                    SharedPreferences sharedPreferences = getSharedPreferences("GreenTravel", Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("phone", phone);
-                    editor.putString("user_id", user_id);
-                    editor.putString("token", token);
-                    editor.commit();
+//                    SharedPreferences sharedPreferences = getSharedPreferences("GreenTravel", Activity.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putString("phone", phone);
+//                    editor.putString("user_id", user_id);
+//                    editor.putString("token", token);
+//                    editor.commit();
                     isOnline = true;
+                    Log.d(TAG, "LoginState:" + isOnline + "+Token:" + token);
                 }
 
                 @Override
@@ -82,7 +84,6 @@ public class MainApplication extends Application {
                 }
             });
         }
-        Log.d(TAG, "sha");
         return isOnline;
     }
 
@@ -233,4 +234,18 @@ public class MainApplication extends Application {
         address_id = sharedPreferences.getString("default_addr_id", "");
         return address_id;
     }
+
+    public String getOrderId() {
+        return order_id;
+    }
+
+    public String getOrderMoney() {
+        return order_money;
+    }
+
+    public void setOrder(String id, String money) {
+        this.order_id = id;
+        this.order_money = money;
+    }
+
 }

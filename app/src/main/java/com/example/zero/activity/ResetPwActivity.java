@@ -122,7 +122,7 @@ public class ResetPwActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String text = phone.getText().trim();
                 if (password.getText().toString().trim().length() < 6) {
-                    Toast.makeText(getBaseContext(), "密码不能少于6个字符。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "密码不能少于6个字符", Toast.LENGTH_SHORT).show();
                 } else if (!password.getText().trim().equals(pw_confirm.getText().trim())) {
                     Toast.makeText(getBaseContext(), "两次输入密码不一致", Toast.LENGTH_SHORT).show();
                 } else if (RegisterActivity.isMobile(text)) {
@@ -162,21 +162,20 @@ public class ResetPwActivity extends AppCompatActivity {
     public void innitView() {
         backArrow = (TextView) findViewById(R.id.resetpw_back_arrow);
         phone = (SimpleTextView) findViewById(R.id.resetpw_phone);
-        phone.setHintText(" 请输入手机号码/邮箱");
+        phone.setHintText("请输入手机号码");
         phone.setLeftImage(R.drawable.user_fill);
         confirm = (SimpleTextView) findViewById(R.id.resetpw_confirm);
-        confirm.setHintText(" 验证码");
+        confirm.setHintText("验证码");
         confirm.setLeftImage(R.drawable.identify);
         password = (SimpleTextView) findViewById(R.id.resetpw_pw);
-        password.setHintText(" 请输入新密码");
+        password.setHintText("请输入新密码");
         password.setLeftImage(R.drawable.lock_fill);
         password.setPw();
         pw_confirm = (SimpleTextView) findViewById(R.id.resetpw_pw_confirm);
-        pw_confirm.setHintText(" 请重复新密码");
+        pw_confirm.setHintText("请重复新密码");
         pw_confirm.setLeftImage(R.drawable.lock_fill);
         pw_confirm.setPw();
         confirm_button = (TextView) findViewById(R.id.resetpw_confirm_button);
         resetpw = (Button) findViewById(R.id.resetpw_button);
-
     }
 }

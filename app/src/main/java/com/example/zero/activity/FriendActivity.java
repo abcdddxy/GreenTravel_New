@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.zero.adapter.FriendItemAdapter;
 import com.example.zero.bean.FriendItemBean;
 import com.example.zero.greentravel_new.R;
-import com.example.zero.view.RecycleItemDecoration;
+import com.example.zero.view.DividerDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +68,6 @@ public class FriendActivity extends AppCompatActivity {
         }
         FriendItemAdapter adapter = new FriendItemAdapter(this, dataList);
         friend_recv.setAdapter(adapter);
-        friend_recv.addItemDecoration(new RecycleItemDecoration(this, RecycleItemDecoration.VERTICAL_LIST));
+        friend_recv.addItemDecoration(new DividerDecoration(this));
     }
 }

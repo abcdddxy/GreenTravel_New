@@ -26,6 +26,7 @@ import com.example.zero.greentravel_new.R;
 import com.example.zero.util.MainApplication;
 import com.example.zero.util.RequestManager;
 import com.example.zero.view.SimpleTextView;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -45,7 +46,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
 
     private TextView backArrow;
     private LinearLayout user_img;
-    private ImageView mImage;
+    private RoundedImageView mImage;
     private View changeName;
     private View changePhone;
     private View changePw;
@@ -75,7 +76,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
         user_name = (TextView) findViewById(R.id.user_name_gray);
         backArrow = (TextView) findViewById(R.id.user_back_arrow);
         user_img = (LinearLayout) findViewById(R.id.user_img_change);
-        mImage = (ImageView) findViewById(R.id.user_img_show);
+        mImage = (RoundedImageView) findViewById(R.id.user_img_show);
         changeName = (View) findViewById(R.id.user_name_change);
         changePhone = (View) findViewById(R.id.user_phone_change);
         changePw = (View) findViewById(R.id.user_pw_change);
@@ -91,7 +92,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
 
         String avator = application.getAvator();
         if (avator != null && !avator.equals("")) {
-            avator = "http://10.108.120.31:8080/users/" + avator + "?type=0";
+            avator = RequestManager.getInstance(getBaseContext()).getBaseUrl() + "/users/" + avator + "?type=0";
             Glide.with(getContext())
                     .load(avator)
                     .dontAnimate()
@@ -208,7 +209,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
         final SimpleTextView confirm = view.findViewById(R.id.dialog_phone_pre_confirm);
         final TextView sendConfirm = view.findViewById(R.id.dialog_phone_pre_button);
         newPhone.setHintText("新手机号");
-        confirm.setHintText("新手机的验证码");
+        confirm.setHintText("新手机收到的验证码");
         newPhone.setLeftImage(R.drawable.user_fill);
         confirm.setLeftImage(R.drawable.identify);
         sendConfirm.setOnClickListener(new View.OnClickListener() {
@@ -332,7 +333,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
                     break;
                 case CROP_SMALL_PICTURE:
                     if (data != null) {
-                        setImageToView(data); // 让刚才选择裁剪得到的图片显示在界面上,并上传服务器（还未写）
+                        setImageToView(data); // 让刚才选择裁剪得到的图片显示在界面上,并上传服务器
                     }
                     break;
                 default:
@@ -424,7 +425,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
 
                 @Override
                 public void onReqFailed(String errorMsg) {
-                    Toast.makeText(getBaseContext(), "修改失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "上传失败", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, errorMsg);
                 }
             });

@@ -4,24 +4,21 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-    android:weightSum="2">
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar">
 
     <com.example.zero.view.SimpleTextView
         android:id="@+id/dialog_phone_new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:padding="5dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal">
 
         <com.example.zero.view.SimpleTextView
             android:id="@+id/dialog_phone_pre_confirm"
@@ -44,7 +41,6 @@
             android:background="@color/white"
             android:gravity="center"
             android:text="获取验证码"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/GreenTheme14" />
     </LinearLayout>
-
 </LinearLayout>

@@ -32,14 +32,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="件商品 合计:   ¥ "
+            android:text="件商品 合计：￥ "
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/user_order_final_price"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="10dp"
             android:gravity="center_vertical"
             android:text="489.00"
             android:textColor="@color/black" />

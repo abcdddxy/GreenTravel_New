@@ -1,11 +1,9 @@
 package com.example.zero.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -44,7 +42,6 @@ import com.example.zero.fragment.FragmentController;
 
 import com.example.zero.greentravel_new.R;
 import com.example.zero.util.MainApplication;
-import com.example.zero.view.TitleLayout;
 import com.example.zero.view.TitleRouteLayout;
 
 import java.io.File;
@@ -74,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     /**
      * 标题栏
      */
-    private TitleLayout titleLayout;
     private TitleRouteLayout titleRouteLayout;
 
     /**
@@ -85,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     /**
      * 定位SDK的核心类
      */
-    // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
     private MyLocationConfiguration.LocationMode mCurrentMode;
@@ -115,14 +110,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private float direction;
 
     private static String PATH = "style_json.json";
-//    private static String PATH = "only_subway.json";
 
     private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //个性化地图
         MainApplication application = (MainApplication) getApplication();
         application.defaultLogin();
         setMapCustomFile(this, PATH);
@@ -130,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         setContentView(R.layout.activity_main);
         initView();
         initBottomNavBar();
-
         List<String> permissionList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -148,19 +140,37 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.READ_PHONE_STATE);
         }
-
         if (!permissionList.isEmpty()) {
             String[] permissions = permissionList.toArray(new String[permissionList.size()]);
             ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
         }
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
-        Log.d(TAG, "onCreate: success");
         sendNotification();
-        verifyStoragePermissions(this);
+        new MyThread().start();
+        Log.d(TAG, "onCreate: success");
+    }
+
+    class MyThread extends Thread {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        //延迟两秒更新
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    MainApplication application = (MainApplication) getApplication();
+                    titleRouteLayout.setImg(MainActivity.this, application.getAvator());
+                }
+            });
+        }
     }
 
     /**
@@ -170,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         bottom_nav_content = (LinearLayout) findViewById(R.id.bottom_nav_content);
         bottom_navigation_bar_container = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar_container);
 
-//        titleLayout = (TitleLayout) findViewById(R.id.main_title);
         titleRouteLayout = (TitleRouteLayout) findViewById(R.id.route_title);
 
         btnLocation = (Button) findViewById(R.id.btn_map_main_location);
@@ -221,35 +230,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
         }
     }
-
-    // Storage Permissions
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    /**
-     * Checks if the app has permission to write to device storage
-     * <p>
-     * If the app does not has permission then the user will be prompted to grant permissions
-     *
-     * @param activity
-     */
-    public static void verifyStoragePermissions(Activity activity) {
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
-    }
-
 
     private void changeMode() {
         switch (mCurrentMode) {
@@ -371,7 +351,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     public void onTabReselected(int position) {
 
     }
-
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {

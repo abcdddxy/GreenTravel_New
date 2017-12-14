@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListPopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -39,6 +40,7 @@ import java.util.Map;
 
 public class AdvSearchActivity extends AppCompatActivity {
     private String keyword;
+    private String station;
     private View spinnerSet;
     private TextView spinner1;
     private TextView spinner2;
@@ -82,10 +84,11 @@ public class AdvSearchActivity extends AppCompatActivity {
     private void initView() {
         Intent intent = getIntent();
         keyword = intent.getStringExtra("keywords");
+        station = intent.getStringExtra("station");
         if(keyword.equals("")) {
             keyword = "火锅";
         }
-
+        Log.d(TAG,station+"-"+keyword);
         adv_recv = (RecyclerView) this.findViewById(R.id.adv_search_recv);
         adv_recv.setLayoutManager(new LinearLayoutManager(context));
 
@@ -186,6 +189,18 @@ public class AdvSearchActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
                 }
+                else if(showList.get(position).getSellerId().equals("")) {
+                    Intent intent = new Intent();
+                    intent.setClass(getBaseContext(),ShoppingCartActivity.class);
+                    intent.putExtra("shopId",showList.get(position).getShopId());
+                    intent.putExtra("sellerId",showList.get(position).getSellerId());
+                    intent.putExtra("shopImg",showList.get(position).getImg());
+                    intent.putExtra("shopName",showList.get(position).getTitle());
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getBaseContext(),"缺少sellerId",Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -240,8 +255,7 @@ public class AdvSearchActivity extends AppCompatActivity {
         params.put("search_type", getSortWay());
         params.put("dis_filter", getDistanceFilters());
         params.put("price_filter", getPriceFilters());
-        params.put("user_lon", "113.303346");
-        params.put("user_lat", "23.122086");
+        params.put("sub_station", station);
         RequestManager.getInstance(getBaseContext()).requestAsyn("search/keywordSearch", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
@@ -260,6 +274,8 @@ public class AdvSearchActivity extends AppCompatActivity {
                         AdvDestinSearchBean bean = new AdvDestinSearchBean();
                         bean.setText(false,
                                 entry.getKey(),
+                                store.getString("shop_id"),
+                                store.getString("seller_id"),
                                 store.getString("shop_name"),
                                 store.getString("addr"),
                                 store.getString("phone"),

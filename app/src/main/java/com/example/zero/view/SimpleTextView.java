@@ -52,6 +52,7 @@ public class SimpleTextView extends LinearLayout implements View.OnClickListener
 
     public void setLeftImage(int id) {
         etInput.setCompoundDrawablesWithIntrinsicBounds(id, 0, 0, 0);
+        etInput.setCompoundDrawablePadding(20);
     }
 
     public void setPw() {
@@ -67,6 +68,14 @@ public class SimpleTextView extends LinearLayout implements View.OnClickListener
         ivDelete.setVisibility(GONE);
     }
 
+    public void setSelectionEnd(int end) {
+        etInput.setSelection(end);
+    }
+
+    public void reqFocus() {
+        etInput.requestFocus();
+    }
+
     /**
      * 初始化View
      */
@@ -74,7 +83,6 @@ public class SimpleTextView extends LinearLayout implements View.OnClickListener
         etInput = (EditText) findViewById(R.id.textview_edit);
         ivDelete = (ImageView) findViewById(R.id.textview_cancel);
         ivDelete.setOnClickListener(this);
-        etInput.requestFocus();
         etInput.addTextChangedListener(new EditChangedListener());
         etInput.setOnClickListener(this);
         etInput.setOnKeyListener(new OnKeyListener() {

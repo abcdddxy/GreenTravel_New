@@ -3,8 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/GreenTheme18</item>
+        <item name="colorPrimaryDark">@color/GreenTheme19</item>
         <item name="colorAccent">@color/white</item>
         <item name="android:listDivider">@drawable/divide_line</item>
         <item name="android:windowActionBarOverlay">true</item>

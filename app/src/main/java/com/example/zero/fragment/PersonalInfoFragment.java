@@ -26,6 +26,7 @@ import com.example.zero.activity.UserActivity;
 import com.example.zero.activity.UserOrderActivity;
 import com.example.zero.greentravel_new.R;
 import com.example.zero.util.MainApplication;
+import com.example.zero.util.RequestManager;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 /**
@@ -123,7 +124,7 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
             user_name.setText(mainApplication.getUsername());
             String avator = mainApplication.getAvator();
             if (avator != null && !avator.equals("")) {
-                avator = "http://10.108.120.31:8080/users/" + avator + "?type=0";
+                avator = RequestManager.getInstance(getContext()).getBaseUrl() + "/users/" + avator + "?type=0";
                 Log.d(TAG, avator);
                 Glide.with(getContext())
                         .load(avator)

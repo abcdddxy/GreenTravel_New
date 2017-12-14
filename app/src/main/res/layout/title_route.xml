@@ -21,12 +21,11 @@
         android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/title_center_view"
-        android:src="@drawable/title_icon"
         app:riv_oval="true" />
 
     <View
     android:id="@+id/title_center_view"
-    android:layout_width="20dp"
+    android:layout_width="10dp"
     android:layout_height="match_parent"
     android:layout_centerInParent="true" />
 
@@ -38,7 +37,7 @@
         android:layout_toRightOf="@+id/title_center_view"
         android:text="@string/title_title"
         android:textColor="@color/white"
-        android:textSize="24sp" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/title_btn_more"

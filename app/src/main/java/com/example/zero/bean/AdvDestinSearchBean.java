@@ -15,6 +15,8 @@ public class AdvDestinSearchBean {
     private String img_url;
     private String address;
     private String phone;
+    private String shopId;
+    private String sellerId;
     private int comments;
     private int price;
     private float distance;
@@ -52,6 +54,24 @@ public class AdvDestinSearchBean {
         this.labels = labels;
     }
 
+    public void setText(boolean isStation,String shopId, String sellerId, String stationTag, String title, String address, String phone, String img, int comments, int
+            price, float distance, float rate, ArrayList<String> labels) {
+        this.shopId = shopId;
+        this.sellerId = sellerId;
+        this.isStation = isStation;
+        this.isExtend = false;
+        this.stationTag = stationTag;
+        this.title = title;
+        this.address = address;
+        this.comments = comments;
+        this.phone = phone;
+        this.distance = distance;
+        this.img_url = img;
+        this.price = price;
+        this.rate = rate;
+        this.labels = labels;
+    }
+
     public boolean isStation() {
         return isStation;
     }
@@ -66,6 +86,14 @@ public class AdvDestinSearchBean {
 
     public void setToggle(boolean toggle) {
         isExtend = toggle;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public String getSellerId() {
+        return sellerId;
     }
 
     public String getStationTag() {

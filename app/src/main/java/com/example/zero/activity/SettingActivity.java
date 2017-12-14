@@ -1,5 +1,6 @@
 package com.example.zero.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +15,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -64,7 +67,7 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         mContext = SettingActivity.this;
         innitView();
-        //checkLocationPermission();
+        checkLocationPermission();
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,8 +81,7 @@ public class SettingActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.setData(Uri.fromParts("package", getPackageName(), null));
-                startActivity(intent);
-                // 设置完成后返回到原来的界面startActivityForResult(intent, 0);
+                startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
             }
         });
 //        map.setOnClickListener(new View.OnClickListener() {
@@ -229,44 +231,37 @@ public class SettingActivity extends AppCompatActivity {
         clean = (Button) findViewById(R.id.setting_clean);
     }
 
-//    /**
-//     * 刷新界面
-//     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 0:
+                checkLocationPermission();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 重写onResume()刷新界面
+     */
 //    @Override
 //    public void onResume() {
 //        super.onResume();
 //        checkLocationPermission();
 //    }
 
-//    /**
-//     * 检查位置权限是否打开
-//     */
-//    public void checkLocationPermission() {
-//        int network = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
-//        int gps = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-//        if (network == PermissionChecker.PERMISSION_GRANTED && gps == PermissionChecker.PERMISSION_GRANTED) {
-//            location_text.setText("已开启");
-//        } else {
-//            location_text.setText("去设置");
-//        }
-//    }
-
     /**
-     * 判断GPS是否开启，GPS或者AGPS开启一个就认为是开启的
-     *
-     * @param context
-     * @return true 表示开启
+     * 检查位置权限是否打开
      */
-    public static final boolean isGPSOpen(final Context context) {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
-        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
-        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        if (gps || network) {
-            return true;
+    public void checkLocationPermission() {
+        int network = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        int gps = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if (network == PermissionChecker.PERMISSION_GRANTED && gps == PermissionChecker.PERMISSION_GRANTED) {
+            location_text.setText("已开启");
         } else {
-            return false;
+            location_text.setText("去设置");
         }
     }
 
@@ -276,14 +271,14 @@ public class SettingActivity extends AppCompatActivity {
      * @param context
      * @return
      */
-    public static boolean isWifiConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiNetworkInfo.isConnected()) {
-            return true;
-        }
-        return false;
-    }
+//    public static boolean isWifiConnected(Context context) {
+//        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//        if (wifiNetworkInfo.isConnected()) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     /**
      * 获取当前程序的版本号
@@ -323,7 +318,7 @@ public class SettingActivity extends AppCompatActivity {
                 download_url = jo.getString("download_url");
                 if (versionCode < serviceVersionCode) {
                     builder = new AlertDialog.Builder(mContext);
-                    alertDialog = builder.setTitle("版本更新提示").setMessage("检查到有最新版本,是否更新?\n" + "新版本功能描述：\n"+description)
+                    alertDialog = builder.setTitle("版本更新提示").setMessage("检查到有最新版本,是否更新?\n" + "新版本功能描述：\n" + description)
                             .setNegativeButton("取消", null)
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
@@ -383,6 +378,7 @@ public class SettingActivity extends AppCompatActivity {
      * handler函数接收消息，处理结果，其用意是清理完了就弹一个Toast，清理完成
      */
     private Handler handler = new Handler() {
+        @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case 0:

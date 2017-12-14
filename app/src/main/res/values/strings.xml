@@ -13,14 +13,16 @@
     <string name="lv_result_content">Content</string>
 
     <!--标题栏-->
-    <string name="title_title">ZERO</string>
+    <string name="title_title">GTravel</string>
     <string name="title_more">MORE</string>
 
     <!--地图-->
     <string name="route_select">请点击选择所需路线，在地图中绘制</string>
 
-    <!--app-->
+    <!--WXPay-->
     <string name="app_tip">提示</string>
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
-    <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
+    <string name="pay_cancel">取消支付</string>
+    <string name="pay_result_success">支付成功</string>
+    <string name="pay_result_fail">支付失败</string>
 </resources>

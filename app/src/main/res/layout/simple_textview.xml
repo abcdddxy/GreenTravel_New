@@ -15,12 +15,14 @@
             android:id="@+id/textview_edit"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:textSize="14sp"
             android:layout_weight="1"
             android:drawableLeft="@drawable/user_fill"
             android:maxLines="1"
-            android:textColorHint="@color/nav_gray"
-            android:textCursorDrawable="@null">
+            android:textColorHighlight="@color/GreenTheme"
+            android:textCursorDrawable="@drawable/simple_edit_cursor_color"
+            android:textSelectHandleLeft="@color/GreenTheme"
+            android:textSelectHandleRight="@color/GreenTheme"
+            android:textSize="14sp">
 
         </EditText>
 

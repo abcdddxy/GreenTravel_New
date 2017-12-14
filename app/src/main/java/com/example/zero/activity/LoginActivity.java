@@ -144,15 +144,18 @@ public class LoginActivity extends AppCompatActivity {
         register = (TextView) findViewById(R.id.login_register);
         reset = (TextView) findViewById(R.id.login_reset);
         phone = (SimpleTextView) findViewById(R.id.login_phone);
-        phone.setHintText(" 请输入手机号码");
+        phone.setHintText("请输入手机号码");
         phone.setLeftImage(R.drawable.user_fill);
         password = (SimpleTextView) findViewById(R.id.login_password);
+        password.setHintText("请输入密码");
         password.setLeftImage(R.drawable.lock_fill);
         password.setPw();
         login = (Button) findViewById(R.id.login_button);
         MainApplication mainApplication = (MainApplication) getApplication();
         phone.setText(mainApplication.getPhone());
-
+        if(!phone.getText().equals("")){
+            password.reqFocus();
+        }
     }
 
     @Override

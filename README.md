@@ -300,6 +300,18 @@ Android App GreenTravel
 		<th>171205</th>
 		<th colspan="3">第十一次程序合并</th>
 	</tr>
+	<tr>
+	 	<th>171207</th>
+	 	<th>书写app软件著作权文档</th>
+	 	<th>微信支付接口调试成功</th>
+	 	<th>扫一扫成功之后从已完成订单看不到订单，只能在所有订单里看到，可能原来的部分有bug</th>
+	</tr>
+	<tr>
+		<th>171208</th>
+		<th>做报告ppt</th>
+		<th>无法添加查询支付结果接口，一添加就崩溃，暂时以微信返回的errCode为准</th>
+		<th>我的订单继续调试</th>
+	</tr>
 </table>
 
 ## 遇到bug或难点
@@ -599,6 +611,18 @@ Android App GreenTravel
     <tr>
 		<th>171205</th>
 		<th colspan="3">暂时没有发现bug</th>
+	</tr>
+	<tr>
+		<th>171207</th>
+		<th>无</th>
+		<th>无</th>
+		<th>扫一扫成功之后从已完成订单看不到订单，只能在所有订单里看到，可能原来的部分有bug</th>
+	</tr>
+	<tr>
+		<th>171208</th>
+		<th>创新点</th>
+		<th>无法添加查询支付结果接口，一添加就崩溃，暂时以微信返回的errCode为准</th>
+		<th>无</th>
 	</tr>
 </table>
 
@@ -904,5 +928,17 @@ Android App GreenTravel
     <tr>
 		<th>171205</th>
 		<th colspan="3">无</th>
+	</tr>
+	<tr>
+		<th>171207</th>
+		<th>无</th>
+		<th>无</th>
+		<th>无</th>
+	</tr>
+	<tr>
+		<th>171208</th>
+		<th>无</th>
+		<th>无</th>
+		<th>无</th>
 	</tr>
 </table>

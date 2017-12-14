@@ -20,16 +20,12 @@ import com.alibaba.fastjson.JSON;
 import com.donkingliang.labels.LabelsView;
 
 import com.example.zero.activity.AdvSearchActivity;
-import com.example.zero.activity.RouteResultActivity;
 import com.example.zero.adapter.RouteSearchAdapter;
 import com.example.zero.bean.RouteSearchBean;
 import com.example.zero.greentravel_new.R;
 import com.example.zero.util.MainApplication;
 import com.example.zero.util.RequestManager;
 import com.example.zero.view.SearchPopView;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -174,10 +170,14 @@ public class AdvDestinFragment extends Fragment implements SearchPopView.SearchP
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), AdvSearchActivity.class);
-                //TODO 具体所需搜索信息
-                String data = searchPopView.getText() + editText.getText().toString();
-                intent.putExtra("position",searchPopView.getText());
-                intent.putExtra("keywords",editText.getText().toString());
+                ArrayList<Integer> selected = labelsView.getSelectLabels();
+                String s = "";
+                for (Integer i : selected) {
+                    s = s + labels.get(i) + "+";
+                }
+                s = s.substring(0, s.length() - 1);
+                intent.putExtra("station", searchPopView.getText());
+                intent.putExtra("keywords", s);
                 startActivity(intent);
             }
         });
@@ -369,6 +369,7 @@ public class AdvDestinFragment extends Fragment implements SearchPopView.SearchP
 
     /**
      * 获取当前热门关键字
+     *
      * @return
      */
     public ArrayList<String> getLabels() {
@@ -380,6 +381,7 @@ public class AdvDestinFragment extends Fragment implements SearchPopView.SearchP
         labels.add("汉堡王");
         labels.add("螺蛳粉");
         labels.add("火锅");
+        labels.add("许留山");
         return labels;
     }
 

@@ -25,6 +25,7 @@
                 android:background="@drawable/route_search_background"
                 android:drawablePadding="@dimen/search_drawable_padding"
                 android:hint=""
+                android:textCursorDrawable="@drawable/search_edit_cursor_color"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:textSize="@dimen/search_text_size" />

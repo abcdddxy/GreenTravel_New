@@ -19,16 +19,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zero.adapter.ScheduleAdapter;
+import com.example.zero.bean.AdvDestinSearchBean;
 import com.example.zero.bean.ScheduleBean;
 import com.example.zero.greentravel_new.R;
 import com.example.zero.util.HttpUtil;
+import com.example.zero.util.MultiItemTypeAdapter;
 
 import org.json.JSONArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -49,6 +54,8 @@ public class SubwayScheduleActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<ScheduleBean> scheduleData;
+    private Map<String,ArrayList<ScheduleBean>> ssMap = new LinkedHashMap<>();
+    private Map<String,Boolean> toggleState = new HashMap<>();
     private ScheduleAdapter scheduleAdapter;
 
     private String stationName;
@@ -95,8 +102,34 @@ public class SubwayScheduleActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) this.findViewById(R.id.station_schedule_recy);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         scheduleData = new ArrayList<ScheduleBean>();
-        scheduleAdapter = new ScheduleAdapter(scheduleData);
+        scheduleAdapter = new ScheduleAdapter(context,scheduleData);
         recyclerView.setAdapter(scheduleAdapter);
+        scheduleAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                if (scheduleData.get(position).isStation()) {
+                    String s = scheduleData.get(position).getFinal_st();
+                    toggleState.put(s, !toggleState.get(s));
+                    scheduleData.clear();
+                    for (Map.Entry<String, ArrayList<ScheduleBean>> entry : ssMap.entrySet()) {
+                        Boolean toggle = toggleState.get(entry.getKey());
+                        ScheduleBean station = entry.getValue().get(0);
+                        station.setToggle(toggle);
+                        if (toggle) {
+                            scheduleData.addAll(entry.getValue());
+                        } else {
+                            scheduleData.add(station);
+                        }
+                    }
+                    scheduleAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
 
         spinnerSet = (View) this.findViewById(R.id.station_spinner_set);
         spinner1 = (TextView) this.findViewById(R.id.station_spinner1);
@@ -240,10 +273,25 @@ public class SubwayScheduleActivity extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONArray array = jsonArray.getJSONArray(i);
                 for (int j = 0; j < array.length(); j++) {
-                    scheduleData.add(new ScheduleBean(array.getJSONObject(j).getString("station"),
+                    ScheduleBean bean1 = new ScheduleBean(array.getJSONObject(j).getString("station"),
+                        array.getJSONObject(j).getString("line"),
+                        array.getJSONObject(j).getString("final_st"),
+                        array.getJSONObject(j).getString("arr_time_str"));
+                    ScheduleBean bean2 = new ScheduleBean(array.getJSONObject(j).getString("station"),
                             array.getJSONObject(j).getString("line"),
-                            array.getJSONObject(j).getString("final_st"),
-                            array.getJSONObject(j).getString("arr_time_str")));
+                            array.getJSONObject(j).getString("final_st"));
+                    if(ssMap.containsKey(bean1.getFinal_st())){
+                        ArrayList<ScheduleBean> list = ssMap.get(bean1.getFinal_st());
+                        list.add(bean1);
+                    }
+                    else {
+                        ArrayList<ScheduleBean> list = new ArrayList<>();
+                        list.add(bean2);
+                        list.add(bean1);
+                        ssMap.put(bean2.getFinal_st(),list);
+                        toggleState.put(bean2.getFinal_st(),false);
+                        scheduleData.add(bean2);
+                    }
                 }
             }
         } catch (Exception e) {

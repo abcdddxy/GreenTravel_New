@@ -4,26 +4,27 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="15dp"
-    android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-    android:weightSum="2">
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar">
 
     <com.example.zero.view.SimpleTextView
         android:id="@+id/dialog_pw_pre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
     <com.example.zero.view.SimpleTextView
         android:id="@+id/dialog_pw_new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
     <com.example.zero.view.SimpleTextView
         android:id="@+id/dialog_pw_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
 </LinearLayout>

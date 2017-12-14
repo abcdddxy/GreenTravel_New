@@ -230,6 +230,7 @@ public class ShopOrderActivity extends AppCompatActivity {
                             }
                             mBundle.putString("shopName", shopName);
                             mBundle.putString("shopId", shopId);
+                            mBundle.putString("sellerId", sellerId);
                             mBundle.putInt("size", count);
                             mBundle.putStringArray("idList", idList);
                             mBundle.putStringArray("nameList", nameList);

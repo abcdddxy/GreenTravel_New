@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal"
-    android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-    android:weightSum="2">
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar">
 
     <com.example.zero.view.SimpleTextView
         android:id="@+id/dialog_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
 </LinearLayout>

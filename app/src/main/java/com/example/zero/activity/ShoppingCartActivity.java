@@ -96,6 +96,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
     private String[] descriptionList = new String[size];
     private int[] numList = new int[size];
     private String[] sellerIdList = new String[size];
+    private String sellerId;
     private int[] buyNumList = new int[size];
 
     private DividerDecoration dividerDecoration;
@@ -126,6 +127,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
 
         Intent intent = getIntent();
         shopId = intent.getStringExtra("shopId");
+        sellerId = intent.getStringExtra("sellerId");
         shopName = intent.getStringExtra("shopName");
         shopImg = intent.getStringExtra("shopImg");
 
@@ -399,11 +401,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
                     mBundle.putStringArray("posterList", posterList);
                     mBundle.putDoubleArray("priceList", priceList);
                     mBundle.putIntArray("numList", numList);
-
+                    mBundle.putString("sellerId", sellerId);
                     intent.putExtras(mBundle);
                     startActivity(intent);
-                    Toast.makeText(context, "结算", Toast.LENGTH_SHORT).show();
-                } else {int size = selectedList.size();
+                } else {
+                    int size = selectedList.size();
                     String[] idList = new String[size];
                     String[] nameList = new String[size];
                     String[] posterList = new String[size];
@@ -431,7 +433,6 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
 
                     intent.putExtras(mBundle);
                     startActivity(intent);
-                    Toast.makeText(context, "结算", Toast.LENGTH_SHORT).show();
                     Toast.makeText(context, "请先登录后在进行操作！", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -503,7 +504,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
         tvCount.setText(String.valueOf(count));
 
         // TODO: 2017/11/10 最低起送价格
-        if (cost > 99.99) {
+        if (cost >= 0.01) {
             tvTips.setVisibility(View.GONE);
             tvSubmit.setVisibility(View.VISIBLE);
         } else {

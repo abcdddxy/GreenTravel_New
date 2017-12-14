@@ -32,7 +32,7 @@ public class RequestManager {
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");//这个需要和服务端保持一致
     //private static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");//这个需要和服务端保持一致
     private static final String TAG = RequestManager.class.getSimpleName();
-    private static final String BASE_URL = "http://10.108.120.225:8080";//请求接口根地址
+    private static final String BASE_URL = "http://10.108.120.31:8080";//请求接口根地址
     private static volatile RequestManager mInstance;//单例引用
     public static final int TYPE_GET = 0;//get请求
     public static final int TYPE_POST_JSON = 1;//post请求参数为json
@@ -73,6 +73,15 @@ public class RequestManager {
             }
         }
         return inst;
+    }
+
+    /**
+     * 获取服务器ip
+     *
+     * @return
+     */
+    public String getBaseUrl() {
+        return BASE_URL;
     }
 
     /**
@@ -333,7 +342,7 @@ public class RequestManager {
     }
 
     /**
-     * okHttp post异步请求1
+     * okHttp post异步请求
      *
      * @param actionUrl 接口地址
      * @param paramsMap 请求参数
@@ -357,6 +366,7 @@ public class RequestManager {
             String requestUrl = String.format("%s/%s", BASE_URL, actionUrl);
             final Request request = addHeaders().url(requestUrl).post(body).build();
             final Call call = mOkHttpClient.newCall(request);
+            Log.d("URLLL", requestUrl);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -427,10 +437,11 @@ public class RequestManager {
     }
 
     /**
-     * okHttp post异步请求2
+     * okHttp post异步请求Body提交
      *
      * @param actionUrl 接口地址
      * @param paramsMap 请求参数
+     * @param json      需要在body提交的数据
      * @param callBack  请求返回数据回调
      * @param <T>       数据泛型
      * @return
@@ -584,11 +595,13 @@ public class RequestManager {
     /**
      * 下载文件
      *
+     * @param fileName    文件名
      * @param fileUrl     文件url
      * @param destFileDir 存储目标目录
+     * @param callBack    回调
+     * @param <T>
      */
     public <T> void downLoadFile(String fileName, String fileUrl, final File destFileDir, final ReqProgressCallBack<T> callBack) {
-        //final String fileName = "test.apk";//MD5.encode(fileUrl);
         final File file = new File(destFileDir, fileName);
         if (file.exists()) {
             successCallBack((T) file, callBack);
