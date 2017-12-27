@@ -275,26 +275,26 @@
                     <ImageView style="@style/arrow_right_black" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/friends"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="horizontal"
-                    android:padding="15dp">
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/friends"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@color/white"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:padding="15dp">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/friend_cute"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:text="常用联系人"
-                        android:textColor="@color/black" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:drawableLeft="@drawable/friend_cute"-->
+                        <!--android:drawablePadding="10dp"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:text="常用联系人"-->
+                        <!--android:textColor="@color/black" />-->
 
-                    <ImageView style="@style/arrow_right_black" />
-                </LinearLayout>
+                    <!--<ImageView style="@style/arrow_right_black" />-->
+                <!--</LinearLayout>-->
 
                 <LinearLayout
                     android:id="@+id/subway"
@@ -323,7 +323,7 @@
                 android:layout_height="wrap_content"
                 android:divider="@drawable/divide_line"
                 android:orientation="vertical"
-                android:paddingBottom="65dp"
+                android:paddingBottom="66dp"
                 android:paddingTop="10dp"
                 android:showDividers="middle">
 

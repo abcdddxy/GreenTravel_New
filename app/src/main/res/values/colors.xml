@@ -71,6 +71,7 @@
     <color name="divideLine">#A9A9A9</color>
     <!--界面背景色-->
     <color name="background">#EDEDED</color>
+    <color name="background1">#86C0C0C0</color>
     <!--顶部导航栏蓝色-->
     <color name="nav_head">#1296db</color>
 

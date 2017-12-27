@@ -69,7 +69,7 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.MyView
         }
         holder.tvShopCartClothName.setText(data.get(position).getProductName());
         holder.tvShopCartShopName.setText(data.get(position).getShopName());
-        holder.tvShopCartClothPrice.setText("¥" + data.get(position).getPrice());
+        holder.tvShopCartClothPrice.setText("¥ " + data.get(position).getPrice());
         holder.etShopCartClothNum.setText(data.get(position).getCount() + "");
 
         if (mOnRefreshListener != null) {

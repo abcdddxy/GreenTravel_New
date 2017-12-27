@@ -19,7 +19,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.zero.adapter.UserOrderAdapter;
 import com.example.zero.bean.UserOrderBean;
 import com.example.zero.greentravel_new.R;
-import com.example.zero.util.HttpUtil;
 import com.example.zero.util.MainApplication;
 import com.example.zero.util.MultiItemTypeAdapter;
 import com.example.zero.util.RequestManager;
@@ -27,13 +26,9 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * Created by kazu_0122 on 2017/11/15.
@@ -80,7 +75,6 @@ public class UserOrderActivity extends Activity {
         //当有消息发送出来的时候就执行Handler的这个方法
         public boolean handleMessage(Message msg) {
             //只要执行到这里就关闭对话框
-            initView();
 
             pd.dismiss();
             return false;
@@ -123,7 +117,7 @@ public class UserOrderActivity extends Activity {
                     Log.e(TAG, errorMsg);
                 }
             });
-            Thread.sleep(2000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -155,6 +149,7 @@ public class UserOrderActivity extends Activity {
             }
             goodCount += goods.size();
         }
+        initView();
     }
 
     private void initView() {
@@ -345,6 +340,7 @@ public class UserOrderActivity extends Activity {
                 break;
             default:
                 order_type = "all";
+                break;
         }
 
         httpThread();

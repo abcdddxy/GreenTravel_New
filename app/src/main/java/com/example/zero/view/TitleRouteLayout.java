@@ -27,13 +27,13 @@ public class TitleRouteLayout extends LinearLayout {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.title_route, this);
         img = (RoundedImageView) findViewById(R.id.title_civ_icon);
-        more = (Button) findViewById(R.id.title_btn_more);
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "More info", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        more = (Button) findViewById(R.id.title_btn_more);
+//        more.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getContext(), "More info", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     public void setImg(Context context, String avator) {

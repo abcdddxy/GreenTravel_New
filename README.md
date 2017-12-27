@@ -316,6 +316,14 @@ Android App GreenTravel
 		<th>171212</th>
 		<th colspan="3">第十二次程序合并</th>
 	</tr>
+    <tr>
+		<th>171220</th>
+		<th colspan="3">第十三次程序合并</th>
+	</tr>
+    <tr>
+		<th>171227</th>
+		<th colspan="3">第十四次程序合并</th>
+	</tr>
 </table>
 
 ## 遇到bug或难点
@@ -630,6 +638,14 @@ Android App GreenTravel
 	</tr>
     <tr>
 		<th>171212</th>
+		<th colspan="3">暂时没有发现bug</th>
+	</tr>
+    <tr>
+		<th>171220</th>
+		<th colspan="3">暂时没有发现bug</th>
+	</tr>
+    <tr>
+		<th>171227</th>
 		<th colspan="3">暂时没有发现bug</th>
 	</tr>
 </table>
@@ -951,6 +967,14 @@ Android App GreenTravel
 	</tr>
     <tr>
 		<th>171212</th>
+		<th colspan="3">无</th>
+	</tr>
+    <tr>
+		<th>171220</th>
+		<th colspan="3">无</th>
+	</tr>
+    <tr>
+		<th>171227</th>
 		<th colspan="3">无</th>
 	</tr>
 </table>

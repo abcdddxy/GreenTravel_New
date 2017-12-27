@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.zero.activity.MainActivity">
 
-    <!--<com.example.zero.view.TitleLayout-->
-        <!--android:id="@+id/main_title"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:visibility="gone" />-->
-
     <com.example.zero.view.TitleRouteLayout
         android:id="@+id/route_title"
         android:layout_width="match_parent"

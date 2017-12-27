@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import com.example.zero.greentravel_new.R;
+
 /**
  * Created by jojo on 2017/9/15.
  */
@@ -26,7 +28,7 @@ public class CouponView extends LinearLayout {
         super(context, attrs);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setDither(true);
-        mPaint.setColor(Color.parseColor("#E6E6E6"));
+        mPaint.setColor(getResources().getColor(R.color.background));
         mPaint.setStyle(Paint.Style.FILL);
     }
 

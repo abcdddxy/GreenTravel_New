@@ -140,6 +140,13 @@
                 android:textColor="@color/black" />
 
             <ImageView
+                android:id="@+id/user_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/password" />
+
+            <ImageView
                 style="@style/arrow_right_black"
                 android:paddingRight="20dp" />
         </LinearLayout>

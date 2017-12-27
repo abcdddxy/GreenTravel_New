@@ -80,7 +80,7 @@ public class SaleHotFragment extends Fragment {
         adapter.setOnItemClickListener(new SaleHotCouponAdapter.onRecycleItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                //Toast.makeText(context, "点击条目 " + position, Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -293,7 +293,7 @@ public class SaleHotFragment extends Fragment {
                             coupon_type = jo.getInteger("type");
                             if (coupon_type == 1) {
                                 String[] str = jo.getString("coupon_name").split("减");
-                                coupon_price = "¥" + str[1];
+                                coupon_price = "￥ " + str[1];
                                 coupon_content = "消费金额" + str[0] + "可用";
                             } else if (coupon_type == 2) {
                                 coupon_price = jo.getString("coupon_name").substring(0, 2);

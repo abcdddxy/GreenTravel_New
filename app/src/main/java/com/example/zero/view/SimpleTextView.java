@@ -142,6 +142,7 @@ public class SimpleTextView extends LinearLayout implements View.OnClickListener
             case R.id.textview_cancel:
                 etInput.setText("");
                 ivDelete.setVisibility(GONE);
+                etInput.requestFocus();
                 break;
             default:
                 break;

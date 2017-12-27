@@ -139,11 +139,11 @@ public class OrderConfirmActivity extends AppCompatActivity {
                         jsonObject.put("good_price", priceList[i]);
                         goodsList.add(jsonObject);
                     }
-                    MainApplication mainApplication = (MainApplication) getApplication();
+                    final MainApplication mainApplication = (MainApplication) getApplication();
                     JSONObject order = new JSONObject();
                     if (coupon_name.equals("")) {
                         order.put("coupon_id", "0");
-                    } else if (couponInfo.size() != 0) {
+                    } else if (couponInfo.size() != 0 && couponInfo.get(0).get("canUse").equals("true")) {
                         order.put("coupon_id", couponInfo.get(0).get("id"));
                     }
                     order.put("products", goodsList);
@@ -165,11 +165,11 @@ public class OrderConfirmActivity extends AppCompatActivity {
                                 Toast.makeText(OrderConfirmActivity.this, "请安装微信客户端", Toast.LENGTH_SHORT).show();
                             } else {
                                 final MainApplication application = (MainApplication) getApplication();
-                                HashMap<String, String> params = new HashMap<>();
-                                params.put("user_id", application.getUser_id());
-                                params.put("token", application.getToken());
-                                params.put("order_no", object.getString("order_no"));
-                                RequestManager.getInstance(OrderConfirmActivity.this).requestAsyn("order/getprepayid", RequestManager.TYPE_POST_JSON, params, new RequestManager.ReqCallBack<String>() {
+                                HashMap<String, String> params1 = new HashMap<>();
+                                params1.put("user_id", application.getUser_id());
+                                params1.put("token", application.getToken());
+                                params1.put("order_no", object.getString("order_no"));
+                                RequestManager.getInstance(OrderConfirmActivity.this).requestAsyn("order/getprepayid", RequestManager.TYPE_POST_JSON, params1, new RequestManager.ReqCallBack<String>() {
                                     @Override
                                     public void onReqSuccess(String result) {
                                         JSONObject jo = JSON.parseObject(result);
@@ -182,9 +182,6 @@ public class OrderConfirmActivity extends AppCompatActivity {
                                             request.nonceStr = jo.getString("noncestr");
                                             request.timeStamp = jo.getString("timestamp");
                                             request.sign = jo.getString("sign");
-//                                            Log.e(TAG, " appid: " + request.appId + " partnerId: " + request.partnerId + " prepayid: " + request.prepayId + " noncestr: " + request.nonceStr + " time: " + request.timeStamp + " sign: " + request.sign + " packageValue; " + request.packageValue);
-//                                            Log.i(TAG, "onReqSuccess0: " + request.checkArgs());
-//                                            Log.i(TAG, "onReqSuccess1: " + msgApi.sendReq(request));
                                             msgApi.sendReq(request);
                                         } catch (Exception e) {
                                             Log.e(TAG, e.getMessage());
@@ -258,7 +255,7 @@ public class OrderConfirmActivity extends AppCompatActivity {
         JSONObject couponObject = JSON.parseObject(coupons);
         JSONObject bestCoupon = JSONObject.parseObject(couponObject.getString("bestCoupon"));
         if (bestCoupon == null) {
-            Log.d(TAG, "bestCoupon = null");
+            Log.d(TAG, "bestCoupon == null");
         } else {
             String expire = bestCoupon.getString("expire_at");
             Timestamp ts1 = new Timestamp(System.currentTimeMillis());
@@ -268,12 +265,20 @@ public class OrderConfirmActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (bestCoupon.getBoolean("owned") && ts2.getTime() > ts1.getTime()) {
-                if (bestCoupon.getInteger("status") == 0) {
+            if (ts2.getTime() > ts1.getTime()) {
+                if (bestCoupon.getBoolean("owned") && bestCoupon.getInteger("status") == 0) {
                     Map<String, String> map = new HashMap<>();
                     map.put("id", bestCoupon.getString("id"));
                     map.put("type", bestCoupon.getString("type"));
                     map.put("name", bestCoupon.getString("coupon_name"));
+                    map.put("canUse", "true");
+                    couponInfo.add(map);
+                } else if (!bestCoupon.getBoolean("owned") || bestCoupon.getInteger("status") == 1) {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("id", bestCoupon.getString("id"));
+                    map.put("type", bestCoupon.getString("type"));
+                    map.put("name", bestCoupon.getString("coupon_name"));
+                    map.put("canUse", "false");
                     couponInfo.add(map);
                 }
             }
@@ -316,7 +321,8 @@ public class OrderConfirmActivity extends AppCompatActivity {
             dataList.add(orderBean2);
         }
         OrderBean orderBean3 = new OrderBean();
-        if (coupon_name.equals("无可用优惠")) {
+        if (coupon_name.equals("无可用优惠") || coupon_name.equals("没有领取最佳优惠券，请前往店铺领取")) {
+            coupon_name = "";
             orderBean3.setDiscount("");
         } else {
             orderBean3.setDiscount(coupon_name);
@@ -356,9 +362,11 @@ public class OrderConfirmActivity extends AppCompatActivity {
         cancel = (TextView) contentView.findViewById(R.id.popwindow1_close);
         other = (View) contentView.findViewById(R.id.popwindow1_other);
         RelativeLayout rl = (RelativeLayout) contentView.findViewById(R.id.popwindow1_rl);
-        if (couponInfo.size() != 0) {
+        if (couponInfo.size() != 0 && couponInfo.get(0).get("canUse").equals("true")) {
             rb1.setText(couponInfo.get(0).get("name"));
-        } else {
+        } else if (couponInfo.size() != 0 && couponInfo.get(0).get("canUse").equals("false")) {
+            rb1.setText("没有领取最佳优惠券，请前往店铺领取");
+        } else if (couponInfo.size() == 0) {
             rb1.setText("无可用优惠");
         }
         if (flag1 == 1) {
@@ -493,9 +501,5 @@ public class OrderConfirmActivity extends AppCompatActivity {
             }
         });
         popupWindow.showAtLocation(contentView, Gravity.BOTTOM, 0, 0);
-    }
-
-    public void wxPay() {
-
     }
 }

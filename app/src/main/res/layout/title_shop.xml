@@ -6,22 +6,12 @@
     android:background="@color/background"
     android:weightSum="1">
 
-    <!--<de.hdodenhof.circleimageview.CircleImageView-->
-    <!--android:id="@+id/title_shop_img"-->
-    <!--android:layout_width="32dp"-->
-    <!--android:layout_height="32dp"-->
-    <!--android:layout_centerInParent="true"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:layout_marginLeft="80dp"-->
-    <!--android:src="@drawable/title_icon" />-->
-
     <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/title_shop_img"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/title_icon"
         app:riv_oval="true" />
 
     <TextView
@@ -31,7 +21,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/title_shop_img"
-        android:text="@string/title_title"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="16sp" />
 </RelativeLayout>

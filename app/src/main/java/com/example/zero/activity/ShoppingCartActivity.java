@@ -185,7 +185,6 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Log.d(TAG, "onFailure: ERROR!");
-                    Toast.makeText(context, "连接服务器失败，请重新尝试！", Toast.LENGTH_LONG).show();
                 }
             });
             Thread.sleep(1500);
@@ -207,7 +206,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
                     nameList[count] = goods.getJSONObject(i).getString("goods_name");
                     posterList[count] = goods.getJSONObject(i).getString("picture_url");
                     if (!posterList[count].contains("http")) {
-                        posterList[count] = "http://10.108.120.225:8080/" + posterList[count];
+                        posterList[count] = "http://10.108.112.96:8080/" + posterList[count];
                     }
                     priceList[count] = goods.getJSONObject(i).getDouble("price");
                     descriptionList[count] = goods.getJSONObject(i).getString("description");
@@ -293,6 +292,8 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
                 Bundle mBundle = new Bundle();
                 Intent intent = new Intent(context, NearShopCouponActivity.class);
                 mBundle.putString("shopId", shopId);
+                mBundle.putString("shopImg", shopImg);
+                mBundle.putString("shopName", shopName);
                 intent.putExtras(mBundle);
                 startActivity(intent);
             }
