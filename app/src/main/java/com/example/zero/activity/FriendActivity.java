@@ -62,7 +62,7 @@ public class FriendActivity extends AppCompatActivity {
 
     private void showFriendData() {
         FriendItemBean friendItemBean = new FriendItemBean();
-        friendItemBean.setText("jojo", "手机号：14235467636", R.drawable.haidilao);
+        friendItemBean.setText("jojo", "手机号：14235467636", R.drawable.loading);
         for (int i = 0; i < 20; i++) {
             dataList.add(friendItemBean);
         }

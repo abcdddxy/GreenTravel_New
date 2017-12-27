@@ -39,13 +39,13 @@
         android:textColor="@color/white"
         android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/title_btn_more"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:text="@string/title_more"
-        android:textColor="@color/white" />
+    <!--<Button-->
+        <!--android:id="@+id/title_btn_more"-->
+        <!--style="@style/Widget.AppCompat.Button.Borderless"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:text="@string/title_more"-->
+        <!--android:textColor="@color/white" />-->
 </RelativeLayout>

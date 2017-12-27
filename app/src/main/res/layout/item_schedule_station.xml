@@ -5,6 +5,11 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divideLine" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,9 +27,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="left">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/schedule_station_line"

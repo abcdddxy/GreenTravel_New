@@ -109,6 +109,7 @@ public class UserActivity extends Activity implements View.OnClickListener {
         final View view = inflater.inflate(R.layout.dialog_change_name, null);
         final SimpleTextView newName = view.findViewById(R.id.dialog_name);
         newName.setHintText("新用户名");
+        newName.setLeftImage(R.drawable.user_fill);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("修改用户名")
                 .setView(view)

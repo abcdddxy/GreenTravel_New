@@ -13,7 +13,7 @@
             android:id="@+id/handle"
             android:layout_width="40dip"
             android:layout_height="40dip"
-            android:background="@drawable/haidilao" />
+            android:background="@drawable/loading" />
 
         <View
             android:id="@+id/content"

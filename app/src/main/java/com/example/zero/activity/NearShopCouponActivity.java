@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -24,6 +23,7 @@ import com.example.zero.greentravel_new.R;
 import com.example.zero.util.HttpUtil;
 import com.example.zero.util.MainApplication;
 import com.example.zero.util.RequestManager;
+import com.example.zero.view.TitleShopLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +41,6 @@ public class NearShopCouponActivity extends AppCompatActivity {
     private List<SaleBean> dataList1 = new ArrayList<>();
     private SaleHotCouponAdapter adapter;
     private ArrayList<String> coupon_id = new ArrayList<>();
-    private ArrayList<String> received_id = new ArrayList<>();
     private String coupon_name;
     private int coupon_type;
     private String shop_type;
@@ -53,6 +52,8 @@ public class NearShopCouponActivity extends AppCompatActivity {
     private String uid, token;
 
     private String shopId;
+    private String shopImg;
+    private String shopName;
 
     private Context context;
 
@@ -60,6 +61,8 @@ public class NearShopCouponActivity extends AppCompatActivity {
     private static final String TAG = "NearShopCouponActivity";
 
     private ProgressDialog pd;
+
+    private TitleShopLayout shopLayout;
 
     //定义Handler对象
     private Handler httpHandler = new Handler(new Handler.Callback() {
@@ -82,6 +85,8 @@ public class NearShopCouponActivity extends AppCompatActivity {
         context = getBaseContext();
         Intent intent = getIntent();
         shopId = intent.getStringExtra("shopId");
+        shopImg = intent.getStringExtra("shopImg");
+        shopName = intent.getStringExtra("shopName");
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -134,7 +139,9 @@ public class NearShopCouponActivity extends AppCompatActivity {
     private void initView() {
         hot_recv = (RecyclerView) findViewById(R.id.sale_hot_recv);
         hot_recv.setLayoutManager(new LinearLayoutManager(context));
-
+        shopLayout = (TitleShopLayout) findViewById(R.id.main_title);
+        shopLayout.setImg(NearShopCouponActivity.this, shopImg);
+        shopLayout.setText(shopName);
         showCouponData();
 
         adapter = new SaleHotCouponAdapter(context, dataList);
@@ -142,7 +149,7 @@ public class NearShopCouponActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new SaleHotCouponAdapter.onRecycleItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(context, "点击条目 " + position, Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -166,6 +173,7 @@ public class NearShopCouponActivity extends AppCompatActivity {
 
                         @Override
                         public void onReqFailed(String errorMsg) {
+                            Log.e(TAG, errorMsg);
                             Toast.makeText(context, "领取失败", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -185,17 +193,13 @@ public class NearShopCouponActivity extends AppCompatActivity {
             dataList1.clear();
             for (int i = 0; i < array.size(); i++) {
                 JSONObject jo = array.getJSONObject(i);
-//                couponHas = jo.getBoolean("owned");
-
-                // TODO: 2017/11/14 优惠券已拥有判定
                 coupon_id.add(jo.getString("id"));
-                received_id.add(jo.getString("id"));
                 coupon_name = jo.getString("shop_name");
                 coupon_type = jo.getInteger("type");
 
                 if (coupon_type == 1) {
                     String[] str = jo.getString("coupon_name").split("减");
-                    coupon_price = "¥" + str[1];
+                    coupon_price = "¥ " + str[1];
                     coupon_content = "消费金额" + str[0] + "可用";
                 } else if (coupon_type == 2) {
                     coupon_price = jo.getString("coupon_name").substring(0, 2);

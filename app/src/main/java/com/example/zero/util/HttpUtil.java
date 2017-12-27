@@ -19,7 +19,7 @@ public class HttpUtil {
     private static String ZMQ = "10.108.112.96";
     private static String CJY = "10.108.120.31";
 
-    private static String server = CJF;
+    private static String server = ZMQ;
 
     public static void sendSingleOkHttpRequest(Bundle mBundle, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();

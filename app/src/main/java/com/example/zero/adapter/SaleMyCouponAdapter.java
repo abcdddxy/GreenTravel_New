@@ -2,6 +2,7 @@ package com.example.zero.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.zero.bean.SaleBean;
 import com.example.zero.greentravel_new.R;
+import com.example.zero.view.CouponView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,18 +48,17 @@ public class SaleMyCouponAdapter extends RecyclerView.Adapter<SaleMyCouponAdapte
 
     @Override
     public void onBindViewHolder(SaleMyCouponAdapter.SaleViewHolder holder, int position) {
-        holder.coupon.removeView(dataList.get(position).getTextView());
         holder.name.setText(dataList.get(position).getName());
         holder.price.setText(dataList.get(position).getPrice());
         holder.content.setText(dataList.get(position).getContent());
         holder.time.setText(dataList.get(position).getTime());
-        if (dataList.get(position).getUseFlag() == true) {
+        Glide.with(context).load(dataList.get(position).getImage()).placeholder(R.drawable.loading).into(holder.img);
+        if (dataList.get(position).getUseFlag()) {
             holder.btn.setText("已使用");
-            holder.coupon.addView(dataList.get(position).getTextView());
+            holder.view.setVisibility(View.VISIBLE);
             holder.coupon.setClickable(false);
             holder.btn.setClickable(false);
         }
-        Glide.with(context).load(dataList.get(position).getImage()).placeholder(R.drawable.loading).into(holder.img);
     }
 
     @Override
@@ -73,6 +74,7 @@ public class SaleMyCouponAdapter extends RecyclerView.Adapter<SaleMyCouponAdapte
         private TextView time;
         private ImageView img;
         private FrameLayout coupon;
+        private CouponView view;
         private Button btn;
 
         public SaleViewHolder(View itemView, onRecycleItemClickListener listener) {
@@ -83,6 +85,7 @@ public class SaleMyCouponAdapter extends RecyclerView.Adapter<SaleMyCouponAdapte
             time = (TextView) itemView.findViewById(R.id.sale_my_time);
             img = (ImageView) itemView.findViewById(R.id.sale_my_img);
             coupon = (FrameLayout) itemView.findViewById(R.id.sale_my_coupon);
+            view = (CouponView) itemView.findViewById(R.id.sale_my_coupon_view);
             btn = (Button) itemView.findViewById(R.id.sale_my_btn);
             mListener = listener;
             coupon.setOnClickListener(this);

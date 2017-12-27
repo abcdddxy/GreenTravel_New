@@ -79,7 +79,7 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
         msg.setOnClickListener(this);
         favor.setOnClickListener(this);
         address.setOnClickListener(this);
-        friend.setOnClickListener(this);
+        //friend.setOnClickListener(this);
         help_feedback.setOnClickListener(this);
         subway.setOnClickListener(this);
         context = person_frag.getContext();
@@ -103,7 +103,7 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
         msg = (LinearLayout) person_frag.findViewById(R.id.msg);
         favor = (LinearLayout) person_frag.findViewById(R.id.favor);
         address = (LinearLayout) person_frag.findViewById(R.id.address);
-        friend = (LinearLayout) person_frag.findViewById(R.id.friends);
+        //friend = (LinearLayout) person_frag.findViewById(R.id.friends);
         help_feedback = (LinearLayout) person_frag.findViewById(R.id.help_feedback);
     }
 
@@ -200,12 +200,12 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
                 startActivity(intent);
                 break;
             }
-            case R.id.friends: {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), FriendActivity.class);
-                startActivity(intent);
-                break;
-            }
+//            case R.id.friends: {
+//                Intent intent = new Intent();
+//                intent.setClass(getActivity(), FriendActivity.class);
+//                startActivity(intent);
+//                break;
+//            }
             case R.id.help_feedback: {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), HelpFeedbackActivity.class);
