@@ -414,8 +414,11 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     JUD = true;
                 }
                 final Bundle mBundle = new Bundle();
-                MainApplication application = (MainApplication) getActivity().getApplication();
-                mBundle.putString("userId", application.getUser_id());
+                if (application.isOnline()) {
+                    mBundle.putString("userId", application.getUser_id());
+                } else {
+                    mBundle.putString("userId", "guest");
+                }
                 mBundle.putString("beginStation", beginStation);
                 mBundle.putString("endStation", endStation);
                 if ((!beginStation.equals("")) & (!endStation.equals(""))) {
@@ -497,8 +500,11 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                                         JUD = true;
                                     }
                                     Bundle mBundle = new Bundle();
-                                    mBundle.putString("userId", "guest");
-                                    mBundle.putString("userId", "guest");
+                                    if (application.isOnline()) {
+                                        mBundle.putString("userId", application.getUser_id());
+                                    } else {
+                                        mBundle.putString("userId", "guest");
+                                    }
                                     mBundle.putString("endStation", endStation);
                                     mBundle.putStringArrayList("beginStationList", beginStationList);
                                     mBundle.putInt("beginNum", beginNum);
@@ -552,8 +558,11 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                                 JUD = true;
                             }
                             Bundle mBundle = new Bundle();
-                            MainApplication application = (MainApplication) getActivity().getApplication();
-                            mBundle.putString("userId", application.getUser_id());
+                            if (application.isOnline()) {
+                                mBundle.putString("userId", application.getUser_id());
+                            } else {
+                                mBundle.putString("userId", "guest");
+                            }
                             mBundle.putString("endStation", endStation);
                             mBundle.putStringArrayList("beginStationList", beginStationList);
                             mBundle.putInt("beginNum", beginNum);
@@ -917,12 +926,17 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     int sellerRange = 2;
                     int count = 0;
                     for (int i = 0; i < fastStationList.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        for (int j = 0; (count < sellerRange) && (j < seller.getJSONArray(fastStationList.get(i)).length()); j++) {
                             if (seller.has(fastStationList.get(i))) {
                                 if (j < seller.getJSONArray(fastStationList.get(i)).length()) {
-                                    fastSellerLatList[count] = seller.getJSONArray(fastStationList.get(i)).getJSONObject(j).getDouble("lat");
-                                    fastSellerLngList[count] = seller.getJSONArray(fastStationList.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        fastSellerLatList[count] = seller.getJSONArray(fastStationList.get(i)).getJSONObject(j).getDouble("lat");
+                                        fastSellerLngList[count] = seller.getJSONArray(fastStationList.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        fastSellerLatList[count] = 0.0;
+                                        fastSellerLngList[count] = 0.0;
+                                    }
                                 }
                             }
                         }
@@ -931,12 +945,17 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
 
                     count = 0;
                     for (int i = 0; i < lessbusyStationList.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        for (int j = 0; (count < sellerRange) && (j < seller.getJSONArray(lessbusyStationList.get(i)).length()); j++) {
                             if (seller.has(lessbusyStationList.get(i))) {
                                 if (j < seller.getJSONArray(lessbusyStationList.get(i)).length()) {
-                                    lessbusySellerLatList[count] = seller.getJSONArray(lessbusyStationList.get(i)).getJSONObject(j).getDouble("lat");
-                                    lessbusySellerLngList[count] = seller.getJSONArray(lessbusyStationList.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        lessbusySellerLatList[count] = seller.getJSONArray(lessbusyStationList.get(i)).getJSONObject(j).getDouble("lat");
+                                        lessbusySellerLngList[count] = seller.getJSONArray(lessbusyStationList.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        lessbusySellerLatList[count] = 0.0;
+                                        lessbusySellerLngList[count] = 0.0;
+                                    }
                                 }
                             }
                         }
@@ -945,12 +964,17 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
 
                     count = 0;
                     for (int i = 0; i < lesschangeStationList.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        for (int j = 0; (count < sellerRange) && (j < seller.getJSONArray(lesschangeStationList.get(i)).length()); j++) {
                             if (seller.has(lesschangeStationList.get(i))) {
                                 if (j < seller.getJSONArray(lesschangeStationList.get(i)).length()) {
-                                    lesschangeSellerLatList[count] = seller.getJSONArray(lesschangeStationList.get(i)).getJSONObject(j).getDouble("lat");
-                                    lesschangeSellerLngList[count] = seller.getJSONArray(lesschangeStationList.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        lesschangeSellerLatList[count] = seller.getJSONArray(lesschangeStationList.get(i)).getJSONObject(j).getDouble("lat");
+                                        lesschangeSellerLngList[count] = seller.getJSONArray(lesschangeStationList.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        lesschangeSellerLatList[count] = 0.0;
+                                        lesschangeSellerLngList[count] = 0.0;
+                                    }
                                 }
                             }
                         }
@@ -1117,12 +1141,17 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     int sellerRange = 2;
                     int count = 0;
                     for (int i = 0; i < stationList1.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        for (int j = 0; (count < sellerRange) && (j < sellers.getJSONArray(stationList1.get(i)).length()); j++) {
                             if (sellers.has(stationList1.get(i))) {
                                 if (j < sellers.getJSONArray(stationList1.get(i)).length()) {
-                                    firstSellerLatList[count] = sellers.getJSONArray(stationList1.get(i)).getJSONObject(j).getDouble("lat");
-                                    firstSellerLngList[count] = sellers.getJSONArray(stationList1.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        firstSellerLatList[count] = sellers.getJSONArray(stationList1.get(i)).getJSONObject(j).getDouble("lat");
+                                        firstSellerLngList[count] = sellers.getJSONArray(stationList1.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        firstSellerLatList[count] = 0.0;
+                                        firstSellerLatList[count] = 0.0;
+                                    }
                                 }
                             }
                         }
@@ -1131,12 +1160,17 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
 
                     count = 0;
                     for (int i = 0; i < stationList2.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        for (int j = 0; (count < sellerRange) && (j < sellers.getJSONArray(stationList2.get(i)).length()); j++) {
                             if (sellers.has(stationList2.get(i))) {
                                 if (j < sellers.getJSONArray(stationList2.get(i)).length()) {
-                                    secondSellerLatList[count] = sellers.getJSONArray(stationList2.get(i)).getJSONObject(j).getDouble("lat");
-                                    secondSellerLngList[count] = sellers.getJSONArray(stationList2.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        secondSellerLatList[count] = sellers.getJSONArray(stationList2.get(i)).getJSONObject(j).getDouble("lat");
+                                        secondSellerLngList[count] = sellers.getJSONArray(stationList2.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        secondSellerLatList[count] = 0.0;
+                                        secondSellerLngList[count] = 0.0;
+                                    }
                                 }
                             }
                         }
@@ -1145,12 +1179,17 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
 
                     count = 0;
                     for (int i = 0; i < stationList3.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        for (int j = 0; (count < sellerRange) && (j < sellers.getJSONArray(stationList3.get(i)).length()); j++) {
                             if (sellers.has(stationList3.get(i))) {
                                 if (j < sellers.getJSONArray(stationList3.get(i)).length()) {
-                                    thirdSellerLatList[count] = sellers.getJSONArray(stationList3.get(i)).getJSONObject(j).getDouble("lat");
-                                    thirdSellerLngList[count] = sellers.getJSONArray(stationList3.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        thirdSellerLatList[count] = sellers.getJSONArray(stationList3.get(i)).getJSONObject(j).getDouble("lat");
+                                        thirdSellerLngList[count] = sellers.getJSONArray(stationList3.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        thirdSellerLatList[count] = 0.0;
+                                        thirdSellerLngList[count] = 0.0;
+                                    }
                                 }
                             }
                         }
@@ -1159,12 +1198,17 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
 
                     count = 0;
                     for (int i = 0; i < stationAfMeetList.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        for (int j = 0; (count < sellerRange) && (j < sellers.getJSONArray(stationAfMeetList.get(i)).length()); j++) {
                             if (sellers.has(stationAfMeetList.get(i))) {
                                 if (j < sellers.getJSONArray(stationAfMeetList.get(i)).length()) {
-                                    afMeetSellerLatList[count] = sellers.getJSONArray(stationAfMeetList.get(i)).getJSONObject(j).getDouble("lat");
-                                    afMeetSellerLngList[count] = sellers.getJSONArray(stationAfMeetList.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        afMeetSellerLatList[count] = sellers.getJSONArray(stationAfMeetList.get(i)).getJSONObject(j).getDouble("lat");
+                                        afMeetSellerLngList[count] = sellers.getJSONArray(stationAfMeetList.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        afMeetSellerLatList[count] = 0.0;
+                                        afMeetSellerLngList[count] = 0.0;
+                                    }
                                 }
                             }
                         }
@@ -1193,7 +1237,7 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
             case DATA:
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userId", "guest");
-                RequestManager.getInstance(context).requestAsyn("http://10.108.120.225:8080/route/station",
+                RequestManager.getInstance(context).requestAsyn("http://service.gsubway.com/route/station",
                         RequestManager.TYPE_GET_Z, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {

@@ -1237,15 +1237,17 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 //seller
                 options.clear();
                 for (int i = 0; i < fastCount; i++) {
-                    Marker mMarker;
-                    MarkerOptions ooA = new MarkerOptions()
-                            .position(new LatLng(fastSellerLatList[i], fastSellerLngList[i]))
-                            .icon(pop)
-                            .zIndex(9)
-                            .draggable(true);
-                    // 掉下动画
-                    ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
-                    mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    if (fastSellerLatList[i] != 0.0) {
+                        Marker mMarker;
+                        MarkerOptions ooA = new MarkerOptions()
+                                .position(new LatLng(fastSellerLatList[i], fastSellerLngList[i]))
+                                .icon(pop)
+                                .zIndex(9)
+                                .draggable(true);
+                        // 掉下动画
+                        ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
+                        mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    }
                 }
                 break;
 
@@ -1253,15 +1255,17 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 //seller
                 options.clear();
                 for (int i = 0; i < lessbusyCount; i++) {
-                    Marker mMarker;
-                    MarkerOptions ooA = new MarkerOptions()
-                            .position(new LatLng(lessbusySellerLatList[i], lessbusySellerLngList[i]))
-                            .icon(pop)
-                            .zIndex(9)
-                            .draggable(true);
-                    // 掉下动画
-                    ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
-                    mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    if (lessbusySellerLatList[i] != 0.0) {
+                        Marker mMarker;
+                        MarkerOptions ooA = new MarkerOptions()
+                                .position(new LatLng(lessbusySellerLatList[i], lessbusySellerLngList[i]))
+                                .icon(pop)
+                                .zIndex(9)
+                                .draggable(true);
+                        // 掉下动画
+                        ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
+                        mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    }
                 }
                 break;
 
@@ -1269,15 +1273,17 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 //seller
                 options.clear();
                 for (int i = 0; i < lesschangeCount; i++) {
-                    Marker mMarker;
-                    MarkerOptions ooA = new MarkerOptions()
-                            .position(new LatLng(lesschangeSellerLatList[i], lesschangeSellerLngList[i]))
-                            .icon(pop)
-                            .zIndex(9)
-                            .draggable(true);
-                    // 掉下动画
-                    ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
-                    mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    if (lesschangeSellerLatList[i] != 0.0) {
+                        Marker mMarker;
+                        MarkerOptions ooA = new MarkerOptions()
+                                .position(new LatLng(lesschangeSellerLatList[i], lesschangeSellerLngList[i]))
+                                .icon(pop)
+                                .zIndex(9)
+                                .draggable(true);
+                        // 掉下动画
+                        ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
+                        mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    }
                 }
                 break;
 
@@ -1285,48 +1291,56 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 //seller
                 options.clear();
                 for (int i = 0; i < firstCount; i++) {
-                    Marker mMarker;
-                    MarkerOptions ooA = new MarkerOptions()
-                            .position(new LatLng(firstSellerLatList[i], firstSellerLngList[i]))
-                            .icon(pop)
-                            .zIndex(9)
-                            .draggable(true);
-                    // 掉下动画
-                    ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
-                    mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    if (fastSellerLatList[i] != 0.0) {
+                        Marker mMarker;
+                        MarkerOptions ooA = new MarkerOptions()
+                                .position(new LatLng(firstSellerLatList[i], firstSellerLngList[i]))
+                                .icon(pop)
+                                .zIndex(9)
+                                .draggable(true);
+                        // 掉下动画
+                        ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
+                        mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    }
                 }
                 for (int i = 0; i < secondCount; i++) {
-                    Marker mMarker;
-                    MarkerOptions ooA = new MarkerOptions()
-                            .position(new LatLng(secondSellerLatList[i], secondSellerLngList[i]))
-                            .icon(pop)
-                            .zIndex(9)
-                            .draggable(true);
-                    // 掉下动画
-                    ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
-                    mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    if (fastSellerLatList[i] != 0.0) {
+                        Marker mMarker;
+                        MarkerOptions ooA = new MarkerOptions()
+                                .position(new LatLng(secondSellerLatList[i], secondSellerLngList[i]))
+                                .icon(pop)
+                                .zIndex(9)
+                                .draggable(true);
+                        // 掉下动画
+                        ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
+                        mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    }
                 }
                 for (int i = 0; i < thirdCount; i++) {
-                    Marker mMarker;
-                    MarkerOptions ooA = new MarkerOptions()
-                            .position(new LatLng(thirdSellerLatList[i], thirdSellerLngList[i]))
-                            .icon(pop)
-                            .zIndex(9)
-                            .draggable(true);
-                    // 掉下动画
-                    ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
-                    mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    if (fastSellerLatList[i] != 0.0) {
+                        Marker mMarker;
+                        MarkerOptions ooA = new MarkerOptions()
+                                .position(new LatLng(thirdSellerLatList[i], thirdSellerLngList[i]))
+                                .icon(pop)
+                                .zIndex(9)
+                                .draggable(true);
+                        // 掉下动画
+                        ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
+                        mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    }
                 }
                 for (int i = 0; i < afMeetCount; i++) {
-                    Marker mMarker;
-                    MarkerOptions ooA = new MarkerOptions()
-                            .position(new LatLng(afMeetSellerLatList[i], afMeetSellerLngList[i]))
-                            .icon(pop)
-                            .zIndex(9)
-                            .draggable(true);
-                    // 掉下动画
-                    ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
-                    mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    if (fastSellerLatList[i] != 0.0) {
+                        Marker mMarker;
+                        MarkerOptions ooA = new MarkerOptions()
+                                .position(new LatLng(afMeetSellerLatList[i], afMeetSellerLngList[i]))
+                                .icon(pop)
+                                .zIndex(9)
+                                .draggable(true);
+                        // 掉下动画
+                        ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
+                        mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    }
                 }
                 break;
 
@@ -1334,15 +1348,17 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 //seller
                 options.clear();
                 for (int i = 0; i < count; i++) {
-                    Marker mMarker;
-                    MarkerOptions ooA = new MarkerOptions()
-                            .position(new LatLng(sellerLatList[i], sellerLngList[i]))
-                            .icon(pop)
-                            .zIndex(9)
-                            .draggable(true);
-                    // 掉下动画
-                    ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
-                    mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    if (fastSellerLatList[i] != 0.0) {
+                        Marker mMarker;
+                        MarkerOptions ooA = new MarkerOptions()
+                                .position(new LatLng(sellerLatList[i], sellerLngList[i]))
+                                .icon(pop)
+                                .zIndex(9)
+                                .draggable(true);
+                        // 掉下动画
+                        ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
+                        mMarker = (Marker) (mBaidumap.addOverlay(ooA));
+                    }
                 }
                 break;
 

@@ -210,8 +210,11 @@ public class AdvPlanFragment extends Fragment implements SearchPopView.SearchPop
                 }
 
                 final Bundle mBundle = new Bundle();
-                MainApplication application = (MainApplication) getActivity().getApplication();
-                mBundle.putString("userId", application.getUser_id());
+                if (application.isOnline()) {
+                    mBundle.putString("userId", application.getUser_id());
+                } else {
+                    mBundle.putString("userId", "guest");
+                }
                 mBundle.putString("beginStation", beginStation);
                 mBundle.putString("endStation", endStation);
                 mBundle.putString("time", textView.getText().toString().trim());
@@ -395,7 +398,7 @@ public class AdvPlanFragment extends Fragment implements SearchPopView.SearchPop
             case DATA:
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userId", "guest");
-                RequestManager.getInstance(context).requestAsyn("http://10.108.112.225:8080/route/station",
+                RequestManager.getInstance(context).requestAsyn("http://service.gsubway.com/route/station",
                         RequestManager.TYPE_GET_Z, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {

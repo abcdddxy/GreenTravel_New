@@ -324,6 +324,10 @@ Android App GreenTravel
 		<th>171227</th>
 		<th colspan="3">第十四次程序合并</th>
 	</tr>
+	<tr>
+		<th>180111</th>
+		<th colspan="3">考试归来</th>
+	</tr>
 </table>
 
 ## 遇到bug或难点
@@ -647,6 +651,10 @@ Android App GreenTravel
     <tr>
 		<th>171227</th>
 		<th colspan="3">暂时没有发现bug</th>
+	</tr>
+	<tr>
+		<th>180111</th>
+		<th colspan="3">考试归来</th>
 	</tr>
 </table>
 
@@ -976,5 +984,9 @@ Android App GreenTravel
     <tr>
 		<th>171227</th>
 		<th colspan="3">无</th>
+	</tr>
+	<tr>
+		<th>180111</th>
+		<th colspan="3">考试归来</th>
 	</tr>
 </table>
