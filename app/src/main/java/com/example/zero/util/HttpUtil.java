@@ -15,11 +15,12 @@ import okhttp3.RequestBody;
 
 public class HttpUtil {
 
-    private static String CJF = "10.108.120.225";
-    private static String ZMQ = "10.108.112.96";
-    private static String CJY = "10.108.120.31";
+    private static String CJF = "10.108.122.29:8084";
+    private static String ZMQ = "10.108.112.96:8080";
+    private static String CJY = "10.108.120.31:8080";
+    private static String ZR = "service.gsubway.com";
 
-    private static String server = ZMQ;
+    private static String server = CJF;
 
     public static void sendSingleOkHttpRequest(Bundle mBundle, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();
@@ -29,7 +30,7 @@ public class HttpUtil {
                 .add("End", mBundle.getString("endStation"))
                 .build();
         Request request = new Request.Builder()
-                .url("http://" + server +":8080/route/single")
+                .url("http://" + server + "/route/single")
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
@@ -45,7 +46,7 @@ public class HttpUtil {
                 .add("timeEnd", mBundle.getString("time").substring(8, 13))
                 .build();
         Request request = new Request.Builder()
-                .url("http://" + server + ":8080/route/advice")
+                .url("http://" + server + "/route/advice")
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
@@ -58,7 +59,7 @@ public class HttpUtil {
                 .add("stationName", mBundle.getString("stationName"))
                 .build();
         Request request = new Request.Builder()
-                .url("http://" + server + ":8080/shops/" + mBundle.getString("stationName") + "/near")
+                .url("http://" + server + "/shops/" + mBundle.getString("stationName") + "/near")
                 .build();
         client.newCall(request).enqueue(callback);
     }
@@ -71,7 +72,7 @@ public class HttpUtil {
                 .add("searchType", mBundle.getString("searchType"))
                 .build();
         Request request = new Request.Builder()
-                .url("http://" + server + ":8080/shops/" + mBundle.getString("stationName") + "/near?searchType=" + mBundle.getString("searchType"))
+                .url("http://" + server + "/shops/" + mBundle.getString("stationName") + "/near?searchType=" + mBundle.getString("searchType"))
                 .build();
         client.newCall(request).enqueue(callback);
     }
@@ -99,7 +100,7 @@ public class HttpUtil {
                 .add("Scene", mBundle.getString("Scene"))
                 .build();
         Request request = new Request.Builder()
-                .url("http://" + server + ":8080/route/multi")
+                .url("http://" + server + "/route/multi")
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
@@ -108,7 +109,7 @@ public class HttpUtil {
     public static void sendDataOkHttpRequest(okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("http://" + server + ":8080/route/station")
+                .url("http://" + server + "/route/station")
                 .build();
         client.newCall(request).enqueue(callback);
     }
@@ -120,7 +121,7 @@ public class HttpUtil {
                 .add("shopId", mBundle.getString("shopId"))
                 .build();
         Request request = new Request.Builder()
-                .url("http://" + server + ":8080/shops/" + mBundle.getString("shopId"))
+                .url("http://" + server + "/shops/" + mBundle.getString("shopId"))
                 .build();
         client.newCall(request).enqueue(callback);
     }
@@ -132,7 +133,7 @@ public class HttpUtil {
                 .add("station", mBundle.getString("station"))
                 .build();
         Request request = new Request.Builder()
-                .url("http://" + server + ":8080/route/station_timelist?city=广州&station=" + mBundle.getString("station"))
+                .url("http://" + server + "/route/station_timelist?city=广州&station=" + mBundle.getString("station"))
                 .build();
         client.newCall(request).enqueue(callback);
     }
@@ -145,7 +146,7 @@ public class HttpUtil {
                 .add("station", mBundle.getString("station"))
                 .build();
         Request request = new Request.Builder()
-                .url("http://" + server + ":8080/route/station_timelist?city=广州&station=" + mBundle.getString("station") + "&type=1")
+                .url("http://" + server + "/route/station_timelist?city=广州&station=" + mBundle.getString("station") + "&type=1")
                 .build();
         client.newCall(request).enqueue(callback);
     }

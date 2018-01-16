@@ -414,8 +414,11 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     JUD = true;
                 }
                 final Bundle mBundle = new Bundle();
-                MainApplication application = (MainApplication) getActivity().getApplication();
-                mBundle.putString("userId", application.getUser_id());
+                if (application.isOnline()) {
+                    mBundle.putString("userId", application.getUser_id());
+                } else {
+                    mBundle.putString("userId", "guest");
+                }
                 mBundle.putString("beginStation", beginStation);
                 mBundle.putString("endStation", endStation);
                 if ((!beginStation.equals("")) & (!endStation.equals(""))) {
@@ -497,8 +500,11 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                                         JUD = true;
                                     }
                                     Bundle mBundle = new Bundle();
-                                    mBundle.putString("userId", "guest");
-                                    mBundle.putString("userId", "guest");
+                                    if (application.isOnline()) {
+                                        mBundle.putString("userId", application.getUser_id());
+                                    } else {
+                                        mBundle.putString("userId", "guest");
+                                    }
                                     mBundle.putString("endStation", endStation);
                                     mBundle.putStringArrayList("beginStationList", beginStationList);
                                     mBundle.putInt("beginNum", beginNum);
@@ -552,8 +558,11 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                                 JUD = true;
                             }
                             Bundle mBundle = new Bundle();
-                            MainApplication application = (MainApplication) getActivity().getApplication();
-                            mBundle.putString("userId", application.getUser_id());
+                            if (application.isOnline()) {
+                                mBundle.putString("userId", application.getUser_id());
+                            } else {
+                                mBundle.putString("userId", "guest");
+                            }
                             mBundle.putString("endStation", endStation);
                             mBundle.putStringArrayList("beginStationList", beginStationList);
                             mBundle.putInt("beginNum", beginNum);
@@ -835,6 +844,7 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     JSONObject seller = jsonObject.getJSONObject("seller");
                     JSONObject route = jsonObject.getJSONObject("route");
                     JSONObject busy = jsonObject.getJSONObject("busy");
+                    String replace = jsonObject.getString("replace_plan");
 
                     JSONObject routeFastX = route.getJSONObject("fast");
                     JSONObject routeLessbusyX = route.getJSONObject("lessbusy");
@@ -857,6 +867,11 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     ArrayList<String> fastStationDetailList = new ArrayList<String>();
                     ArrayList<String> lessbusyStationDetailList = new ArrayList<String>();
                     ArrayList<String> lesschangeStationDetailList = new ArrayList<String>();
+
+                    ArrayList<String> busyList = new ArrayList<String>();
+                    int busyCount;
+                    double[] busyLatList = new double[100];
+                    double[] busyLngList = new double[100];
 
                     for (int i = 0; i < routeFast.length(); i++) {
                         if (i % 2 == 0) {
@@ -906,6 +921,20 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     mBundleHttp.putStringArrayList("lesschangeRouteList", lesschangeRouteList);
                     mBundleHttp.putStringArrayList("lesschangeStationDetailList", lesschangeStationDetailList);
 
+                    Iterator it = busy.keys();
+                    busyCount = 0;
+                    while(it.hasNext()) {
+                        String stName = (String)it.next();
+                        busyList.add(busy.getJSONObject(stName).getString("st_name"));
+                        busyLngList[busyCount] = busy.getJSONObject(stName).getDouble("lng");
+                        busyLatList[busyCount] = busy.getJSONObject(stName).getDouble("lat");
+                        busyCount++;
+                    }
+                    mBundleHttp.putStringArrayList("busyList", busyList);
+                    mBundleHttp.putDoubleArray("busyLngList", busyLngList);
+                    mBundleHttp.putDoubleArray("busyLatList", busyLatList);
+                    mBundleHttp.putInt("busyCount", busyCount);
+
                     int size = 100;
                     double[] fastSellerLatList = new double[size];
                     double[] fastSellerLngList = new double[size];
@@ -917,42 +946,69 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     int sellerRange = 2;
                     int count = 0;
                     for (int i = 0; i < fastStationList.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        count = 0;
+                        for (int j = 0; (count < sellerRange) && (j < seller.getJSONArray(fastStationList.get(i)).length()); j++) {
                             if (seller.has(fastStationList.get(i))) {
                                 if (j < seller.getJSONArray(fastStationList.get(i)).length()) {
-                                    fastSellerLatList[count] = seller.getJSONArray(fastStationList.get(i)).getJSONObject(j).getDouble("lat");
-                                    fastSellerLngList[count] = seller.getJSONArray(fastStationList.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        fastSellerLatList[count + i * 2] = seller.getJSONArray(fastStationList.get(i)).getJSONObject(j).getDouble("lat");
+                                        fastSellerLngList[count + i * 2] = seller.getJSONArray(fastStationList.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        fastSellerLatList[count + i * 2] = 0.0;
+                                        fastSellerLngList[count + i * 2] = 0.0;
+                                    }
                                 }
                             }
+                        }
+                        if (i == fastStationList.size() - 1) {
+                            count = count + i * 2;
                         }
                     }
                     mBundleHttp.putInt("fastCount", count);
 
                     count = 0;
                     for (int i = 0; i < lessbusyStationList.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        count = 0;
+                        for (int j = 0; (count < sellerRange) && (j < seller.getJSONArray(lessbusyStationList.get(i)).length()); j++) {
                             if (seller.has(lessbusyStationList.get(i))) {
                                 if (j < seller.getJSONArray(lessbusyStationList.get(i)).length()) {
-                                    lessbusySellerLatList[count] = seller.getJSONArray(lessbusyStationList.get(i)).getJSONObject(j).getDouble("lat");
-                                    lessbusySellerLngList[count] = seller.getJSONArray(lessbusyStationList.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        lessbusySellerLatList[count + i * 2] = seller.getJSONArray(lessbusyStationList.get(i)).getJSONObject(j).getDouble("lat");
+                                        lessbusySellerLngList[count + i * 2] = seller.getJSONArray(lessbusyStationList.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        lessbusySellerLatList[count + i * 2] = 0.0;
+                                        lessbusySellerLngList[count + i * 2] = 0.0;
+                                    }
                                 }
                             }
+                        }
+                        if (i == lessbusyStationList.size() - 1) {
+                            count = count + i * 2;
                         }
                     }
                     mBundleHttp.putInt("lessbusyCount", count);
 
                     count = 0;
                     for (int i = 0; i < lesschangeStationList.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        count = 0;
+                        for (int j = 0; (count < sellerRange) && (j < seller.getJSONArray(lesschangeStationList.get(i)).length()); j++) {
                             if (seller.has(lesschangeStationList.get(i))) {
                                 if (j < seller.getJSONArray(lesschangeStationList.get(i)).length()) {
-                                    lesschangeSellerLatList[count] = seller.getJSONArray(lesschangeStationList.get(i)).getJSONObject(j).getDouble("lat");
-                                    lesschangeSellerLngList[count] = seller.getJSONArray(lesschangeStationList.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        lesschangeSellerLatList[count + i * 2] = seller.getJSONArray(lesschangeStationList.get(i)).getJSONObject(j).getDouble("lat");
+                                        lesschangeSellerLngList[count + i * 2] = seller.getJSONArray(lesschangeStationList.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        lesschangeSellerLatList[count + i * 2] = 0.0;
+                                        lesschangeSellerLngList[count + i * 2] = 0.0;
+                                    }
                                 }
                             }
+                        }
+                        if (i == lesschangeStationList.size() - 1) {
+                            count = count + i * 2;
                         }
                     }
                     mBundleHttp.putInt("lesschangeCount", count);
@@ -963,6 +1019,8 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     mBundleHttp.putDoubleArray("lessbusySellerLngList", lessbusySellerLngList);
                     mBundleHttp.putDoubleArray("lesschangeSellerLatList", lesschangeSellerLatList);
                     mBundleHttp.putDoubleArray("lesschangeSellerLngList", lesschangeSellerLngList);
+
+                    mBundleHttp.putString("replace_plan", replace);
 
                     mBundleHttp.putString("origin", "Single");
 
@@ -1117,56 +1175,92 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     int sellerRange = 2;
                     int count = 0;
                     for (int i = 0; i < stationList1.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        count = 0;
+                        for (int j = 0; (count < sellerRange) && (j < sellers.getJSONArray(stationList1.get(i)).length()); j++) {
                             if (sellers.has(stationList1.get(i))) {
                                 if (j < sellers.getJSONArray(stationList1.get(i)).length()) {
-                                    firstSellerLatList[count] = sellers.getJSONArray(stationList1.get(i)).getJSONObject(j).getDouble("lat");
-                                    firstSellerLngList[count] = sellers.getJSONArray(stationList1.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        firstSellerLatList[count + i * 2] = sellers.getJSONArray(stationList1.get(i)).getJSONObject(j).getDouble("lat");
+                                        firstSellerLngList[count + i * 2] = sellers.getJSONArray(stationList1.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        firstSellerLatList[count + i * 2] = 0.0;
+                                        firstSellerLatList[count + i * 2] = 0.0;
+                                    }
                                 }
                             }
+                        }
+                        if (i == stationList1.size() - 1) {
+                            count = count + i * 2;
                         }
                     }
                     mBundleHttp.putInt("firstCount", count);
 
                     count = 0;
                     for (int i = 0; i < stationList2.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        count = 0;
+                        for (int j = 0; (count < sellerRange) && (j < sellers.getJSONArray(stationList2.get(i)).length()); j++) {
                             if (sellers.has(stationList2.get(i))) {
                                 if (j < sellers.getJSONArray(stationList2.get(i)).length()) {
-                                    secondSellerLatList[count] = sellers.getJSONArray(stationList2.get(i)).getJSONObject(j).getDouble("lat");
-                                    secondSellerLngList[count] = sellers.getJSONArray(stationList2.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        secondSellerLatList[count + i * 2] = sellers.getJSONArray(stationList2.get(i)).getJSONObject(j).getDouble("lat");
+                                        secondSellerLngList[count + i * 2] = sellers.getJSONArray(stationList2.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        secondSellerLatList[count + i * 2] = 0.0;
+                                        secondSellerLngList[count + i * 2] = 0.0;
+                                    }
                                 }
                             }
+                        }
+                        if (i == stationList2.size() - 1) {
+                            count = count + i * 2;
                         }
                     }
                     mBundleHttp.putInt("secondCount", count);
 
                     count = 0;
                     for (int i = 0; i < stationList3.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        count = 0;
+                        for (int j = 0; (count < sellerRange) && (j < sellers.getJSONArray(stationList3.get(i)).length()); j++) {
                             if (sellers.has(stationList3.get(i))) {
                                 if (j < sellers.getJSONArray(stationList3.get(i)).length()) {
-                                    thirdSellerLatList[count] = sellers.getJSONArray(stationList3.get(i)).getJSONObject(j).getDouble("lat");
-                                    thirdSellerLngList[count] = sellers.getJSONArray(stationList3.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        thirdSellerLatList[count + i * 2] = sellers.getJSONArray(stationList3.get(i)).getJSONObject(j).getDouble("lat");
+                                        thirdSellerLngList[count + i * 2] = sellers.getJSONArray(stationList3.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        thirdSellerLatList[count + i * 2] = 0.0;
+                                        thirdSellerLngList[count + i * 2] = 0.0;
+                                    }
                                 }
                             }
+                        }
+                        if (i == stationList3.size() - 1) {
+                            count = count + i * 2;
                         }
                     }
                     mBundleHttp.putInt("thirdCount", count);
 
                     count = 0;
                     for (int i = 0; i < stationAfMeetList.size(); i++) {
-                        for (int j = 0; j < sellerRange; j++) {
+                        count = 0;
+                        for (int j = 0; (count < sellerRange) && (j < sellers.getJSONArray(stationAfMeetList.get(i)).length()); j++) {
                             if (sellers.has(stationAfMeetList.get(i))) {
                                 if (j < sellers.getJSONArray(stationAfMeetList.get(i)).length()) {
-                                    afMeetSellerLatList[count] = sellers.getJSONArray(stationAfMeetList.get(i)).getJSONObject(j).getDouble("lat");
-                                    afMeetSellerLngList[count] = sellers.getJSONArray(stationAfMeetList.get(i)).getJSONObject(j).getDouble("lng");
-                                    count++;
+                                    try {
+                                        afMeetSellerLatList[count + i * 2] = sellers.getJSONArray(stationAfMeetList.get(i)).getJSONObject(j).getDouble("lat");
+                                        afMeetSellerLngList[count + i * 2] = sellers.getJSONArray(stationAfMeetList.get(i)).getJSONObject(j).getDouble("lng");
+                                        count++;
+                                    } catch (Exception e) {
+                                        afMeetSellerLatList[count + i * 2] = 0.0;
+                                        afMeetSellerLngList[count + i * 2] = 0.0;
+                                    }
                                 }
                             }
+                        }
+                        if (i == stationAfMeetList.size() - 1) {
+                            count = count + i * 2;
                         }
                     }
                     mBundleHttp.putInt("afMeetCount", count);
@@ -1193,7 +1287,7 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
             case DATA:
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userId", "guest");
-                RequestManager.getInstance(context).requestAsyn("http://10.108.120.225:8080/route/station",
+                RequestManager.getInstance(context).requestAsyn("http://service.gsubway.com/route/station",
                         RequestManager.TYPE_GET_Z, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {

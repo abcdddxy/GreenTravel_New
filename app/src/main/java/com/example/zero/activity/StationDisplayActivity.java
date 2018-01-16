@@ -125,7 +125,6 @@ public class StationDisplayActivity extends AppCompatActivity {
         public boolean handleMessage(Message msg) {
             //只要执行到这里就关闭对话框
             pd.dismiss();
-
             showData();
             return false;
         }
@@ -189,6 +188,7 @@ public class StationDisplayActivity extends AppCompatActivity {
             final Bundle mBundle = new Bundle();
             mBundle.putString("userId", "guest");
             mBundle.putString("stationName", stationName);
+            mBundle.putString("searchType", "default");
             HttpUtil.sendStationDisplayOkHttpRequest(mBundle, new okhttp3.Callback() {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {

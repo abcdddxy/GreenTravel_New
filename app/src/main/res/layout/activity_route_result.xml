@@ -4,12 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <!--<com.example.zero.view.TitleLayout-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--tools:layout_editor_absoluteY="0dp"-->
-    <!--tools:layout_editor_absoluteX="8dp" />-->
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
@@ -171,8 +165,30 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="90dip"
-            android:layout_marginRight="45dip"
+            android:layout_marginRight="40dip"
             android:background="@drawable/route_conpou_display"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/route_detail"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="150dip"
+            android:layout_marginRight="40dip"
+            android:background="@drawable/route_detail"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/route_replace"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="90dip"
+            android:layout_marginLeft="40dip"
+            android:background="@drawable/replace"
             android:visibility="gone"/>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

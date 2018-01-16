@@ -206,7 +206,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
                     nameList[count] = goods.getJSONObject(i).getString("goods_name");
                     posterList[count] = goods.getJSONObject(i).getString("picture_url");
                     if (!posterList[count].contains("http")) {
-                        posterList[count] = "http://10.108.112.96:8080/" + posterList[count];
+                        posterList[count] = "http://service.gsubway.com/" + posterList[count];
                     }
                     priceList[count] = goods.getJSONObject(i).getDouble("price");
                     descriptionList[count] = goods.getJSONObject(i).getString("description");
