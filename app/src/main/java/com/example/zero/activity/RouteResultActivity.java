@@ -293,6 +293,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
     private List<RouteDetailBean> fastRouteDetailBeanList;
     private List<RouteDetailBean> lessbusyRouteDetailBeanList;
     private List<RouteDetailBean> lesschangeRouteDetailBeanList;
+    private List<RouteDetailBean> multiRouteDetailBeanList;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -443,7 +444,6 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 new AlertDialog.Builder(RouteResultActivity.this)
                         .setTitle("可替换车站")
                         .setMessage(replace)
-                        .setPositiveButton("确定", null)
                         .show();
             }
         });
@@ -491,6 +491,19 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         Toast.makeText(context, lesschangeRouteDetailBeanList.get(i).getStation(), Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .show();
+                        break;
+                    case MULTI:
+                        routeDetailDialogAdapter = new RouteDetailDialogAdapter(context, multiRouteDetailBeanList, R.layout.dialog_route_detail);
+                        new AlertDialog.Builder(context)
+                                .setTitle("路线详情")
+                                .setView(R.layout.dialog_content_circle)
+                                .setAdapter(routeDetailDialogAdapter, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Toast.makeText(context, multiRouteDetailBeanList.get(i).getStation(), Toast.LENGTH_SHORT).show();
                                     }
                                 })
                                 .show();
@@ -742,6 +755,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 }
             });
         } else if (mBundle.getString("origin").equals("Multi")) {
+            detailBtn.setVisibility(View.VISIBLE);
             singleBtn.setVisibility(View.GONE);
             fastBtn.setVisibility(View.GONE);
             lessbusyBtn.setVisibility(View.GONE);
@@ -846,6 +860,33 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                             .to(PlanNode.withCityNameAndPlaceName("广州", stationAfMeetList.get(i + 1))));
                 }
             }
+
+            multiRouteDetailBeanList = new ArrayList<RouteDetailBean>();
+            if (stationList1.size() != 0) {
+                multiRouteDetailBeanList.add(new RouteDetailBean(("用户一：")));
+                for (int i = 0; i < stationList1.size() - 1; i++) {
+                    multiRouteDetailBeanList.add(new RouteDetailBean(stationList1.get(i), routeList1.get(i), stationList1.get(i + 1)));
+                }
+            }
+            if (stationList2.size() != 0) {
+                multiRouteDetailBeanList.add(new RouteDetailBean(("用户二：")));
+                for (int i = 0; i < stationList2.size() - 1; i++) {
+                    multiRouteDetailBeanList.add(new RouteDetailBean(stationList2.get(i), routeList2.get(i), stationList2.get(i + 1)));
+                }
+            }
+            if (stationList3.size() != 0) {
+                multiRouteDetailBeanList.add(new RouteDetailBean(("用户三：")));
+                for (int i = 0; i < stationList3.size() - 1; i++) {
+                    multiRouteDetailBeanList.add(new RouteDetailBean(stationList3.get(i), routeList3.get(i), stationList3.get(i + 1)));
+                }
+            }
+            if (stationAfMeetList.size() != 0) {
+                multiRouteDetailBeanList.add(new RouteDetailBean(("汇合后：")));
+                for (int i = 0; i < stationAfMeetList.size() - 1; i++) {
+                    multiRouteDetailBeanList.add(new RouteDetailBean(stationAfMeetList.get(i), routeAfMeetList.get(i), stationAfMeetList.get(i + 1)));
+                }
+            }
+
             addMarker();
 
             MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomBy(14);
@@ -1410,7 +1451,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 //seller
                 options.clear();
                 for (int i = 0; i < firstCount; i++) {
-                    if (fastSellerLatList[i] != 0.0) {
+                    if (firstSellerLatList[i] != 0.0) {
                         Marker mMarker;
                         MarkerOptions ooA = new MarkerOptions()
                                 .position(new LatLng(firstSellerLatList[i], firstSellerLngList[i]))
@@ -1423,7 +1464,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                     }
                 }
                 for (int i = 0; i < secondCount; i++) {
-                    if (fastSellerLatList[i] != 0.0) {
+                    if (secondSellerLatList[i] != 0.0) {
                         Marker mMarker;
                         MarkerOptions ooA = new MarkerOptions()
                                 .position(new LatLng(secondSellerLatList[i], secondSellerLngList[i]))
@@ -1436,7 +1477,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                     }
                 }
                 for (int i = 0; i < thirdCount; i++) {
-                    if (fastSellerLatList[i] != 0.0) {
+                    if (thirdSellerLatList[i] != 0.0) {
                         Marker mMarker;
                         MarkerOptions ooA = new MarkerOptions()
                                 .position(new LatLng(thirdSellerLatList[i], thirdSellerLngList[i]))
@@ -1449,7 +1490,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                     }
                 }
                 for (int i = 0; i < afMeetCount; i++) {
-                    if (fastSellerLatList[i] != 0.0) {
+                    if (afMeetSellerLatList[i] != 0.0) {
                         Marker mMarker;
                         MarkerOptions ooA = new MarkerOptions()
                                 .position(new LatLng(afMeetSellerLatList[i], afMeetSellerLngList[i]))
@@ -1467,7 +1508,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 //seller
                 options.clear();
                 for (int i = 0; i < count; i++) {
-                    if (fastSellerLatList[i] != 0.0) {
+                    if (sellerLatList[i] != 0.0) {
                         Marker mMarker;
                         MarkerOptions ooA = new MarkerOptions()
                                 .position(new LatLng(sellerLatList[i], sellerLngList[i]))

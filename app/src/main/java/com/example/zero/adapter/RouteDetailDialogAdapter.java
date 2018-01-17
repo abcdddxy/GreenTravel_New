@@ -14,15 +14,23 @@ import java.util.List;
  * Created by ZERO on 2018/1/16.
  */
 
-public class RouteDetailDialogAdapter  extends CommonAdapter<RouteDetailBean> {
+public class RouteDetailDialogAdapter extends CommonAdapter<RouteDetailBean> {
     public RouteDetailDialogAdapter(Context context, List<RouteDetailBean> data, int layoutId) {
         super(context, data, layoutId);
     }
 
     @Override
     public void convert(ViewHolder holder, int position) {
-        holder.setText(R.id.line,"（" + mData.get(position).getLine() + "）")
-                .setText(R.id.stStation,mData.get(position).getStation())
-                .setText(R.id.enStation,mData.get(position).getFinal_st());
+        if (mData.get(position).getStation().equals("abc")) {
+            holder.setText(R.id.line, mData.get(position).getLine())
+                    .setImageBitmap(R.id.route1_img, null)
+                    .setText(R.id.stStation, null)
+                    .setText(R.id.enStation, null)
+                    .setText(R.id.stEdJ, null);
+        } else {
+            holder.setText(R.id.line, "（" + mData.get(position).getLine() + "）")
+                    .setText(R.id.stStation, mData.get(position).getStation())
+                    .setText(R.id.enStation, mData.get(position).getFinal_st());
+        }
     }
 }

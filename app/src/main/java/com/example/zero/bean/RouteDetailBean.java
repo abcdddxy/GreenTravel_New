@@ -15,6 +15,11 @@ public class RouteDetailBean {
         this.final_st = final_st;
     }
 
+    public RouteDetailBean(String line) {
+        this.line = line;
+        this.station = "abc";
+    }
+
     public String getStation() {
         return station;
     }

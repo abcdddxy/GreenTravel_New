@@ -20,7 +20,7 @@ public class HttpUtil {
     private static String CJY = "10.108.120.31:8080";
     private static String ZR = "service.gsubway.com";
 
-    private static String server = CJF;
+    private static String server = ZR;
 
     public static void sendSingleOkHttpRequest(Bundle mBundle, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();
