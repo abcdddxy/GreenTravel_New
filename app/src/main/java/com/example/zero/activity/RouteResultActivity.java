@@ -5,11 +5,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Looper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +35,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mapapi.utils.CoordinateConverter;
+import com.baidu.lbsapi.tools.Point;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -55,9 +59,18 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.district.DistrictSearch;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiIndoorResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.poi.PoiSortType;
 import com.baidu.mapapi.search.route.BikingRouteLine;
 import com.baidu.mapapi.search.route.BikingRoutePlanOption;
 import com.baidu.mapapi.search.route.BikingRouteResult;
@@ -93,10 +106,12 @@ import com.example.zero.entity.Route;
 import com.example.zero.fragment.OverlayManager;
 import com.example.zero.fragment.RouteFragmentDouble;
 import com.example.zero.greentravel_new.R;
+import com.example.zero.util.BaiduMapUtil;
 import com.example.zero.util.BikingRouteOverlay;
 import com.example.zero.util.CouponOverlay;
 import com.example.zero.util.DrivingRouteOverlay;
 import com.example.zero.util.HttpUtil;
+import com.example.zero.util.MainApplication;
 import com.example.zero.util.MassTransitRouteOverlay;
 import com.example.zero.util.RequestManager;
 import com.example.zero.util.TransitRouteOverlay;
@@ -107,17 +122,28 @@ import com.alibaba.fastjson.*;
 import org.json.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static com.baidu.platform.comapi.location.CoordinateType.BD09LL;
+import static com.example.zero.util.BaiduMapUtil.bdToGaoDe;
+import static com.example.zero.util.BaiduMapUtil.coordConverter;
+import static com.example.zero.util.BaiduMapUtil.genSignature;
+import static com.example.zero.util.BaiduMapUtil.readMetaDataFromApplication;
 
 public class RouteResultActivity extends AppCompatActivity implements BaiduMap.OnMapClickListener, OnGetRoutePlanResultListener, SensorEventListener {
 
@@ -174,6 +200,8 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
     private Button replaceBtn;
     //详细路线
     private Button detailBtn;
+    //停车场
+    private Button showParkBtn;
 
     // 路线节点
     private List<String> mPathList = new ArrayList<String>();
@@ -295,12 +323,17 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
     private List<RouteDetailBean> lesschangeRouteDetailBeanList;
     private List<RouteDetailBean> multiRouteDetailBeanList;
 
+    // 停车场
+    private final int MAX_PARK_NUM_PER_STATION = 30;
+    private List<PoiInfo> poiInfoList;
+    private ArrayList<LatLng> startStationList = new ArrayList<>();
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_result);
         Intent intent = getIntent();
-        Bundle mBundle = intent.getExtras();
+        final Bundle mBundle = intent.getExtras();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
@@ -428,6 +461,79 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                             Toast.makeText(context, "连接服务器失败，请重新尝试！", Toast.LENGTH_LONG).show();
                         }
                     });
+                } else if (marker.getExtraInfo().getString("id").equals("park")) {
+                    final Bundle mBundle = marker.getExtraInfo();
+
+                    final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+                    builder.setIcon(R.drawable.icon_park);
+                    builder.setTitle("停车场详情");
+                    String phoneNum = mBundle.getString("phoneNum");
+                    if (phoneNum != null && phoneNum.length() > 0)
+                        builder.setMessage("地址：" + mBundle.getString("address") + "\n电话号：" + phoneNum);
+                    else
+                        builder.setMessage("地址：" + mBundle.getString("address"));
+
+                    builder.setPositiveButton("前往", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            selectDialog.dismiss();
+                            Intent intent = new Intent();
+                            if (BaiduMapUtil.isAvilible(context, "com.baidu.BaiduMap")) {
+
+                                intent.setData(Uri.parse("baidumap://map/navi?location=" +
+                                        mBundle.getString("latitude") + "," + mBundle.getString("longitude")));
+                                try {
+                                    startActivity(intent);
+                                } catch (Exception e) {
+                                    Toast.makeText(context, "无法打开百度地图", Toast.LENGTH_SHORT).show();
+                                    Log.e("baidu", e.toString());
+                                }
+
+                            } else if (BaiduMapUtil.isAvilible(context, "com.autonavi.minimap")) {
+
+
+                                double[] latlng = bdToGaoDe(Double.valueOf(mBundle.getString("latitude")), Double.valueOf(mBundle.getString("longitude")));
+
+                                intent.addCategory("android.intent.category.DEFAULT");
+                                intent.setPackage("com.autonavi.minimap");
+                                intent.setData(Uri.parse("androidamap://navi?sourceApplication=GTravel&lat=" + String.valueOf(latlng[0]) +
+                                        "&lon=" + String.valueOf(latlng[1]) + "&dev=1&style=2"));
+                                try {
+                                    startActivity(intent);
+                                } catch (Exception e) {
+                                    Toast.makeText(context, "无法打开高德地图", Toast.LENGTH_SHORT).show();
+                                    Log.e("gaode", e.toString());
+                                }
+                            } else {
+                                MainApplication mainApplication = (MainApplication) getApplication();
+                                String url =
+                                        "http://api.map.baidu.com/direction?origin=latlng:" +
+//                                                "23.166844750645,113.33844445956" +
+                                                mainApplication.getLatitude() + "," + mainApplication.getLongitude() +
+                                                "|name:我的位置&destination=latlng:" + mBundle.getString("latitude") +
+                                                "," + mBundle.getString("longitude") + "|name:停车场&mode=driving&region=广州&output=html&src=GTravel";
+
+                                Log.i("setPositiveButton", url);
+                                Uri uri = Uri.parse(url);
+                                intent = new Intent(Intent.ACTION_VIEW, uri);
+                                try {
+                                    startActivity(intent);
+                                } catch (Exception e) {
+                                    Toast.makeText(context, "无法打开浏览器", Toast.LENGTH_SHORT).show();
+                                    Log.e("baidu web", e.toString());
+                                }
+                            }
+
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    selectDialog = builder.create();
+                    selectDialog.show();
                 }
                 return false;
             }
@@ -511,6 +617,59 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                     default:
                         break;
                 }
+            }
+        });
+
+        //停车场
+        showParkBtn = (Button) findViewById(R.id.start_station_park);
+        showParkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                PoiSearch mPoiSearch = PoiSearch.newInstance();
+                mPoiSearch.setOnGetPoiSearchResultListener(new OnGetPoiSearchResultListener() {
+                    @Override
+                    public void onGetPoiResult(PoiResult poiResult) {
+                        if (poiResult.getAllPoi() == null) {
+                            Toast.makeText(context, "起始站附近1KM未找到停车场", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Log.i("showParkBtn", String.valueOf(poiResult.getAllPoi().size()));
+
+                        if (poiResult.getAllPoi().size() > MAX_PARK_NUM_PER_STATION)
+                            poiInfoList.addAll(poiResult.getAllPoi().subList(0, MAX_PARK_NUM_PER_STATION));
+                        else
+                            poiInfoList.addAll(poiResult.getAllPoi());
+                        addParkMarker();
+                    }
+
+                    @Override
+                    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+                        Log.i("showParkBtn", poiDetailResult.toString());
+                    }
+
+                    @Override
+                    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
+                        Log.i("showParkBtn", poiIndoorResult.toString());
+
+                    }
+                });
+
+                poiInfoList = new ArrayList<>();
+                Log.i("startStationList", startStationList.toString());
+                for (LatLng loc : startStationList) {
+                    mPoiSearch.searchNearby(new PoiNearbySearchOption()
+                            .keyword("停车场")
+                            .sortType(PoiSortType.distance_from_near_to_far)
+                            .location(loc)
+                            .radius(1000)
+                            .pageCapacity(100)
+                            .pageNum(0)
+                            .sortType(PoiSortType.comprehensive));
+
+                }
+                mPoiSearch.destroy();
+
             }
         });
 
@@ -632,6 +791,11 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
             busyLngList = mBundle.getDoubleArray("busyLngList");
             busyLatList = mBundle.getDoubleArray("busyLatList");
 
+            ArrayList<String> startPosList = mBundle.getStringArrayList("startPosList");
+            startStationList = new ArrayList<>();
+            startStationList.add(coordConverter(new LatLng(Double.valueOf(startPosList.get(0)), Double.valueOf(startPosList.get(1)))));
+
+
             for (int i = 0; i < fastStationList.size() - 1; i++) {
                 fastRouteDetailBeanList.add(new RouteDetailBean(fastStationList.get(i), fastRouteList.get(i), fastStationList.get(i + 1)));
             }
@@ -648,6 +812,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 @Override
                 public void onClick(View view) {
                     detailBtn.setVisibility(View.VISIBLE);
+                    showParkBtn.setVisibility(View.VISIBLE);
                     replaceBtn.setVisibility(View.VISIBLE);
                     couponDisplayBtn.setVisibility(View.VISIBLE);
                     cModel = Route.RouteType.FAST;
@@ -671,6 +836,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                         addMarker();
                         addBusy();
                         addReplace();
+                        addParkMarker();
 
                         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomBy(11);
                         mBaidumap.animateMapStatus(mapStatusUpdate);
@@ -684,6 +850,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 @Override
                 public void onClick(View view) {
                     detailBtn.setVisibility(View.VISIBLE);
+                    showParkBtn.setVisibility(View.VISIBLE);
                     replaceBtn.setVisibility(View.VISIBLE);
                     couponDisplayBtn.setVisibility(View.VISIBLE);
                     cModel = Route.RouteType.LESSBUSY;
@@ -708,6 +875,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                         addMarker();
                         addBusy();
                         addReplace();
+                        addParkMarker();
 
                         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomBy(11);
                         mBaidumap.animateMapStatus(mapStatusUpdate);
@@ -721,6 +889,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 @Override
                 public void onClick(View view) {
                     detailBtn.setVisibility(View.VISIBLE);
+                    showParkBtn.setVisibility(View.VISIBLE);
                     replaceBtn.setVisibility(View.VISIBLE);
                     couponDisplayBtn.setVisibility(View.VISIBLE);
                     cModel = Route.RouteType.LESSCHANGE;
@@ -745,6 +914,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                         addMarker();
                         addBusy();
                         addReplace();
+                        addParkMarker();
 
                         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomBy(11);
                         mBaidumap.animateMapStatus(mapStatusUpdate);
@@ -756,6 +926,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
             });
         } else if (mBundle.getString("origin").equals("Multi")) {
             detailBtn.setVisibility(View.VISIBLE);
+            showParkBtn.setVisibility(View.VISIBLE);
             singleBtn.setVisibility(View.GONE);
             fastBtn.setVisibility(View.GONE);
             lessbusyBtn.setVisibility(View.GONE);
@@ -803,6 +974,14 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
             secondCount = mBundle.getInt("secondCount");
             thirdCount = mBundle.getInt("thirdCount");
             afMeetCount = mBundle.getInt("afMeetCount");
+
+            ArrayList<String> startPosList = mBundle.getStringArrayList("startPosList");
+            startStationList = new ArrayList<>();
+            for (String pos : startPosList) {
+                String[] posLatLng = pos.split(",");
+                startStationList.add(coordConverter(new LatLng(Double.valueOf(posLatLng[0].substring(1, posLatLng[0].length())),
+                        Double.valueOf(posLatLng[1].substring(0, posLatLng[0].length() - 1)))));
+            }
 
             TransitRoutePlanOption transitRouteFast = new TransitRoutePlanOption();
             transitRouteFast.mPolicy = TransitRoutePlanOption.TransitPolicy.EBUS_TRANSFER_FIRST;
@@ -941,6 +1120,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
             }
             nowSearchType = 2;
         }
+
     }
 
     private void parseJSONWithJSONObject(String jsonData) {
@@ -1391,6 +1571,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
         BitmapDescriptor pop = BitmapDescriptorFactory
                 .fromResource(R.drawable.icon_gcoding);
 
+
         List<OverlayOptions> options = new ArrayList<OverlayOptions>();
         switch (cModel) {
             case FAST:
@@ -1526,7 +1707,47 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                 Toast.makeText(context, "无掉落动画", Toast.LENGTH_SHORT).show();
                 break;
         }
+
+
     }
+
+    private void addParkMarker() {
+        BitmapDescriptor park_icon = BitmapDescriptorFactory
+                .fromResource(R.drawable.icon_park);
+        if (poiInfoList != null)
+            Log.i("addParkMarker", poiInfoList.size() + "");
+        else
+            Log.i("addParkMarker", "0");
+        //        如果请求过停车场的数据，当切换模式时，默认把停车场标记出来
+        if (poiInfoList != null && poiInfoList.size() > 0) {
+            List<OverlayOptions> options = new ArrayList<>();
+
+            for (PoiInfo poiInfo : poiInfoList) {
+                Bundle mBundle = new Bundle();
+                mBundle.putString("id", "park");
+                mBundle.putString("address", poiInfo.address);
+                mBundle.putString("phoneNum", poiInfo.phoneNum);
+                mBundle.putString("longitude", String.valueOf(poiInfo.location.longitude));
+                mBundle.putString("latitude", String.valueOf(poiInfo.location.latitude));
+
+                OverlayOptions option = new MarkerOptions()
+                        .position(poiInfo.location)
+                        .icon(park_icon)
+                        .extraInfo(mBundle)
+                        .zIndex(9);
+                options.add(option);
+
+            }
+            //在地图上批量添加
+            mBaidumap.addOverlays(options);
+//            MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomBy(9);
+//            mBaidumap.animateMapStatus(mapStatusUpdate);
+            MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLng(startStationList.get(0));
+            mBaidumap.animateMapStatus(mapStatusUpdate);
+
+        }
+    }
+
 
     private void addBusy() {
         for (int i = 0; i < busyCount; i++) {

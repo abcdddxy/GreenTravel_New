@@ -30,7 +30,7 @@ public class MainApplication extends Application {
     private boolean pic;
     private String address_id, address_name, address_phone;
     private String order_id, order_money;
-
+    private double latitude, longitude;
     private List<RouteSearchBean> stationList = new ArrayList<>();
     private List<String> busyStationList = new ArrayList<>();
 
@@ -248,4 +248,19 @@ public class MainApplication extends Application {
         this.order_money = money;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 }

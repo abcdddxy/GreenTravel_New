@@ -389,6 +389,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             }
             mCurrentLat = location.getLatitude();
             mCurrentLon = location.getLongitude();
+
+            MainApplication application = (MainApplication) getApplication();
+            application.setLongitude(mCurrentLon);
+            application.setLatitude(mCurrentLat);
+
             mCurrentAccracy = location.getRadius();
             locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())

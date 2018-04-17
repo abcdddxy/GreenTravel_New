@@ -844,11 +844,14 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     JSONObject seller = jsonObject.getJSONObject("seller");
                     JSONObject route = jsonObject.getJSONObject("route");
                     JSONObject busy = jsonObject.getJSONObject("busy");
+
                     String replace = jsonObject.getString("replace_plan");
 
                     JSONObject routeFastX = route.getJSONObject("fast");
                     JSONObject routeLessbusyX = route.getJSONObject("lessbusy");
                     JSONObject routeLesschangeX = route.getJSONObject("lesschange");
+
+                    JSONArray startPos = jsonObject.getJSONArray("start_pos");
 
                     JSONArray routeFast = routeFastX.getJSONArray("route");
                     JSONArray routeLessbusy = routeLessbusyX.getJSONArray("route");
@@ -923,8 +926,8 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
 
                     Iterator it = busy.keys();
                     busyCount = 0;
-                    while(it.hasNext()) {
-                        String stName = (String)it.next();
+                    while (it.hasNext()) {
+                        String stName = (String) it.next();
                         busyList.add(busy.getJSONObject(stName).getString("st_name"));
                         busyLngList[busyCount] = busy.getJSONObject(stName).getDouble("lng");
                         busyLatList[busyCount] = busy.getJSONObject(stName).getDouble("lat");
@@ -934,6 +937,12 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     mBundleHttp.putDoubleArray("busyLngList", busyLngList);
                     mBundleHttp.putDoubleArray("busyLatList", busyLatList);
                     mBundleHttp.putInt("busyCount", busyCount);
+
+                    ArrayList<String> startPosList = new ArrayList<>();
+                    for (int i = 0; i < startPos.length(); i++) {
+                        startPosList.add(startPos.getString(i));
+                    }
+                    mBundleHttp.putStringArrayList("startPosList", startPosList);
 
                     int size = 100;
                     double[] fastSellerLatList = new double[size];
@@ -1041,6 +1050,8 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                     JSONObject busy = jsonObject.getJSONObject("busy");
                     JSONArray routeBfMeet = routes.getJSONArray(0);
                     JSONArray routeAfMeet = routes.getJSONArray(1);
+                    JSONArray startPos = jsonObject.getJSONArray("start_pos");
+
 
                     ArrayList<String> stationList1 = new ArrayList<String>();
                     ArrayList<String> stationList2 = new ArrayList<String>();
@@ -1143,6 +1154,12 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
                             }
                         }
                     }
+
+                    ArrayList<String> starPosList = new ArrayList<>();
+                    for (int i = 0; i < startPos.length(); i++) {
+                        starPosList.add(startPos.getString(i));
+                    }
+                    mBundleHttp.putStringArrayList("startPosList", starPosList);
 
                     mBundleHttp.putStringArrayList("stationList1", stationList1);
                     mBundleHttp.putStringArrayList("stationList2", stationList2);
@@ -1287,7 +1304,7 @@ public class RouteFragmentDouble extends Fragment implements SearchPopView.Searc
             case DATA:
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userId", "guest");
-                RequestManager.getInstance(context).requestAsyn("http://service.gsubway.com/route/station",
+                RequestManager.getInstance(context).requestAsyn("http://"+HttpUtil.server+"/route/station",
                         RequestManager.TYPE_GET_Z, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {
