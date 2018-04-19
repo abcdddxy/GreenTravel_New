@@ -202,6 +202,8 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
     private Button detailBtn;
     //停车场
     private Button showParkBtn;
+    //优惠券
+    private Button stationCoupon;
 
     // 路线节点
     private List<String> mPathList = new ArrayList<String>();
@@ -468,10 +470,11 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                     builder.setIcon(R.drawable.icon_park);
                     builder.setTitle("停车场详情");
                     String phoneNum = mBundle.getString("phoneNum");
-                    if (phoneNum != null && phoneNum.length() > 0)
+                    if (phoneNum != null && phoneNum.length() > 0) {
                         builder.setMessage("地址：" + mBundle.getString("address") + "\n电话号：" + phoneNum);
-                    else
+                    } else {
                         builder.setMessage("地址：" + mBundle.getString("address"));
+                    }
 
                     builder.setPositiveButton("前往", new DialogInterface.OnClickListener() {
                         @Override
@@ -651,6 +654,15 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                     @Override
                     public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
                         Log.i("showParkBtn", poiIndoorResult.toString());
+
+                    }
+                });
+
+                //todo 站点周围优惠券
+                stationCoupon = (Button) findViewById(R.id.station_coupon);
+                stationCoupon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
                     }
                 });
