@@ -202,16 +202,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             public void onClick(View view) {
                 MainApplication mainApplication = (MainApplication) getApplication();
                 giftCouponList = new ArrayList<>();
-//                // 造点假数据
-//                if(giftCouponList.size() == 0){
-//                    double lat = mainApplication.getLatitude();
-//                    double lng = mainApplication.getLongitude();
-//                    for(int i=0; i<3; i++){
-//                        for(int j=0; j<3;j++)
-//                        giftCouponList.add(new GiftCoupon("123", lat + (i-1) * 0.003, lng + (j-1)* 0.003));
-//                    }
-//                }
-                httpThread(1, null);
+                if(!mainApplication.isOnline()){
+                    Toast.makeText(MainActivity.this, "您还未登录，请先登录", Toast.LENGTH_SHORT).show();
+                }else{
+                    httpThread(1, null);
+                }
             }
         });
 

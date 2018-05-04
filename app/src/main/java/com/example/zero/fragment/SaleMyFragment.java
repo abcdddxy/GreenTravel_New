@@ -398,8 +398,8 @@ public class SaleMyFragment extends Fragment {
                 mBundle.putString("user_id", mainApplication.getUser_id());
                 mBundle.putString("token", mainApplication.getToken());
                 mBundle.putString("coupon_id", coupon_id);
-                mBundle.putString("lat", String.valueOf(mainApplication.getLongitude()));
-                mBundle.putString("lng", String.valueOf(mainApplication.getLatitude()));
+                mBundle.putString("lat", String.valueOf(mainApplication.getLatitude()));
+                mBundle.putString("lng", String.valueOf(mainApplication.getLongitude()));
                 HttpUtil.sendGiftCouponPublicOkHttpRequest(mBundle, new okhttp3.Callback() {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
