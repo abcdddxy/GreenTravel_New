@@ -23,7 +23,7 @@ public class HttpUtil {
     private static String ZR = "service.gsubway.com";
     private static String ZR2 = "service2.gsubway.com";
 
-    public static String server = CJF;
+    public static String server = ZR2;
 
     public static void sendSingleOkHttpRequest(Bundle mBundle, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();
