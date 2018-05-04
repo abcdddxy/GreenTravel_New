@@ -9,18 +9,21 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import javax.xml.transform.OutputKeys;
+
 /**
  * Created by ZERO on 2017/10/29.
  */
 
 public class HttpUtil {
 
-    private static String CJF = "10.108.122.29:8084";
+    private static String CJF = "10.108.120.225:8084";
     private static String ZMQ = "10.108.112.96:8080";
     private static String CJY = "10.108.122.109:8084";
     private static String ZR = "service.gsubway.com";
+    private static String ZR2 = "service2.gsubway.com";
 
-    public static String server = ZR;
+    public static String server = CJF;
 
     public static void sendSingleOkHttpRequest(Bundle mBundle, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();
@@ -60,6 +63,78 @@ public class HttpUtil {
                 .build();
         Request request = new Request.Builder()
                 .url("http://" + server + "/shops/" + mBundle.getString("stationName") + "/near")
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void nearByGiftCouponDisplayOkHttpRequest(Bundle mBundle, okhttp3.Callback callback) {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("user_id", mBundle.getString("user_id"))
+                .add("token", mBundle.getString("token"))
+                .add("lat", mBundle.getString("lat"))
+                .add("lng", mBundle.getString("lng"))
+                .build();
+        Request request = new Request.Builder()
+                .url("http://" + server + "/coupons/getNearbyCoupons")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void receiveGiftCouponOkHttpRequest(Bundle mBundle, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("user_id", mBundle.getString("user_id"))
+                .add("token", mBundle.getString("token"))
+                .add("share_code", mBundle.getString("share_code"))
+                .build();
+        Request request = new Request.Builder()
+                .url("http://" + server + "/coupons/receivePublic")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void sendGiftCouponPrivateOkHttpRequest(Bundle mBundle, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("user_id", mBundle.getString("user_id"))
+                .add("token", mBundle.getString("token"))
+                .add("coupon_id", mBundle.getString("coupon_id"))
+                .build();
+        Request request = new Request.Builder()
+                .url("http://" + server + "/coupons/giftPrivate")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void sendGiftCouponPublicOkHttpRequest(Bundle mBundle, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("user_id", mBundle.getString("user_id"))
+                .add("token", mBundle.getString("token"))
+                .add("coupon_id", mBundle.getString("coupon_id"))
+                .add("lat", mBundle.getString("lat"))
+                .add("lng", mBundle.getString("lng"))
+                .build();
+        Request request = new Request.Builder()
+                .url("http://" + server + "/coupons/giftPublic")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void receiveGiftCouponPrivateOkHttpRequest(Bundle mBundle, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("phone", mBundle.getString("phone"))
+                .add("share_code", mBundle.getString("share_code"))
+                .build();
+        Request request = new Request.Builder()
+                .url("http://" + server + "/coupons/receivePrivate")
+                .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
     }

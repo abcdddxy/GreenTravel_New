@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#47ec38" />
+
+    <EditText
+            android:id="@+id/coupon_gift_copy"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@null"
+            android:hint="这里的内容可以被复制"
+            android:scrollHorizontally="false"
+            android:textIsSelectable="true"
+            android:gravity="center"
+            android:enabled="false"/>
+</LinearLayout>

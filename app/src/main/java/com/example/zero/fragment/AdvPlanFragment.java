@@ -398,7 +398,7 @@ public class AdvPlanFragment extends Fragment implements SearchPopView.SearchPop
             case DATA:
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userId", "guest");
-                RequestManager.getInstance(context).requestAsyn("http://service.gsubway.com/route/station",
+                RequestManager.getInstance(context).requestAsyn("http://"+ HttpUtil.server +"/route/station",
                         RequestManager.TYPE_GET_Z, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {

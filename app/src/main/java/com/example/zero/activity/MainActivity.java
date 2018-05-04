@@ -1,7 +1,9 @@
 package com.example.zero.activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -9,6 +11,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -30,24 +34,24 @@ import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.model.LatLng;
+import com.example.zero.entity.CouponInfo;
+import com.example.zero.entity.GiftCoupon;
 import com.example.zero.fragment.FragmentController;
 
 import com.example.zero.greentravel_new.R;
+import com.example.zero.util.HttpUtil;
 import com.example.zero.util.MainApplication;
 import com.example.zero.view.TitleRouteLayout;
+import okhttp3.Call;
+import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,9 +102,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
      * 定位按钮
      */
     private Button btnLocation;
+    //优惠券
+    private Button stationCouponBtn;
 
     MapView mMapView;
     BaiduMap mBaiduMap;
+
+    // 附近的优惠券
+    private List<GiftCoupon> giftCouponList;
+    private android.support.v7.app.AlertDialog selectDialog;
+    // 领到的优惠券
+    private CouponInfo couponInfo;
 
     // UI相关
     RadioGroup.OnCheckedChangeListener radioButtonListener;
@@ -140,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.READ_PHONE_STATE);
         }
+
         if (!permissionList.isEmpty()) {
             String[] permissions = permissionList.toArray(new String[permissionList.size()]);
             ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
@@ -183,6 +196,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         titleRouteLayout = (TitleRouteLayout) findViewById(R.id.route_title);
 
         btnLocation = (Button) findViewById(R.id.btn_map_main_location);
+        stationCouponBtn = (Button) findViewById(R.id.station_coupon_by);
+        stationCouponBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainApplication mainApplication = (MainApplication) getApplication();
+                giftCouponList = new ArrayList<>();
+//                // 造点假数据
+//                if(giftCouponList.size() == 0){
+//                    double lat = mainApplication.getLatitude();
+//                    double lng = mainApplication.getLongitude();
+//                    for(int i=0; i<3; i++){
+//                        for(int j=0; j<3;j++)
+//                        giftCouponList.add(new GiftCoupon("123", lat + (i-1) * 0.003, lng + (j-1)* 0.003));
+//                    }
+//                }
+                httpThread(1, null);
+            }
+        });
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);//获取传感器管理服务
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
@@ -217,6 +248,45 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         mLocClient.setLocOption(option);
         mLocClient.start();
         mLocClient.requestLocation();
+        // 点击事件
+        mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(final Marker marker) {
+                // 附近的优惠券活动
+                if (marker.getExtraInfo().getString("id").equals("gift")){
+                    final Bundle mBundle = marker.getExtraInfo();
+                    final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(MainActivity.this);
+                    builder.setIcon(R.drawable.icon_coupon);
+                    builder.setTitle("捡到了一个券包");
+                    builder.setMessage("您在周围捡到了一个券包，是否打开?");
+                    builder.setPositiveButton("打开", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            marker.remove();
+                            MainApplication mainApplication = (MainApplication) getApplication();
+                            if(!mainApplication.isOnline()){
+                                Toast.makeText(MainActivity.this, "您还未登录，请先登录", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                // 发送请求，领取优惠券
+                                String share_code = mBundle.getString("share_code");
+                                httpThread(2, share_code);
+                                // 显示结果
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    selectDialog = builder.create();
+                    selectDialog.show();
+                }
+                return false;
+            }
+        });
     }
 
     public void sendNotification() {
@@ -512,5 +582,200 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             }
         }
         MapView.setCustomMapStylePath(moduleName + "/" + PATH);
+    }
+
+    //todo 站点周围优惠券
+
+
+    private void addGiftMarker() {
+        BitmapDescriptor coupon_icon = BitmapDescriptorFactory
+                .fromResource(R.drawable.icon_coupon);
+        if(giftCouponList != null)
+            Log.i("addCouponMarker", giftCouponList.size() + "");
+        else
+            Log.i("addCouponMarker", "0");
+        if(giftCouponList!=null && giftCouponList.size() >0){
+            // 清空地图上的marker
+            mBaiduMap.clear();
+            List<OverlayOptions> options = new ArrayList<>();
+            for (GiftCoupon gift:giftCouponList) {
+                Bundle mBundle = new Bundle();
+                mBundle.putString("id", "gift");
+                mBundle.putString("share_code", gift.getId());
+                mBundle.putString("latitude", String.valueOf(gift.getLat()));
+                mBundle.putString("longitude", String.valueOf(gift.getLng()));
+
+                OverlayOptions option = new MarkerOptions()
+                        .position(new LatLng(gift.getLat(), gift.getLng()))
+                        .icon(coupon_icon)
+                        .extraInfo(mBundle)
+                        .zIndex(9);
+                options.add(option);
+            }
+            mBaiduMap.addOverlays(options);
+            MainApplication mainApplication = (MainApplication) getApplication();
+            MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(new LatLng(mainApplication.getLatitude(), mainApplication.getLongitude()),16);
+            mBaiduMap.animateMapStatus(mapStatusUpdate);
+        }
+    }
+
+
+
+    private ProgressDialog pd;
+
+    //定义Handler对象
+    private Handler httpHandler = new Handler(new Handler.Callback() {
+        @Override
+        //当有消息发送出来的时候就执行Handler的这个方法
+        public boolean handleMessage(Message msg) {
+            //只要执行到这里就关闭对话框
+            pd.dismiss();
+            // TODO 收到请求
+            switch (msg.what){
+                // 描绘周边的优惠券
+                case 1:addGiftMarker();break;
+                case 2:showReceivedCouponInfo();break;
+            }
+            return false;
+        }
+    });
+
+
+    // TODO 进度条
+    private void httpThread(int flag, final String code) {
+        //构建一个下载进度条
+        pd = ProgressDialog.show(MainActivity.this, "加载数据", "数据加载中，请稍后......");
+        switch (flag){
+            // 读取周边的优惠券
+            case 1:new Thread() {
+                @Override
+                public void run() {
+                    //在新线程里执行长耗时方法
+                    getNearByCouponGifts();
+                    //执行完毕后给handler发送一个空消息
+                    httpHandler.sendEmptyMessage(1);
+                }
+            }.start();break;
+            // 领取选定优惠券
+            case 2:new Thread() {
+                @Override
+                public void run() {
+                    //在新线程里执行长耗时方法
+                    receiveCouponGift(code);
+                    //执行完毕后给handler发送一个空消息
+                    httpHandler.sendEmptyMessage(2);
+                }
+            }.start();break;
+        }
+    }
+
+    //加载周边优惠券
+    private void getNearByCouponGifts() {
+        try {
+            MainApplication mainApplication = (MainApplication) getApplication();
+            final Bundle mBundle = new Bundle();
+            mBundle.putString("user_id", mainApplication.getUser_id());
+            mBundle.putString("token", mainApplication.getToken());
+            mBundle.putString("lat", String.valueOf(mainApplication.getLatitude()));
+            mBundle.putString("lng", String.valueOf(mainApplication.getLongitude()));
+            HttpUtil.nearByGiftCouponDisplayOkHttpRequest(mBundle, new okhttp3.Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseData = response.body().string();
+                    parseNearByCouponGifts(responseData);
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d(TAG, "onFailure: ERROR!");
+                    Toast.makeText(MainActivity.this, "连接服务器失败，请重新尝试！", Toast.LENGTH_LONG).show();
+                }
+            });
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 读取附近的优惠券
+    private void parseNearByCouponGifts(String jsonData) {
+        try {
+            JSONObject rep = new JSONObject(jsonData);
+            JSONArray coupons = rep.getJSONArray("coupons");
+            if (coupons.length() != 0) {
+                for (int i = 0; i < coupons.length(); i++) {
+                    JSONObject coupon = coupons.getJSONObject(i);
+                    GiftCoupon giftCoupon = new GiftCoupon(coupon.getString("id"), coupon.getDouble("coupon_lat"), coupon.getDouble("coupon_lng"));
+                    giftCouponList.add(giftCoupon);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    // 领取优惠券
+    private void receiveCouponGift(String code) {
+        try {
+            MainApplication mainApplication = (MainApplication) getApplication();
+            final Bundle mBundle = new Bundle();
+            mBundle.putString("user_id", mainApplication.getUser_id());
+            mBundle.putString("token", mainApplication.getToken());
+            mBundle.putString("share_code", code);
+            HttpUtil.receiveGiftCouponOkHttpRequest(mBundle, new okhttp3.Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseData = response.body().string();
+                    parseCouponGift(responseData);
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d(TAG, "onFailure: ERROR!");
+                    Toast.makeText(MainActivity.this, "连接服务器失败，请重新尝试！", Toast.LENGTH_LONG).show();
+                }
+            });
+            Thread.sleep(1500);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+    // 解析领取到的优惠券
+    private void parseCouponGift(String jsonData){
+        try{
+            JSONObject rsp = new JSONObject(jsonData);
+            Log.d("sb", String.valueOf(rsp.getInt("succeed")));
+            if(rsp.has("succeed") && rsp.getInt("succeed")==1){
+                JSONObject coupon = rsp.getJSONObject("coupon");
+                couponInfo = new CouponInfo(coupon.getString("id"),
+                        coupon.getInt("type"), coupon.getString("coupon_name"),
+                        coupon.getString("shop_id"), coupon.getString("seller_id"),
+                        coupon.getString("expire_at"), coupon.getString("shop_tag"),
+                        coupon.getString("image_url"), coupon.getString("shop_name"));
+            }else{
+                Toast.makeText(MainActivity.this, "优惠券领取失败，请稍后再试", Toast.LENGTH_LONG).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    // 显示优惠券信息
+    private void showReceivedCouponInfo() {
+        if(couponInfo!=null){
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(MainActivity.this);
+            builder.setIcon(R.drawable.icon_coupon);
+            builder.setTitle("领取成功");
+            builder.setMessage("名称:" + couponInfo.getCoupon_name() + "\n" +
+                    "商家名称:" + couponInfo.getShop_name() + "\n" +
+                    "过期时间:" + couponInfo.getExpire_at());
+            builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            builder.show();
+        }
+        else{
+            Toast.makeText(MainActivity.this, "优惠券领取失败，请稍后再试", Toast.LENGTH_LONG).show();
+        }
     }
 }

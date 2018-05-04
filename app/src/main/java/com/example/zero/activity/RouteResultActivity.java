@@ -2,6 +2,7 @@ package com.example.zero.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +13,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -91,7 +94,9 @@ import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 
+import com.example.zero.entity.GiftCoupon;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.zero.adapter.RouteDetailDialogAdapter;
@@ -202,8 +207,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
     private Button detailBtn;
     //停车场
     private Button showParkBtn;
-    //优惠券
-    private Button stationCoupon;
+
 
     // 路线节点
     private List<String> mPathList = new ArrayList<String>();
@@ -330,6 +334,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
     private List<PoiInfo> poiInfoList;
     private ArrayList<LatLng> startStationList = new ArrayList<>();
 
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -416,6 +421,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
 
         // 地图点击事件处理
         mBaidumap.setOnMapClickListener(this);
+        // todo 增加点击事件
         mBaidumap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -658,15 +664,6 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
                     }
                 });
 
-                //todo 站点周围优惠券
-                stationCoupon = (Button) findViewById(R.id.station_coupon);
-                stationCoupon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-
                 poiInfoList = new ArrayList<>();
                 Log.i("startStationList", startStationList.toString());
                 for (LatLng loc : startStationList) {
@@ -684,6 +681,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
 
             }
         });
+
 
         couponDisplayBtn = (Button) findViewById(R.id.route_coupon_display);
         couponDisplayBtn.setOnClickListener(new View.OnClickListener() {
@@ -1761,6 +1759,7 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
     }
 
 
+
     private void addBusy() {
         for (int i = 0; i < busyCount; i++) {
             String busyStation = busyList.get(i);
@@ -2569,4 +2568,5 @@ public class RouteResultActivity extends AppCompatActivity implements BaiduMap.O
             onItemInDlgClickListener = itemListener;
         }
     }
+
 }

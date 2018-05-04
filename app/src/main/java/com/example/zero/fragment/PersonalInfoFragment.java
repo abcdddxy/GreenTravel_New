@@ -1,33 +1,38 @@
 package com.example.zero.fragment;
 
+import android.app.ProgressDialog;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
-import com.example.zero.activity.AddressActivity;
-import com.example.zero.activity.FavorActivity;
-import com.example.zero.activity.FriendActivity;
-import com.example.zero.activity.HelpFeedbackActivity;
-import com.example.zero.activity.LoginActivity;
-import com.example.zero.activity.MsgActivity;
-import com.example.zero.activity.RegisterActivity;
-import com.example.zero.activity.SettingActivity;
-import com.example.zero.activity.SubwayScheduleActivity;
-import com.example.zero.activity.UserActivity;
-import com.example.zero.activity.UserOrderActivity;
+import com.example.zero.activity.*;
+import com.example.zero.entity.CouponInfo;
 import com.example.zero.greentravel_new.R;
+import com.example.zero.util.HttpUtil;
 import com.example.zero.util.MainApplication;
 import com.example.zero.util.RequestManager;
 import com.makeramen.roundedimageview.RoundedImageView;
+import okhttp3.Call;
+import okhttp3.Response;
+
+import java.io.IOException;
 
 /**
  * @author Created by jojo on 2017/9/22.
@@ -54,12 +59,13 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
     private LinearLayout friend;
     private LinearLayout help_feedback;
     private LinearLayout subway;
+    private LinearLayout couponReceive;
 
     private static final int START_LOGIN_ACTIVITY = 1;
     private static final int START_REGISTER_ACTIVITY = 2;
     private static final int START_USER_ACTIVITY = 3;
     private static final String TAG = "PersonalInfoFragment";
-
+    private CouponInfo couponInfo;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
@@ -82,6 +88,7 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
         //friend.setOnClickListener(this);
         help_feedback.setOnClickListener(this);
         subway.setOnClickListener(this);
+        couponReceive.setOnClickListener(this);
         context = person_frag.getContext();
         return person_frag;
     }
@@ -105,6 +112,7 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
         address = (LinearLayout) person_frag.findViewById(R.id.address);
         //friend = (LinearLayout) person_frag.findViewById(R.id.friends);
         help_feedback = (LinearLayout) person_frag.findViewById(R.id.help_feedback);
+        couponReceive = (LinearLayout) person_frag.findViewById(R.id.couponReceive);
     }
 
     @Override
@@ -260,8 +268,121 @@ public class PersonalInfoFragment extends Fragment implements View.OnClickListen
                 startActivity(intent);
                 break;
             }
+            case R.id.couponReceive:{
+                MainApplication mainApplication = (MainApplication) getActivity().getApplication();
+                if (mainApplication.isOnline()) {
+                    // 领取优惠券
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setIcon(R.drawable.coupon_receive);
+                    builder.setTitle("请输入兑换码");
+                    View v = LayoutInflater.from(context).inflate(R.layout.coupon_receive_code, null);
+                    builder.setView(v);
+
+                    final EditText ipt = (EditText) v.findViewById(R.id.coupon_receive_code);
+                    builder.setPositiveButton("兑换", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            couponInfo=null;
+                            String gift_code = ipt.getText().toString().trim();
+                            httpThread(gift_code);
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    builder.show();
+                    Log.d(TAG, "online");
+                } else {
+                    Toast.makeText(getContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "offline");
+                }
+                break;
+            }
             default:
                 break;
+        }
+    }
+    private ProgressDialog pd;
+    private Handler httpHandler = new Handler(new Handler.Callback() {
+        @Override
+        //当有消息发送出来的时候就执行Handler的这个方法
+        public boolean handleMessage(Message msg) {
+            //只要执行到这里就关闭对话框
+            pd.dismiss();
+            // TODO 收到请求
+            showCouponReceiveResult();
+            return false;
+        }
+    });
+    private void httpThread(final String gift_code) {
+        //构建一个下载进度条
+        pd = ProgressDialog.show(context, "领取中", "领取中，请稍候......");
+        // 私人赠送
+       new Thread() {
+            @Override
+            public void run() {
+                //在新线程里执行长耗时方法
+                couponReceive(gift_code);
+                //执行完毕后给handler发送一个空消息
+                httpHandler.sendEmptyMessage(1);
+            }
+        }.start();
+    }
+    private void showCouponReceiveResult(){
+        if(couponInfo!=null){
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+            builder.setIcon(R.drawable.icon_coupon);
+            builder.setTitle("领取成功");
+            builder.setMessage("名称:" + couponInfo.getCoupon_name() + "\n" +
+                    "商家名称:" + couponInfo.getShop_name() + "\n" +
+                    "过期时间:" + couponInfo.getExpire_at());
+            builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            builder.show();
+        }
+        else{
+            Toast.makeText(context, "优惠券领取失败，请稍后再试", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void couponReceive(String gift_code){
+        try {
+            MainApplication mainApplication = (MainApplication) getActivity().getApplication();
+            String phone = mainApplication.getPhone();
+            final Bundle mBundle = new Bundle();
+            mBundle.putString("phone", phone);
+            mBundle.putString("share_code", gift_code);
+            HttpUtil.receiveGiftCouponPrivateOkHttpRequest(mBundle, new okhttp3.Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseData = response.body().string();
+                    // 处理返回数据
+                    JSONObject rsp = JSON.parseObject(responseData);
+                    if (rsp.containsKey("succeed") && rsp.getInteger("succeed") == 1) {
+                        // 领取成功, 解析
+                        JSONObject coupon = rsp.getJSONObject("coupon_info");
+                        couponInfo = new CouponInfo(coupon.getString("id"),
+                                coupon.getInteger("type"), coupon.getString("coupon_name"),
+                                coupon.getString("shop_id"), coupon.getString("seller_id"),
+                                coupon.getString("expire_at"), coupon.getString("shop_tag"),
+                                coupon.getString("image_url"), coupon.getString("shop_name"));
+                    }
+                }
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d(TAG, "onFailure: ERROR!");
+                    Toast.makeText(context, "连接服务器失败，请重新尝试！", Toast.LENGTH_LONG).show();
+                }
+            });
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

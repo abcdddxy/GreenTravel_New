@@ -23,6 +23,7 @@ import com.example.zero.activity.AdvSearchActivity;
 import com.example.zero.adapter.RouteSearchAdapter;
 import com.example.zero.bean.RouteSearchBean;
 import com.example.zero.greentravel_new.R;
+import com.example.zero.util.HttpUtil;
 import com.example.zero.util.MainApplication;
 import com.example.zero.util.RequestManager;
 import com.example.zero.view.SearchPopView;
@@ -201,7 +202,7 @@ public class AdvDestinFragment extends Fragment implements SearchPopView.SearchP
             case DATA:
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userId", "guest");
-                RequestManager.getInstance(context).requestAsyn("http://service.gsubway.com/route/station",
+                RequestManager.getInstance(context).requestAsyn("http://" + HttpUtil.server +"/route/station",
                         RequestManager.TYPE_GET_Z, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {

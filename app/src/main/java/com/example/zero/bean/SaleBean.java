@@ -1,6 +1,5 @@
 package com.example.zero.bean;
 
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 /**
@@ -11,10 +10,15 @@ public class SaleBean {
     private String name;
     private String price;
     private String content;
+    private String send;
     private String time;
     private String img;
     private boolean isUsed;
     private TextView textView;
+    private boolean giftEnable;
+
+    public SaleBean() {
+    }
 
     public void setText(String name, String price, String content, String time, String imgId) {
         this.name = name;
@@ -23,6 +27,8 @@ public class SaleBean {
         this.time = time;
         this.img = imgId;
     }
+
+    public void setSend(String send){ this.send = send; }
 
     public void setTextView(TextView textView) {
         this.textView = textView;
@@ -56,7 +62,19 @@ public class SaleBean {
         return time;
     }
 
+    public String getSend() {
+        return send;
+    }
+
     public String getImage() {
         return img;
+    }
+
+    public boolean isGiftEnable() {
+        return giftEnable;
+    }
+
+    public void setGiftEnable(boolean giftEnable) {
+        this.giftEnable = giftEnable;
     }
 }

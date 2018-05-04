@@ -316,6 +316,28 @@
 
                     <ImageView style="@style/arrow_right_black" />
                 </LinearLayout>
+
+
+                <LinearLayout
+                        android:id="@+id/couponReceive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="15dp">
+
+                    <TextView android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+                              android:drawableLeft="@drawable/coupon_receive"
+                              android:drawablePadding="10dp"
+                              android:gravity="center_vertical"
+                              android:text="兑换优惠券"
+                              android:textColor="@color/black"
+                    />
+                    <ImageView style="@style/arrow_right_black"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout

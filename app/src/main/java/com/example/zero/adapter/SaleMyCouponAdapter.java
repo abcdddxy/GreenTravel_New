@@ -52,12 +52,27 @@ public class SaleMyCouponAdapter extends RecyclerView.Adapter<SaleMyCouponAdapte
         holder.price.setText(dataList.get(position).getPrice());
         holder.content.setText(dataList.get(position).getContent());
         holder.time.setText(dataList.get(position).getTime());
+        holder.send.setText(dataList.get(position).getSend());
         Glide.with(context).load(dataList.get(position).getImage()).placeholder(R.drawable.loading).into(holder.img);
         if (dataList.get(position).getUseFlag()) {
             holder.btn.setText("已使用");
             holder.view.setVisibility(View.VISIBLE);
             holder.coupon.setClickable(false);
             holder.btn.setClickable(false);
+            holder.btn_gift.setClickable(false);
+            holder.btn_gift.setVisibility(View.INVISIBLE);
+        } else{
+            holder.btn.setText("立即使用");
+            holder.view.setVisibility(View.INVISIBLE);
+            holder.coupon.setClickable(true);
+            holder.btn.setClickable(true);
+            if (dataList.get(position).isGiftEnable()) {
+                holder.btn_gift.setClickable(true);
+                holder.btn_gift.setVisibility(View.VISIBLE);
+            } else {
+                holder.btn_gift.setClickable(false);
+                holder.btn_gift.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -71,25 +86,29 @@ public class SaleMyCouponAdapter extends RecyclerView.Adapter<SaleMyCouponAdapte
         private TextView name;
         private TextView price;
         private TextView content;
-        private TextView time;
+        private TextView send,time;
         private ImageView img;
         private FrameLayout coupon;
         private CouponView view;
         private Button btn;
+        private Button btn_gift;
 
         public SaleViewHolder(View itemView, onRecycleItemClickListener listener) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.sale_my_name);
             price = (TextView) itemView.findViewById(R.id.sale_my_price);
             content = (TextView) itemView.findViewById(R.id.sale_my_content);
+            send = (TextView) itemView.findViewById(R.id.sale_my_send);
             time = (TextView) itemView.findViewById(R.id.sale_my_time);
             img = (ImageView) itemView.findViewById(R.id.sale_my_img);
             coupon = (FrameLayout) itemView.findViewById(R.id.sale_my_coupon);
             view = (CouponView) itemView.findViewById(R.id.sale_my_coupon_view);
             btn = (Button) itemView.findViewById(R.id.sale_my_btn);
+            btn_gift = (Button) itemView.findViewById(R.id.gift_my_btn);
             mListener = listener;
             coupon.setOnClickListener(this);
             btn.setOnClickListener(this);
+            btn_gift.setOnClickListener(this);
         }
 
         @Override
@@ -99,8 +118,10 @@ public class SaleMyCouponAdapter extends RecyclerView.Adapter<SaleMyCouponAdapte
                     mListener.onItemClick(view, getAdapterPosition());
                     break;
                 case R.id.sale_my_btn:
-                    mListener.onBtnClick(view, getAdapterPosition());
+                    mListener. onBtnClick(view, getAdapterPosition());
                     break;
+                case R.id.gift_my_btn:
+                    mListener.onGiftClick(view, getAdapterPosition());
                 default:
                     break;
             }
@@ -114,6 +135,7 @@ public class SaleMyCouponAdapter extends RecyclerView.Adapter<SaleMyCouponAdapte
         void onItemClick(View view, int position);
 
         void onBtnClick(View view, int position);
-    }
 
+        void onGiftClick(View view, int position);
+    }
 }
