@@ -176,9 +176,20 @@ public class AdvDestinFragment extends Fragment implements SearchPopView.SearchP
                 for (Integer i : selected) {
                     s = s + labels.get(i) + "+";
                 }
-                s = s.substring(0, s.length() - 1);
-                intent.putExtra("station", searchPopView.getText());
-                intent.putExtra("keywords", s);
+                String sta;
+                String key;
+                if (searchPopView.getText().equals("")) {
+                    sta = "体育西路";
+                } else {
+                    sta = searchPopView.getText();
+                }
+                if (s.equals("")) {
+                    key = "火锅";
+                } else {
+                    key = s.substring(0, s.length() - 1);
+                }
+                intent.putExtra("station", sta);
+                intent.putExtra("keywords", key);
                 startActivity(intent);
             }
         });
@@ -202,7 +213,7 @@ public class AdvDestinFragment extends Fragment implements SearchPopView.SearchP
             case DATA:
                 HashMap<String, String> params = new HashMap<>();
                 params.put("userId", "guest");
-                RequestManager.getInstance(context).requestAsyn("http://" + HttpUtil.server +"/route/station",
+                RequestManager.getInstance(context).requestAsyn("http://" + HttpUtil.server + "/route/station",
                         RequestManager.TYPE_GET_Z, params, new RequestManager.ReqCallBack<String>() {
                             @Override
                             public void onReqSuccess(String result) {

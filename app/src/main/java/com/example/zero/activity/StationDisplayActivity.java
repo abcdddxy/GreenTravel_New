@@ -71,6 +71,7 @@ public class StationDisplayActivity extends AppCompatActivity {
 
     private String stationName;
     private int size = 100;
+    private String[] idList = new String[size];
     private String[] shopIdList = new String[size];
     private String[] sellerIdList = new String[size];
     private double[] sellerLatList = new double[size];
@@ -240,6 +241,7 @@ public class StationDisplayActivity extends AppCompatActivity {
             if (shop.length() != 0) {
                 int count = 0;
                 for (int i = 0; i < shop.length(); i++) {
+                    idList[count] = shop.getJSONObject(i).getString("id");
                     shopIdList[count] = shop.getJSONObject(i).getString("shop_id");
                     sellerIdList[count] = shop.getJSONObject(i).getString("seller_id");
                     sellerLatList[count] = shop.getJSONObject(i).getDouble("lat");
@@ -420,6 +422,7 @@ public class StationDisplayActivity extends AppCompatActivity {
                 Toast.makeText(context, "1" + shopNameList[position], Toast.LENGTH_SHORT).show();
                 Bundle mBundle = new Bundle();
                 Intent intent = new Intent(context, ShoppingCartActivity.class);
+                mBundle.putString("id", idList[position]);
                 mBundle.putString("shopId", shopIdList[position]);
                 mBundle.putString("sellerId",sellerIdList[position]);
                 mBundle.putString("shopName", shopNameList[position]);

@@ -189,9 +189,10 @@ public class AdvSearchActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
                 }
-                else if(!showList.get(position).getSellerId().equals("")) {
+                else if(!showList.get(position).getId().equals("")) {
                     Intent intent = new Intent();
                     intent.setClass(getBaseContext(),ShoppingCartActivity.class);
+                    intent.putExtra("id",showList.get(position).getId());
                     intent.putExtra("shopId",showList.get(position).getShopId());
                     intent.putExtra("sellerId",showList.get(position).getSellerId());
                     intent.putExtra("shopImg",showList.get(position).getImg());
@@ -273,6 +274,7 @@ public class AdvSearchActivity extends AppCompatActivity {
                         JSONObject store = stores.getJSONObject(i);
                         AdvDestinSearchBean bean = new AdvDestinSearchBean();
                         bean.setText(false,
+                                store.getString("id"),
                                 store.getString("shop_id"),
                                 store.getString("seller_id"),
                                 entry.getKey(),

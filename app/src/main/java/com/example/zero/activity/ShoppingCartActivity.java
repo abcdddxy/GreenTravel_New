@@ -64,6 +64,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
     private StickyListHeadersListView listView;
 
     private TitleShopLayout title;
+    private String id;
     private String shopId;
     private String shopImg;
     private String shopName;
@@ -126,6 +127,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
         context = getBaseContext();
 
         Intent intent = getIntent();
+        id = intent.getStringExtra("id");
         shopId = intent.getStringExtra("shopId");
         sellerId = intent.getStringExtra("sellerId");
         shopName = intent.getStringExtra("shopName");
@@ -174,7 +176,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
         try {
             final Bundle mBundle = new Bundle();
             mBundle.putString("userId", "guest");
-            mBundle.putString("shopId", shopId);
+            mBundle.putString("shopId", id);
             HttpUtil.sendGoodsOkHttpRequest(mBundle, new okhttp3.Callback() {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
@@ -599,5 +601,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
                 bottomSheetLayout.showWithSheetView(bottomSheet);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy(){
+        pd.dismiss();
+        super.onDestroy();
     }
 }
